@@ -1,0 +1,4 @@
+steps:
+
+  - label: "Build, test and publish app"
+    command: buildkite/build-test-push.sh

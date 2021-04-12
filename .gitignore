@@ -1,0 +1,8 @@
+.DS_Store
+/.idea/
+/src/.gradle/
+/src/build/
+/src/app/build/
+/src/app/static/node_modules/
+/src/app/static/coverage/
+/src/app/src/main/resources/static/

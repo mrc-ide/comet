@@ -21,7 +21,7 @@ export default createStore({
       commit('increment', randomAmount);
     },
     async getApiInfo({ commit }) {
-      const { data }= await axios.get('/api-info');
+      const { data } = await axios.get('/api-info');
       commit('setApiInfo', data.data);
     }
   },

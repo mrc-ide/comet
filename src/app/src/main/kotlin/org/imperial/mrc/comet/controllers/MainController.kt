@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RestController
 import kotlin.random.Random
 
 @RestController
-class MainController(val apiClient: APIClient) {
+class MainController(val apiClient: APIClient)
+{
 
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @GetMapping("/random")
-    fun random(@RequestParam min: Int, @RequestParam max: Int): Response {
+    fun random(@RequestParam min: Int, @RequestParam max: Int): Response
+    {
         logger.info("random {} {}", kv("min", min), kv("max", max))
         return Response(Random.nextInt(min, max))
     }

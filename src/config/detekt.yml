@@ -1,3 +1,10 @@
 style:
   MandatoryBracesLoops:
     active: true
+  MandatoryBracesIfStatements:
+    active: true
+formatting:
+  SpacingAroundCurly:
+    active: false
+  NoLineBreakAfterElse:
+    active: false

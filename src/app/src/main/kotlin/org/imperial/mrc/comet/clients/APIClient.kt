@@ -14,8 +14,10 @@ interface APIClient {
 }
 
 @Component
-class FuelAPIClient(private val appProperties: AppProperties) : APIClient {
-    override fun info(): ResponseEntity<String> {
+class FuelAPIClient(private val appProperties: AppProperties) : APIClient
+{
+    override fun info(): ResponseEntity<String>
+    {
         return "${appProperties.apiUrl}/"
                 .httpGet()
                 .response()
@@ -23,7 +25,8 @@ class FuelAPIClient(private val appProperties: AppProperties) : APIClient {
                 .toResponseEntity()
     }
 
-    override fun knownFailure(): ResponseEntity<String> {
+    override fun knownFailure(): ResponseEntity<String>
+    {
         return "${appProperties.apiUrl}/nonexistent"
                 .httpGet()
                 .response()

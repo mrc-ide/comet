@@ -23,4 +23,7 @@ class MainController(val apiClient: APIClient) {
 
     @GetMapping("/api-info")
     fun apiInfo() = apiClient.info()
+
+    @GetMapping("/failure")
+    fun failure() = apiClient.knownFailure()
 }

@@ -14,10 +14,8 @@ interface APIClient {
 }
 
 @Component
-class FuelAPIClient(private val appProperties: AppProperties) : APIClient
-{
-    override fun info(): ResponseEntity<String>
-    {
+class FuelAPIClient(private val appProperties: AppProperties) : APIClient {
+    override fun info(): ResponseEntity<String> {
         return "${appProperties.apiUrl}/"
                 .httpGet()
                 .response()
@@ -25,8 +23,7 @@ class FuelAPIClient(private val appProperties: AppProperties) : APIClient
                 .toResponseEntity()
     }
 
-    override fun knownFailure(): ResponseEntity<String>
-    {
+    override fun knownFailure(): ResponseEntity<String> {
         return "${appProperties.apiUrl}/nonexistent"
                 .httpGet()
                 .response()
@@ -35,8 +32,7 @@ class FuelAPIClient(private val appProperties: AppProperties) : APIClient
     }
 }
 
-fun Response.toResponseEntity(): ResponseEntity<String>
-{
+fun Response.toResponseEntity(): ResponseEntity<String> {
     val httpStatus = httpStatusFromCode(this.statusCode)
 
     val body = this.body().asString("application/json")
@@ -46,15 +42,11 @@ fun Response.toResponseEntity(): ResponseEntity<String>
                 .body(body)
 }
 
-fun httpStatusFromCode(code: Int): HttpStatus
-{
+fun httpStatusFromCode(code: Int): HttpStatus {
     val status = HttpStatus.resolve(code) ?: return HttpStatus.INTERNAL_SERVER_ERROR
-    return if (status <= HttpStatus.NOT_FOUND)
-    {
+    return if (status <= HttpStatus.NOT_FOUND) {
         status
-    }
-    else
-    {
+    } else {
         HttpStatus.INTERNAL_SERVER_ERROR
     }
 }

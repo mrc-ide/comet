@@ -1,30 +1,30 @@
-import { createStore } from 'vuex';
-import axios from 'axios';
+import { createStore } from "vuex";
+import axios from "axios";
 
 export default createStore({
-  state: {
-    count: 0,
-    apiInfo: null
-  },
-  mutations: {
-    increment(state, amount) {
-      state.count += amount;
+    state: {
+        count: 0,
+        apiInfo: null
     },
-    setApiInfo(state, apiInfo) {
-      state.apiInfo = apiInfo;
-    }
-  },
-  actions: {
-    async increment({ commit }) {
-      const { data } = await axios.get('/random', { params: { min: 1, max: 10 } });
-      const { data: randomAmount } = data;
-      commit('increment', randomAmount);
+    mutations: {
+        increment(state, amount) {
+            state.count += amount;
+        },
+        setApiInfo(state, apiInfo) {
+            state.apiInfo = apiInfo;
+        }
     },
-    async getApiInfo({ commit }) {
-      const { data } = await axios.get('/api-info');
-      commit('setApiInfo', data.data);
+    actions: {
+        async increment({ commit }) {
+            const { data } = await axios.get("/random", { params: { min: 1, max: 10 } });
+            const { data: randomAmount } = data;
+            commit("increment", randomAmount);
+        },
+        async getApiInfo({ commit }) {
+            const { data } = await axios.get("/api-info");
+            commit("setApiInfo", data.data);
+        }
+    },
+    modules: {
     }
-  },
-  modules: {
-  },
 });

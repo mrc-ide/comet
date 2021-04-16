@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>SpacingAroundKeyword:org.imperial.mrc.comet.clients.APIClient.kt:56</ID>
-  </CurrentIssues>
-</SmellBaseline>

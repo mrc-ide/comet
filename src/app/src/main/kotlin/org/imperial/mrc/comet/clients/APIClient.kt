@@ -1,37 +1,48 @@
 package org.imperial.mrc.comet.clients
 
-import com.github.kittinunf.fuel.core.FuelError
+import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.result.Result
 import org.imperial.mrc.comet.AppProperties
-import org.imperial.mrc.comet.models.ErrorDetail
-import org.imperial.mrc.comet.models.Response
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 
 interface APIClient {
-    fun ip(): Response
+    fun info(): ResponseEntity<String>
 }
 
 @Component
 class FuelAPIClient(private val appProperties: AppProperties) : APIClient {
-    override fun ip(): Response {
-        return "${appProperties.apiUrl}/ip"
+    override fun info(): ResponseEntity<String> {
+        return "${appProperties.apiUrl}/"
                 .httpGet()
-                .responseString()
-                .third
-                .toResponse()
+                .response()
+                .second
+                .toResponseEntity()
     }
 }
 
-fun <V> Result<V, FuelError>.toResponse() = when (this) {
-    is Result.Failure ->
+fun Response.toResponseEntity(): ResponseEntity<String>
+{
+    val httpStatus = httpStatusFromCode(this.statusCode)
+
+    val body = this.body().asString("application/json")
+
+    return ResponseEntity.status(httpStatus)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(body)
+}
+
+fun httpStatusFromCode(code: Int): HttpStatus
+{
+    val status = HttpStatus.resolve(code) ?: return HttpStatus.INTERNAL_SERVER_ERROR
+    return if (status <= HttpStatus.NOT_FOUND)
     {
-        val ex = this.getException()
-        Response(null, "failure", listOf(ErrorDetail(ex.javaClass.simpleName, ex.message)))
+        status
     }
-    is Result.Success ->
+    else
     {
-        val data = this.get()
-        Response(data)
+        HttpStatus.INTERNAL_SERVER_ERROR
     }
 }

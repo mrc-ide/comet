@@ -4,11 +4,15 @@ import axios from 'axios';
 export default createStore({
   state: {
     count: 0,
+    apiInfo: null
   },
   mutations: {
     increment(state, amount) {
       state.count += amount;
     },
+    setApiInfo(state, apiInfo) {
+      state.apiInfo = apiInfo;
+    }
   },
   actions: {
     async increment({ commit }) {
@@ -16,6 +20,10 @@ export default createStore({
       const { data: randomAmount } = data;
       commit('increment', randomAmount);
     },
+    async getApiInfo({ commit }) {
+      const { data }= await axios.get('/api-info');
+      commit('setApiInfo', data.data);
+    }
   },
   modules: {
   },

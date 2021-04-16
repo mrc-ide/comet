@@ -1,9 +1,12 @@
 # comet
 
+Comet is a web application which provides access to CovidSim model results using [cometr](https://github.com/mrc-ide/cometr)
+
 ## Getting started
 
 ```shell
 npm install --prefix=src/app/static/
+./scripts/run-dependencies.sh
 src/gradlew -p src :app:bootRun
 ```
 
@@ -16,6 +19,9 @@ For automatic recompilation of TypeScript code you can additionally run:
 ```shell
 npm run watch --prefix=src/app/static/
 ```
+
+Run `scripts/clear-docker.sh` to tear down all docker dependencies. Alternatively, use `scripts/run-dev-dependencies.sh`
+and use `Ctrl-C` to stop dependencies. 
 
 ## Other build targets
 

@@ -21,6 +21,6 @@ class MainController(val apiClient: APIClient) {
         return Response(Random.nextInt(min, max))
     }
 
-    @GetMapping("/passthrough")
-    fun passthrough() = apiClient.ip()
+    @GetMapping("/api-info")
+    fun apiInfo() = apiClient.info()
 }

@@ -17,6 +17,7 @@ COPY app/static/package-lock.json app/static/
 RUN npm ci --prefix=app/static/ --quiet
 
 COPY . .
+COPY app/src/main/resources/docker-config.properties app/src/main/resources/config.properties
 
 FROM build AS test
 

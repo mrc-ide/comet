@@ -1,10 +1,26 @@
 import { shallowMount } from "@vue/test-utils";
+import Vuex from "vuex";
 import About from "@/views/About.vue";
 
 describe("About.vue", () => {
     it("renders props.msg when passed", () => {
         const heading = "new message";
-        const wrapper = shallowMount(About, { props: { heading } });
+
+        const $store = new Vuex.Store({
+            state: {
+                apiInfo: { name: "test", version: {} }
+            },
+            actions: {}
+        });
+
+        const wrapper = shallowMount(About, {
+            props: { heading },
+            global: {
+                mocks: {
+                    $store
+                }
+            }
+        });
         expect(wrapper.text()).toMatch(heading);
     });
 });

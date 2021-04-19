@@ -24,6 +24,11 @@ class AppMetadata(private val logger: Logger = LoggerFactory.getLogger(AppMetada
 
     @PostConstruct
     fun init() {
+        val charts = buildChartsMetadata()
+        logger.info("APP METADATA CONSTRUCTED!!!!!")
+    }
+
+    private fun buildChartsMetadata(): ArrayNode {
         val chartsText = readFromResource("$CHARTS_ROOT/charts.json")
         val charts = objectMapper.readValue<ArrayNode>(chartsText)
         for (node in charts) {
@@ -39,8 +44,7 @@ class AppMetadata(private val logger: Logger = LoggerFactory.getLogger(AppMetada
             setResourceContentsAsObjectNode(chartNode, "inputSchema", "$chartRoot/input.schema.json")
         }
 
-        logger.info("APP METADATA CONSTRUCTED!!!!!")
-        logger.info(charts.toPrettyString())
+        return charts
     }
 
     private fun setResourceContentsAsTextNode(parentNode: ObjectNode, name: String,  resourcePath: String) {

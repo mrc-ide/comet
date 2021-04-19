@@ -17,7 +17,7 @@ GIT_BRANCH=${GIT_BRANCH//\//-}
 IMAGE_NAME=mrcide/comet
 
 function cleardocker() {
- $HERE/../scripts/clear-docker.sh
+  $HERE/../scripts/clear-docker.sh
 }
 trap cleardocker EXIT
 

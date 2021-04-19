@@ -18,11 +18,11 @@ dependencies {
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("net.logstash.logback:logstash-logback-encoder:6.6")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.1.0")
     testImplementation("org.leadpony.justify:justify:1.1.0")
     testImplementation("org.leadpony.joy:joy:1.1.0")
-    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0")
 }

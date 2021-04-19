@@ -1,0 +1,59 @@
+{
+  "title": {
+    "text": "Healthcare demand"
+  },
+  "shapes": [
+    {
+      "type": "line",
+      "x0": "2020-02-05T00:00:00.000Z",
+      "y0": params.general_beds,
+      "x1": "2022-12-31T00:00:00.000Z",
+      "y1": params.general_beds,
+      "line": {
+        "color": "#ff00fb",
+        "width": 1,
+        "dash": "solid"
+      }
+    },
+    {
+      "type": "line",
+      "x0": "2020-02-05T00:00:00.000Z",
+      "y0": params.critical_beds,
+      "x1": "2022-12-31T00:00:00.000Z",
+      "y1": params.critical_beds,
+      "line": {
+        "color": "#007f80",
+        "width": 1,
+        "dash": "solid"
+      }
+    },
+    params[].phases#$pos[$pos!=0].{
+      "type": "line",
+      "x0": start,
+      "y0": 0,
+      "x1": start,
+      "y1": $max($$.data[visible=true or $not($exists(visible))].y),
+      "line": {
+        "color": "black",
+        "width": 1,
+        "dash": "dot"
+      }
+    }
+  ],
+  "yaxis": {
+    "autorange": false,
+    "type": "linear",
+    "range": [
+      0,
+      1.1 * $max(data[visible=true or $not($exists(visible))].y)
+    ],
+    "hoverformat": ",f"
+  },
+  "xaxis": {
+    "autorange": false,
+    "range": [
+      "2020-01-01",
+      "2023-01-01"
+    ]
+  }
+}

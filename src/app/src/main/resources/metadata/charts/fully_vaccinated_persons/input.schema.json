@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "string"
+          },
+          "year_2021": {
+            "type": "number"
+          },
+          "year_2022": {
+            "type": "number"
+          },
+          "remainder": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "age",
+          "year_2021",
+          "year_2022",
+          "remainder"
+        ]
+      }
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "additionalProperties": false
+}

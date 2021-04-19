@@ -1,0 +1,75 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "counterfactual_hospitalisations": {
+            "type": "number"
+          },
+          "counterfactual_critical_care": {
+            "type": "number"
+          },
+          "hospitalisations": {
+            "type": "number"
+          },
+          "critical_care": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "date",
+          "counterfactual_hospitalisations",
+          "counterfactual_critical_care",
+          "hospitalisations",
+          "critical_care"
+        ]
+      }
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "general_beds": {
+          "type": "number"
+        },
+        "critical_beds": {
+          "type": "number"
+        },
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string"
+              },
+              "rt": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "start",
+              "rt"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "general_beds",
+        "critical_beds",
+        "phases"
+      ]
+    }
+  },
+  "required": [
+    "data",
+    "params"
+  ],
+  "additionalProperties": false
+}

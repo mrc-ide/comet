@@ -1,0 +1,50 @@
+[
+  {
+    "x": data.date,
+    "y": data.counterfactual_hospitalisations,
+    "mode": "lines",
+    "name": "Counterfactual hospitalisations",
+    "visible": true,
+    "line": {
+      "color": "#ffd5fe",
+      "width": 2
+    },
+    "hovertemplate": "%{y:,.0f}<extra></extra>"
+  },
+  {
+    "x": data.date,
+    "y": data.counterfactual_critical_care,
+    "mode": "lines",
+    "name": "Counterfactual critical care",
+    "visible": true,
+    "line": {
+      "color": "#c0ffff",
+      "width": 2
+    },
+    "hovertemplate": "%{y:,.0f}<extra></extra>"
+  },
+  {
+    "x": data.date,
+    "y": data.hospitalisations,
+    "mode": "lines",
+    "name": "Hospitalisations",
+    "visible": true,
+    "line": {
+      "color": "#ff00fb",
+      "width": 2
+    },
+    "hovertemplate": "%{y:,.0f}<extra></extra>"
+  },
+  {
+    "x": data.date,
+    "y": data.critical_care,
+    "mode": "lines",
+    "name": "Critical care",
+    "visible": true,
+    "line": {
+      "color": "#007f80",
+      "width": 2
+    },
+    "hovertemplate": "%{y:,.0f}<extra></extra>"
+  }
+]

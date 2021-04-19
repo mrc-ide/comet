@@ -1,0 +1,71 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "counterfactual_current_infections": {
+            "type": "number"
+          },
+          "counterfactual_deaths": {
+            "type": "number"
+          },
+          "current_infections": {
+            "type": "number"
+          },
+          "deaths": {
+            "type": "number"
+          },
+          "reported_deaths": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "date",
+          "counterfactual_current_infections",
+          "counterfactual_deaths",
+          "current_infections",
+          "deaths",
+          "reported_deaths"
+        ]
+      }
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string"
+              },
+              "rt": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "start",
+              "rt"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "phases"
+      ]
+    }
+  },
+  "required": [
+    "data",
+    "params"
+  ],
+  "additionalProperties": false
+}

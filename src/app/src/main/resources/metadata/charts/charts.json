@@ -1,0 +1,7 @@
+[
+  {"id":  "epidemic_trajectory", "collapsed":  false},
+  {"id":  "r", "collapsed":  true},
+  {"id":  "healthcare_demand", "collapsed":  true},
+  {"id":  "cumulative_percentage_of_population_vaccinated", "collapsed":  true},
+  {"id":  "fully_vaccinated_persons", "collapsed":  true}
+]

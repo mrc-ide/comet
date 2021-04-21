@@ -6,12 +6,16 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.node.TextNode
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.imperial.mrc.comet.models.ErrorDetail
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.io.FileNotFoundException
 import java.net.URL
 import javax.annotation.PostConstruct
+import org.imperial.mrc.comet.models.Response
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 
 @Component
 class AppMetadata(private val logger: Logger = LoggerFactory.getLogger(AppMetadata::class.java)) {
@@ -22,10 +26,18 @@ class AppMetadata(private val logger: Logger = LoggerFactory.getLogger(AppMetada
         private val objectMapper = ObjectMapper()
     }
 
+    lateinit var metadata: Response
+
     @PostConstruct
     fun init() {
+        val fullMetadata = ObjectNode(objectMapper.nodeFactory)
+
         val charts = buildChartsMetadata()
-        logger.info("APP METADATA CONSTRUCTED!!!!!")
+        fullMetadata.set<ArrayNode>("charts", charts)
+
+        metadata = Response(fullMetadata)
+
+        logger.info("AppMetadata constructed")
     }
 
     private fun buildChartsMetadata(): ArrayNode {

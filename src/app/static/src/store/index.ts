@@ -4,7 +4,8 @@ import axios from "axios";
 export default createStore({
     state: {
         count: 0,
-        apiInfo: null
+        apiInfo: null,
+        metadata: null
     },
     mutations: {
         increment(state, amount) {
@@ -12,6 +13,9 @@ export default createStore({
         },
         setApiInfo(state, apiInfo) {
             state.apiInfo = apiInfo;
+        },
+        setMetadata(state, metadata) {
+          state.metadata = metadata;
         }
     },
     actions: {
@@ -23,6 +27,10 @@ export default createStore({
         async getApiInfo({ commit }) {
             const { data } = await axios.get("/api-info");
             commit("setApiInfo", data.data);
+        },
+        async getMetadata({ commit }) {
+            const { data } = await axios.get("/metadata");
+            commit("setMetadata", data);
         }
     },
     modules: {

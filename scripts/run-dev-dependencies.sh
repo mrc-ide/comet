@@ -7,8 +7,7 @@ NETWORK=comet_nw
 "$HERE"/run-dependencies.sh
 
 # From now on, if the user presses Ctrl+C we should teardown gracefully
-trap cleanup INT
-trap cleanup ERR
+trap cleanup EXIT
 function cleanup() {
   docker kill $API
   docker network rm $NETWORK

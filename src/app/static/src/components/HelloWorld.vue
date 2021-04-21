@@ -7,24 +7,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { defineComponent } from "vue";
+import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
-  name: 'HelloWorld',
-  props: {
-    msg: String,
-  },
-  computed: {
-    ...mapState([
-      'count',
-    ]),
-  },
-  methods: {
-    ...mapActions([
-      'increment',
-    ]),
-  },
+    name: "HelloWorld",
+    props: {
+        msg: String
+    },
+    computed: {
+        ...mapState([
+            "count"
+        ])
+    },
+    methods: {
+        ...mapActions([
+            "increment"
+        ])
+    }
 });
 </script>
 

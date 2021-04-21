@@ -17,11 +17,11 @@ GIT_BRANCH=${GIT_BRANCH//\//-}
 IMAGE_NAME=mrcide/comet
 
 function cleardocker() {
-  $HERE/../scripts/clear-docker.sh
+  "$HERE"/../scripts/clear-docker.sh
 }
 trap cleardocker EXIT
 
-$HERE/../scripts/run-dependencies.sh
+"$HERE"/../scripts/run-dependencies.sh
 
 docker build \
   --build-arg BUILDKITE --build-arg BUILDKITE_BRANCH --build-arg BUILDKITE_BUILD_NUMBER --build-arg BUILDKITE_JOB_ID --build-arg BUILDKITE_BUILD_URL --build-arg BUILDKITE_PROJECT_SLUG --build-arg BUILDKITE_COMMIT --build-arg CODECOV_TOKEN \

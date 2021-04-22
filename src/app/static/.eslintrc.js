@@ -16,15 +16,20 @@ module.exports = {
         "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
         "comma-dangle": ["error", "never"],
         indent: ["error", 4],
-        quotes: ["error", "double", { avoidEscape: true }]
+        quotes: ["error", "double", { avoidEscape: true }],
+        "arrow-body-style": "off",
+        "import/prefer-default-export": "off"
     },
     overrides: [{
         files: [
             "**/__tests__/*.{j,t}s?(x)",
-            "**/tests/unit/**/*.spec.{j,t}s?(x)"
+            "**/tests/unit/**/*.test.{j,t}s?(x)"
         ],
         env: {
             jest: true
+        },
+        rules: {
+            "@typescript-eslint/no-explicit-any": "off"
         }
     }]
 };

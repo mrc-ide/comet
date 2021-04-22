@@ -1,5 +1,5 @@
-import {mockRootState} from "../../mocks";
-import {mutations} from "@/store/mutations";
+import { mutations } from "@/store/mutations";
+import { mockRootState } from "../../mocks";
 
 describe("mutations", () => {
     it("sets metadata", () => {
@@ -7,5 +7,5 @@ describe("mutations", () => {
         const mockMetadata = { charts: [] };
         mutations.setMetadata(state, mockMetadata);
         expect(state.metadata).toBe(mockMetadata);
-  });
+    });
 });

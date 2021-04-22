@@ -1,5 +1,5 @@
-import {actions} from "@/store/actions";
-import {mockAxios, mockSuccess} from "../../mocks";
+import { actions } from "@/store/actions";
+import { mockAxios, mockSuccess } from "../../mocks";
 
 describe("actions", () => {
     beforeEach(() => {
@@ -7,11 +7,11 @@ describe("actions", () => {
     });
 
     it("fetches metadata", async () => {
-        const mockMetadata = {"charts": []};
+        const mockMetadata = { charts: [] };
         mockAxios.onGet("/metadata")
-          .reply(200, mockSuccess(mockMetadata));
+            .reply(200, mockSuccess(mockMetadata));
         const commit = jest.fn();
-        await (actions.getMetadata as any)({commit});
+        await (actions.getMetadata as any)({ commit });
 
         expect(commit.mock.calls.length).toBe(1);
         expect(commit.mock.calls[0][0]).toBe("setMetadata");

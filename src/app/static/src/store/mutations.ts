@@ -1,14 +1,14 @@
-import {RootState} from "@/store/index";
-import {ApiInfo, Metadata} from "@/types";
+import { RootState } from "@/store/state";
+import { ApiInfo, Metadata } from "@/types";
 
 export const mutations = {
-  increment(state: RootState, amount: number) {
-    state.count += amount;
-  },
-  setApiInfo(state: RootState, apiInfo: ApiInfo) {
-    state.apiInfo = apiInfo;
-  },
-  setMetadata(state: RootState, metadata: Metadata) {
-    state.metadata = metadata;
-  }
+    increment(state: RootState, amount: number): void {
+        state.count += amount;
+    },
+    setApiInfo(state: RootState, apiInfo: ApiInfo): void {
+        state.apiInfo = apiInfo;
+    },
+    setMetadata(state: RootState, metadata: Metadata): void {
+        state.metadata = metadata;
+    }
 };

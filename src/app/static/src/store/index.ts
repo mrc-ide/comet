@@ -1,13 +1,7 @@
 import { createStore } from "vuex";
-import {ApiInfo, Metadata} from "@/types";
-import {actions} from "@/store/actions";
-import {mutations} from "@/store/mutations";
-
-export interface RootState {
-  count: number
-  apiInfo: ApiInfo | null
-  metadata: Metadata | null
-}
+import { actions } from "@/store/actions";
+import { mutations } from "@/store/mutations";
+import { RootState } from "@/store/state";
 
 export default createStore<RootState>({
     state: {

@@ -5,7 +5,7 @@ export interface ApiError {
 
 export interface ApiResponse {
     status: string,
-    data: any,
+    data: unknown,
     errors: ApiError[] | null
 }
 
@@ -15,6 +15,5 @@ export interface ApiInfo {
 }
 
 export interface Metadata {
-    charts: any[]
+    charts: unknown[]
 }
-

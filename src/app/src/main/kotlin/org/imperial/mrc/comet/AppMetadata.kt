@@ -15,8 +15,8 @@ import org.imperial.mrc.comet.models.Response
 
 @Component
 class AppMetadata(
-        private val logger: Logger = LoggerFactory.getLogger(AppMetadata::class.java),
-        private val classLoader: ClassLoader = AppMetadata::class.java.classLoader
+    private val logger: Logger = LoggerFactory.getLogger(AppMetadata::class.java),
+    private val classLoader: ClassLoader = AppMetadata::class.java.classLoader
 ) {
 
     companion object {
@@ -57,7 +57,7 @@ class AppMetadata(
         return charts
     }
 
-    private fun setResourceContentsAsTextNode(parentNode: ObjectNode, name: String,  resourcePath: String) {
+    private fun setResourceContentsAsTextNode(parentNode: ObjectNode, name: String, resourcePath: String) {
         val text = readFromResource(resourcePath)
         parentNode.set<TextNode>(name, TextNode(text))
     }

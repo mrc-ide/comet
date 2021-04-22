@@ -10,8 +10,9 @@ import org.imperial.mrc.comet.models.Response
 @RestController
 class MetadataController(
     private val appMetadata: AppMetadata,
-    private val logger: Logger = LoggerFactory.getLogger(MetadataController::class.java))
-{
+    private val logger: Logger = LoggerFactory.getLogger(MetadataController::class.java)
+) {
+
     @GetMapping("/metadata")
     fun metadata(): Response {
         logger.info("metadata")

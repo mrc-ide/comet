@@ -13,7 +13,7 @@ class MetadataController(
     private val logger: Logger = LoggerFactory.getLogger(MetadataController::class.java))
 {
     @GetMapping("/metadata")
-    fun apiInfo(): Response {
+    fun metadata(): Response {
         logger.info("metadata")
         return appMetadata.metadata
     }

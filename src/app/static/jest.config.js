@@ -3,5 +3,8 @@ module.exports = {
     transform: {
         "^.+\\.vue$": "vue-jest"
     },
-    collectCoverage: true
+    collectCoverage: true,
+    testMatch: [
+        "**/?(*.)(spec|test).(js|ts)"
+    ]
 };

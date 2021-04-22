@@ -1,4 +1,4 @@
-package org.imperial.mrc.comet.unit_tests
+package org.imperial.mrc.comet.unit_tests.controllers
 
 import org.assertj.core.api.Assertions.assertThat
 import org.imperial.mrc.comet.clients.APIClient

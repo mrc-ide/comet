@@ -13,14 +13,14 @@ import java.net.URL
 
 @RestController
 class DataController(
-        private val logger: Logger = LoggerFactory.getLogger(DataController::class.java),
-        private val classLoader: ClassLoader = DataController::class.java.classLoader
+    private val logger: Logger = LoggerFactory.getLogger(DataController::class.java),
+    private val classLoader: ClassLoader = DataController::class.java.classLoader
 ) {
     @GetMapping("/results")
     fun results(): Response {
         logger.info("results")
 
-        //TODO: replace this implementation to return fixed test data with getting real results from cometr
+        // NB this implementation to return fixed test data will be replaced with getting real results from cometr
         val fileName = "data.json"
         val url: URL? = classLoader.getResource(fileName)
         val resultsText = url?.readText() ?: throw FileNotFoundException("Resource file '$fileName' not found")

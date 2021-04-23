@@ -21,7 +21,7 @@ describe("actions", () => {
     it("fetches results", async () => {
         const mockResults = { time_series: [] };
         mockAxios.onGet("/results")
-          .reply(200, mockSuccess(mockResults));
+            .reply(200, mockSuccess(mockResults));
         const commit = jest.fn();
         await (actions.getResults as any)({ commit });
 

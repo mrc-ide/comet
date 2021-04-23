@@ -12,6 +12,6 @@ export const mutations = {
         state.metadata = metadata;
     },
     setResults(state: RootState, results: unknown): void {
-      state.results = results;
+        state.results = results;
     }
 };

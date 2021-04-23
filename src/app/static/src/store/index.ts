@@ -7,7 +7,8 @@ export default createStore<RootState>({
     state: {
         count: 0,
         apiInfo: null,
-        metadata: null
+        metadata: null,
+        results: null
     },
     mutations,
     actions,

@@ -1,24 +1,28 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <Charts chart-metadata="metadata.charts" chart-data="results"></Charts>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue";
-import { mapActions } from "vuex";
+import Charts from "@/components/charts/Charts.vue";
+import {mapActions, mapState} from "vuex";
 
 export default defineComponent({
     name: "Home",
     components: {
-        HelloWorld
+        Charts
     },
     methods: {
         ...mapActions([
             "getMetadata",
             "getResults"
+        ]),
+        ...mapState([
+            "metadata",
+            "results"
         ])
     },
     mounted() {

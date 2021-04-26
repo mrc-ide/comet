@@ -14,6 +14,13 @@ export interface ApiInfo {
     version: Record<string, string>
 }
 
+export interface ChartMetadata {
+    config: unknown,
+    data: string,
+    layout: string,
+    inputSchema: unknown
+}
+
 export interface Metadata {
-    charts: unknown[]
+    charts: ChartMetadata[]
 }

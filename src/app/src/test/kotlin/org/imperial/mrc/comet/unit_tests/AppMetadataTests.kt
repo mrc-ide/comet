@@ -53,11 +53,11 @@ class AppMetadataTests {
                         ]"""
             )
 
-            on { getResource("metadata/charts/chart1/config.json") } doReturn createTestResource(
-                    "metadata/charts/chart1/config.json", """{"testContent": "chart1_config"}"""
+            on { getResource("metadata/charts/chart1/config.jsonata") } doReturn createTestResource(
+                    "metadata/charts/chart1/config.jsonata", """{"testContent": "chart1_config"}"""
             )
-            on { getResource("metadata/charts/chart2/config.json") } doReturn createTestResource(
-                    "metadata/charts/chart2/config.json", """{"testContent": "chart2_config"}"""
+            on { getResource("metadata/charts/chart2/config.jsonata") } doReturn createTestResource(
+                    "metadata/charts/chart2/config.jsonata", """{"testContent": "chart2_config"}"""
             )
 
             on { getResource("metadata/charts/chart1/data.jsonata") } doReturn createTestResource(
@@ -95,7 +95,7 @@ class AppMetadataTests {
         val chart1 = charts[0]
         assertThat(chart1["id"].asText()).isEqualTo("chart1")
         assertThat(chart1["collapsed"].asBoolean()).isEqualTo(true)
-        assertThat(chart1["config"].toString()).isEqualTo("""{"testContent":"chart1_config"}""")
+        assertThat(chart1["config"].asText()).isEqualTo("""{"testContent": "chart1_config"}""")
         assertThat(chart1["data"].asText()).isEqualTo("chart1_data")
         assertThat(chart1["layout"].asText()).isEqualTo("chart1_layout")
         assertThat(chart1["inputSchema"].toString()).isEqualTo("""{"testContent":"chart1_schema"}""")
@@ -103,7 +103,7 @@ class AppMetadataTests {
         val chart2 = charts[1]
         assertThat(chart2["id"].asText()).isEqualTo("chart2")
         assertThat(chart2["collapsed"].asBoolean()).isEqualTo(false)
-        assertThat(chart2["config"].toString()).isEqualTo("""{"testContent":"chart2_config"}""")
+        assertThat(chart2["config"].asText()).isEqualTo("""{"testContent": "chart2_config"}""")
         assertThat(chart2["data"].asText()).isEqualTo("chart2_data")
         assertThat(chart2["layout"].asText()).isEqualTo("chart2_layout")
         assertThat(chart2["inputSchema"].toString()).isEqualTo("""{"testContent":"chart2_schema"}""")

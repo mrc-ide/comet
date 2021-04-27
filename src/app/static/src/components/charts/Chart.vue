@@ -1,40 +1,46 @@
 <template>
   <div>
-    <div>{{JSON.stringify(data)}}</div>
-    <div>{{JSON.stringify(layout)}}</div>
+    Here is a chart
     <div ref="chart"></div>
   </div>
 </template>
 
 <script lang="ts">
-  import Plotly from "plotly.js";
-  import {ChartMetadata} from "@/types";
-  import { defineComponent, ref } from "vue";
+  import Plotly, {Config, Data, Layout} from "plotly.js";
+  import {ChartMetadata, Results} from "@/types";
+  import { defineComponent, ref, PropType, computed, watch, onMounted } from "vue";
+  import jsonata from "jsonata";
 
-  //TODO: do all necessary jsonata unpacking and validation
+  //TODO: schema validation
+  /*interface Computed {
+      plotlyData: () => Data[],
+      plotlyLayout: () => Partial<Layout>;
+  }*/
+
+  interface Props {
+      chartMetadata: ChartMetadata,
+      chartData: Results
+  }
+
   export default defineComponent( {
       name: "Chart",
+      props: {
+          chartMetadata: { type: Object as PropType<ChartMetadata>},
+          chartData: { type: Object as PropType<Results>}
+      },
       $refs: {
           chart: ref(null)
       },
-      props: {
-          chartMetadata: {
-              type: Array,
-              default: []
-          },
-          chartData: {
-              type: Object
-          }
-      },
-      data() {
-          return {
-              data: [{ x: [1, 3], y: [2, 4] }],
-              layout: {},
-              config: {}
-          }
-      },
       mounted() {
-          Plotly.newPlot(this.$refs.chart as HTMLElement, this.data, this.layout, this.config)
+          //TODO: Need to get params and data into the data.jsonata
+          console.log("setting some metadata for " + (this.chartMetadata as any).id);
+          const plotlyData = JSON.parse(JSON.stringify(jsonata(this.chartMetadata!!.data).evaluate(this.chartData)));
+          //console.log("plotlyData: " + JSON.stringify(plotlyData))
+          const plotlyLayout = JSON.parse(JSON.stringify(jsonata(this.chartMetadata!!.layout).evaluate({data: plotlyData})));
+          console.log("plotlyLayout: " + JSON.stringify(plotlyLayout))
+          const plotlyConfig = this.chartMetadata!!.config as Partial<Config>; //TODO: This shouldn't change
+          //console.log("plotlyConfig: " + JSON.stringify(plotlyConfig))
+          Plotly.newPlot(this.$refs.chart as HTMLElement, plotlyData, plotlyLayout, plotlyConfig); //TODO: make plotly.react in watch data
       }
   });
 </script>

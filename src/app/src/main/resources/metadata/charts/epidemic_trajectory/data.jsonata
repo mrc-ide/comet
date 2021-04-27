@@ -1,7 +1,7 @@
 [
   {
-    "x": data.date,
-    "y": data.counterfactual_current_infections,
+    "x": time_series.date,
+    "y": time_series.counterfactual_current_infections,
     "mode": "lines",
     "name": "Counterfactual current infections",
     "visible": false,
@@ -12,8 +12,8 @@
     "hovertemplate": "%{y:,.0f}<extra></extra>"
   },
   {
-    "x": data.date,
-    "y": data.counterfactual_deaths,
+    "x": time_series.date,
+    "y": time_series.counterfactual_deaths,
     "mode": "lines",
     "name": "Counterfactual deaths",
     "visible": true,
@@ -24,8 +24,8 @@
     "hovertemplate": "%{y:,.0f}<extra></extra>"
   },
   {
-    "x": data.date,
-    "y": data.current_infections,
+    "x": time_series.date,
+    "y": time_series.current_infections,
     "mode": "lines",
     "name": "Current infections",
     "visible": false,
@@ -36,8 +36,8 @@
     "hovertemplate": "%{y:,.0f}<extra></extra>"
   },
   {
-    "x": data.date,
-    "y": data.deaths,
+    "x": time_series.date,
+    "y": time_series.deaths,
     "mode": "lines",
     "name": "Deaths",
     "visible": true,
@@ -48,8 +48,8 @@
     "hovertemplate": "%{y:,.0f}<extra></extra>"
   },
   {
-    "x": data.date,
-    "y": data.reported_deaths,
+    "x": time_series.date,
+    "y": time_series.reported_deaths,
     "mode": "markers",
     "name": "Reported deaths",
     "marker": {

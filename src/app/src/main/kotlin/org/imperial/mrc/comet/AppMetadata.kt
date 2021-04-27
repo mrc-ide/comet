@@ -46,7 +46,7 @@ class AppMetadata(
             val chartId = node["id"].asText()
             val chartRoot = "$CHARTS_ROOT/$chartId"
 
-            setResourceContentsAsObjectNode(chartNode, "config", "$chartRoot/config.json")
+            setResourceContentsAsTextNode(chartNode, "config", "$chartRoot/config.jsonata")
 
             setResourceContentsAsTextNode(chartNode, "data", "$chartRoot/data.jsonata")
             setResourceContentsAsTextNode(chartNode, "layout", "$chartRoot/layout.jsonata")

@@ -1,0 +1,41 @@
+[
+  {
+    "x": data.age,
+    "y": data.year_2021,
+    "name": "2021",
+    "marker": {
+      "color": "rgba(209, 137, 105, 1)",
+      "line": {
+        "width": 0
+      }
+    },
+    "type": "bar",
+    "hovertemplate": "%{y:,.1f} million<extra></extra>"
+  },
+  {
+    "x": data.age,
+    "y": data.year_2022,
+    "name": "2022",
+    "marker": {
+      "color": "rgba(158, 108, 144, 1)",
+      "line": {
+        "width": 0
+      }
+    },
+    "type": "bar",
+    "hovertemplate": "%{y:,.1f} million<extra></extra>"
+  },
+  {
+    "x": data.age,
+    "y": data.remainder,
+    "name": "Remainder",
+    "marker": {
+      "color": "rgba(220, 220, 220, 1)",
+      "line": {
+        "width": 0
+      }
+    },
+    "type": "bar",
+    "hovertemplate": "%{y:,.1f} million<extra></extra>"
+  }
+]

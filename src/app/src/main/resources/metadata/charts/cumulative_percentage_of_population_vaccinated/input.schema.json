@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "string"
+          },
+          "healthcare_workers": {
+            "type": "number"
+          },
+          "over_65_years": {
+            "type": "number"
+          },
+          "working_age": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "month",
+          "healthcare_workers",
+          "over_65_years",
+          "working_age"
+        ]
+      }
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "population": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "population"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "data",
+    "params"
+  ],
+  "additionalProperties": false
+}

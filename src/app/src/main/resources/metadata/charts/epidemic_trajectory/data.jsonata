@@ -1,0 +1,61 @@
+[
+  {
+    "x": data.date,
+    "y": data.counterfactual_current_infections,
+    "mode": "lines",
+    "name": "Counterfactual current infections",
+    "visible": false,
+    "line": {
+      "color": "#c6def4",
+      "width": 2
+    },
+    "hovertemplate": "%{y:,.0f}<extra></extra>"
+  },
+  {
+    "x": data.date,
+    "y": data.counterfactual_deaths,
+    "mode": "lines",
+    "name": "Counterfactual deaths",
+    "visible": true,
+    "line": {
+      "color": "#ff9191",
+      "width": 2
+    },
+    "hovertemplate": "%{y:,.0f}<extra></extra>"
+  },
+  {
+    "x": data.date,
+    "y": data.current_infections,
+    "mode": "lines",
+    "name": "Current infections",
+    "visible": false,
+    "line": {
+      "color": "#2a73bb",
+      "width": 2
+    },
+    "hovertemplate": "%{y:,.0f}<extra></extra>"
+  },
+  {
+    "x": data.date,
+    "y": data.deaths,
+    "mode": "lines",
+    "name": "Deaths",
+    "visible": true,
+    "line": {
+      "color": "#bf0000",
+      "width": 2
+    },
+    "hovertemplate": "%{y:,.0f}<extra></extra>"
+  },
+  {
+    "x": data.date,
+    "y": data.reported_deaths,
+    "mode": "markers",
+    "name": "Reported deaths",
+    "marker": {
+      "color": "green",
+      "size": 6
+    },
+    "hovertemplate": "%{y:,r}<extra></extra>"
+  }
+]

@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "rt": {
+            "type": "number"
+          },
+          "reff": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "date"
+        ]
+      }
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "string"
+              },
+              "rt": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "start",
+              "rt"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "phases"
+      ]
+    }
+  },
+  "required": [
+    "data",
+    "params"
+  ],
+  "additionalProperties": false
+}

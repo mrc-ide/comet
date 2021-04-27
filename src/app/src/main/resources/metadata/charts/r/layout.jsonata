@@ -1,0 +1,24 @@
+{
+  "title": {
+    "text": "R"
+  },
+  "xaxis": {
+    "autorange": false,
+    "range": [
+      "2020-01-01",
+      "2023-01-01"
+    ]
+  },
+  "shapes": params[].phases#$pos[$pos!=0].{
+    "type": "line",
+    "x0": start,
+    "y0": 0,
+    "x1": start,
+    "y1": $max($$.data[visible=true or $not($exists(visible))].y),
+    "line": {
+      "color": "black",
+      "width": 1,
+      "dash": "dot"
+    }
+  }
+}

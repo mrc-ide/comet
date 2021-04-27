@@ -1,30 +1,16 @@
 import { createStore } from "vuex";
-import axios from "axios";
+import { actions } from "@/store/actions";
+import { mutations } from "@/store/mutations";
+import { RootState } from "@/store/state";
 
-export default createStore({
+export default createStore<RootState>({
     state: {
         count: 0,
-        apiInfo: null
+        apiInfo: null,
+        metadata: null
     },
-    mutations: {
-        increment(state, amount) {
-            state.count += amount;
-        },
-        setApiInfo(state, apiInfo) {
-            state.apiInfo = apiInfo;
-        }
-    },
-    actions: {
-        async increment({ commit }) {
-            const { data } = await axios.get("/random", { params: { min: 1, max: 10 } });
-            const { data: randomAmount } = data;
-            commit("increment", randomAmount);
-        },
-        async getApiInfo({ commit }) {
-            const { data } = await axios.get("/api-info");
-            commit("setApiInfo", data.data);
-        }
-    },
+    mutations,
+    actions,
     modules: {
     }
 });

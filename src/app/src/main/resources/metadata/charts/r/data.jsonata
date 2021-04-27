@@ -1,0 +1,24 @@
+[
+  {
+    "x": data.date,
+    "y": data.rt,
+    "name": "Rt",
+    "mode": "lines",
+    "hovertemplate": "%{y:,.2f}<extra></extra>",
+    "line": {
+      "color": "lightgrey",
+      "width": 2
+    }
+  },
+  {
+    "x": data.date,
+    "y": data.reff,
+    "name": "Reff",
+    "mode": "lines",
+    "hovertemplate": "%{y:,.2f}<extra></extra>",
+    "line": {
+      "color": "rgb(42, 115, 187)",
+      "width": 2
+    }
+  }
+]

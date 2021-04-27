@@ -9,7 +9,7 @@ export default createStore<RootState>({
         apiInfo: null,
         metadata: null,
         results: null,
-        //This auxlxiliary data required by charts will eventually come out of dynamic parameters
+        //This auxiliary data required by charts will eventually come out of dynamic parameters
         chartLayoutData: {
           "params": {
             "phases": [

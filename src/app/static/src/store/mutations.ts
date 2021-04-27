@@ -1,5 +1,5 @@
 import { RootState } from "@/store/state";
-import {ApiInfo, Metadata, Results} from "@/types";
+import {ApiInfo, Metadata, Data} from "@/types";
 
 export const mutations = {
     increment(state: RootState, amount: number): void {
@@ -11,7 +11,7 @@ export const mutations = {
     setMetadata(state: RootState, metadata: Metadata): void {
         state.metadata = metadata;
     },
-    setResults(state: RootState, results: Results): void {
+    setResults(state: RootState, results: Data): void {
         state.results = results;
     }
 };

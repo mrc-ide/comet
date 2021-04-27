@@ -11,7 +11,7 @@
 <script lang="ts">
     import { defineComponent, PropType } from "vue";
     import Chart from "./Chart.vue";
-    import {ChartMetadata, Results} from "@/types";
+    import {ChartMetadata, Data} from "@/types";
 
     export default defineComponent( {
         name: "Charts",
@@ -20,8 +20,8 @@
         },
         props: {
             chartMetadata: { type: Array as PropType<ChartMetadata[]>, required: true },
-            chartData: { type: Object as PropType<Results>},
-            layoutData: { type: Object, required: true }
+            chartData: { type: Object as PropType<Data>},
+            layoutData: { type: Object as PropType<Data>, required: true }
         },
     });
 </script>

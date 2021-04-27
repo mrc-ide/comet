@@ -25,6 +25,6 @@ export interface Metadata {
     charts: ChartMetadata[]
 }
 
-export interface Results {
+export interface Data {
   [k: string]: unknown;
 }

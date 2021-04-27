@@ -124,6 +124,6 @@ class AppMetadataTests {
 
         assertThatThrownBy{ AppMetadata(mock(), mockClassLoader) }
                 .isInstanceOf(FileNotFoundException::class.java)
-                .hasMessage("Resource file 'metadata/charts/chart1/config.json' not found")
+                .hasMessage("Resource file 'metadata/charts/chart1/config.jsonata' not found")
     }
 }

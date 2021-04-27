@@ -35,8 +35,8 @@
           //TODO: Need to get params and data into the data.jsonata
           console.log("setting some metadata for " + (this.chartMetadata as any).id);
           const plotlyData = JSON.parse(JSON.stringify(jsonata(this.chartMetadata!!.data).evaluate(this.chartData)));
-          //console.log("plotlyData: " + JSON.stringify(plotlyData))
-          const plotlyLayout = JSON.parse(JSON.stringify(jsonata(this.chartMetadata!!.layout).evaluate({data: plotlyData})));
+          console.log("plotlyData: " + JSON.stringify(plotlyData))
+          const plotlyLayout = JSON.parse(JSON.stringify(jsonata(this.chartMetadata!!.layout).evaluate(plotlyData)));
           console.log("plotlyLayout: " + JSON.stringify(plotlyLayout))
           const plotlyConfig = this.chartMetadata!!.config as Partial<Config>; //TODO: This shouldn't change
           //console.log("plotlyConfig: " + JSON.stringify(plotlyConfig))

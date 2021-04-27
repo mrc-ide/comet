@@ -5,4 +5,5 @@ export interface RootState {
   apiInfo: ApiInfo | null
   metadata: Metadata | null
   results: Results | null
+  chartLayoutData: unknown
 }

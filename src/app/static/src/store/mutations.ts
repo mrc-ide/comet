@@ -12,22 +12,6 @@ export const mutations = {
         state.metadata = metadata;
     },
     setResults(state: RootState, results: Results): void {
-        //TODO: This is temporary - provide hardcoded params until we have real params
-        results["params"] = {
-            "phases": [
-              {
-                "start": "2020-01-01T00:00:00.000Z",
-                "rt": 1.35
-              },
-              {
-                "start": "2021-03-25T00:00:00.000Z",
-                "rt": 2.45
-              }
-            ],
-            "general_beds": 314310,
-            "critical_beds": 11350
-        };
-
         state.results = results;
     }
 };

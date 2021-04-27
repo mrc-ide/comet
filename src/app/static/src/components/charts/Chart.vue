@@ -11,12 +11,6 @@
   import { defineComponent, ref, PropType, computed, watch, onMounted } from "vue";
   import jsonata from "jsonata";
 
-  //TODO: schema validation
-  /*interface Computed {
-      plotlyData: () => Data[],
-      plotlyLayout: () => Partial<Layout>;
-  }*/
-
   interface Props {
       chartMetadata: ChartMetadata,
       chartData: Results
@@ -26,21 +20,26 @@
       name: "Chart",
       props: {
           chartMetadata: { type: Object as PropType<ChartMetadata>},
-          chartData: { type: Object as PropType<Results>}
+          chartData: { type: Object as PropType<Results>},
+          layoutData: { type: Object}
       },
       $refs: {
           chart: ref(null)
       },
       mounted() {
-          //TODO: Need to get params and data into the data.jsonata
+          //TODO: schema validation
           console.log("setting some metadata for " + (this.chartMetadata as any).id);
           const plotlyData = JSON.parse(JSON.stringify(jsonata(this.chartMetadata!!.data).evaluate(this.chartData)));
           console.log("plotlyData: " + JSON.stringify(plotlyData))
-          const plotlyLayout = JSON.parse(JSON.stringify(jsonata(this.chartMetadata!!.layout).evaluate(plotlyData)));
+          console.log("plotly data params:" + JSON.stringify(plotlyData.params));
+          console.log("layout data:" + JSON.stringify(this.layoutData))
+
+          const plotlyLayout = JSON.parse(JSON.stringify(jsonata(this.chartMetadata!!.layout).evaluate({...this.layoutData, data: plotlyData})));
+          //const plotlyLayout = {title: {text: "R"}};
           console.log("plotlyLayout: " + JSON.stringify(plotlyLayout))
           const plotlyConfig = this.chartMetadata!!.config as Partial<Config>; //TODO: This shouldn't change
           //console.log("plotlyConfig: " + JSON.stringify(plotlyConfig))
-          Plotly.newPlot(this.$refs.chart as HTMLElement, plotlyData, plotlyLayout, plotlyConfig); //TODO: make plotly.react in watch data
+          Plotly.newPlot(this.$refs.chart as HTMLElement, plotlyData, plotlyLayout, plotlyConfig); //TODO: make plotly.react in watch data and layoutData
       }
   });
 </script>

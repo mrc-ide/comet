@@ -1,8 +1,10 @@
 <template>
   <div>
-    Here are charts
-    <!--<div v-for="chart in chartMetadata">{{JSON.stringify(chart)}}</div>-->
-    <Chart v-if="chartData" v-for="chart in chartMetadata" :chart-metadata="chart" :chart-data="chartData"></Chart>
+    <Chart v-if="chartData"
+           v-for="chart in chartMetadata"
+           :chart-metadata="chart"
+           :chart-data="chartData"
+           :layout-data="layoutData"></Chart>
   </div>
 </template>
 
@@ -18,7 +20,8 @@
         },
         props: {
             chartMetadata: { type: Array as PropType<ChartMetadata[]>, required: true },
-            chartData: { type: Object as PropType<Results> , required: true}
+            chartData: { type: Object as PropType<Results>},
+            layoutData: { type: Object, required: true }
         },
     });
 </script>

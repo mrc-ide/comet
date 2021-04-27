@@ -1,7 +1,9 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <Charts :chart-metadata="metadata ? metadata.charts: null" :chart-data="results"></Charts>
+    <Charts v-if="metadata"
+            :chart-metadata="metadata.charts"
+            :chart-data="results"
+            :layout-data="chartLayoutData"></Charts>
   </div>
 </template>
 
@@ -18,7 +20,8 @@ export default defineComponent({
     computed: {
         ...mapState([
             "metadata",
-            "results"
+            "results",
+            "chartLayoutData"
         ])
     },
     methods: {

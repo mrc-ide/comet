@@ -6,5 +6,8 @@ module.exports = {
     collectCoverage: true,
     testMatch: [
         "**/?(*.)(spec|test).(js|ts)"
+    ],
+    coveragePathIgnorePatterns: [
+        "./tests/mocks.ts"
     ]
 };

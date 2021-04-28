@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "data": {
+    "cumulative_percent_pop_vacced": {
       "type": "array",
       "items": {
         "type": "object",
@@ -36,13 +36,11 @@
       },
       "required": [
         "population"
-      ],
-      "additionalProperties": false
+      ]
     }
   },
   "required": [
-    "data",
+    "cumulative_percent_pop_vacced",
     "params"
-  ],
-  "additionalProperties": false
+  ]
 }

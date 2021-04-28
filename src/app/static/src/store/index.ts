@@ -23,7 +23,8 @@ export default createStore<RootState>({
               }
             ],
             "general_beds": 314310,
-            "critical_beds": 11350
+            "critical_beds": 11350,
+            "population": 67890000
           }
       }
 },

@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "data": {
+    "time_series": {
       "type": "array",
       "items": {
         "type": "object",
@@ -64,8 +64,7 @@
     }
   },
   "required": [
-    "data",
+    "time_series",
     "params"
-  ],
-  "additionalProperties": false
+  ]
 }

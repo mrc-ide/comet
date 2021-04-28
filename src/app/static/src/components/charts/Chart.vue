@@ -3,46 +3,67 @@
 </template>
 
 <script lang="ts">
-    import Plotly, {Config} from "plotly.js";
-    import {ChartMetadata, Data} from "@/types";
-    import {computed, defineComponent, onMounted, PropType, ref, watch} from "vue";
-    import jsonata from "jsonata";
+import Plotly, { Config } from "plotly.js";
+import Ajv, {Schema} from "ajv";
+import { ChartMetadata, Data } from "@/types";
+import { computed, defineComponent, onMounted, PropType, ref, watch } from "vue";
+import jsonata from "jsonata";
 
-    export default defineComponent( {
-        name: "Chart",
-        props: {
-            chartMetadata: { type: Object as PropType<ChartMetadata>, required: true},
-            chartData: { type: Object as PropType<Data>, required: true},
-            layoutData: { type: Object as PropType<Data>, required: true }
-        },
-        setup(props) {
-            const chart = ref(null);
-            const data = computed(() => {
-                return JSON.parse(JSON.stringify(jsonata(props.chartMetadata!!.data).evaluate(props.chartData)));
+export default defineComponent( {
+    name: "Chart",
+    props: {
+        chartMetadata: { type: Object as PropType<ChartMetadata>, required: true },
+        chartData: { type: Object as PropType<Data>, required: true },
+        layoutData: { type: Object as PropType<Data>, required: true }
+    },
+    setup(props) {
+        const chart = ref(null);
+        const data = computed(() => {
+            return jsonata(props.chartMetadata.data).evaluate({
+                ...props.chartData,
+                ...props.layoutData
             });
-            const layout = computed(() => {
-                return JSON.parse(JSON.stringify(jsonata(props.chartMetadata!!.layout).evaluate({...props.layoutData, data: data.value})));
+        });
+        const layout = computed(() => {
+            return jsonata(props.chartMetadata.layout).evaluate({
+                ...props.layoutData,
+                data: data.value
             });
-            const config = computed(() => {
-                return props.chartMetadata.config as Partial<Config>;
-            });
+        });
+        const config = computed(() => {
+            return props.chartMetadata.config as Partial<Config>;
+        });
 
-            function drawChart() {
-                const el = chart.value as unknown;
-                Plotly.react(el as HTMLElement, data.value, layout.value, config.value);
+        function validate() {
+            const ajv = new Ajv();
+            const ajvValidate = ajv.compile(props.chartMetadata.inputSchema as Schema); //TODO: make the state type of this Schema
+            const valid = ajvValidate({
+                ...props.chartData,
+                ...props.layoutData
+            }); //TODO: make full inputdata a computed property
+
+            if (!valid) {
+                console.error(ajvValidate.errors);
+                throw new Error("Data validation failed");
             }
-
-            //TODO: schema validation
-            onMounted(() => {
-                drawChart();
-            });
-
-            watch([data, layout], () =>{
-                drawChart();
-            });
-
-            return { chart, data, layout, config, drawChart }
         }
-  });
-</script>
 
+        function drawChart() {
+            const el = chart.value as unknown;
+            Plotly.react(el as HTMLElement, data.value, layout.value, config.value);
+        }
+
+        onMounted(() => {
+            validate();
+            drawChart();
+        });
+
+        watch([data, layout], () => {
+            validate();
+            drawChart();
+        });
+
+        return { chart, data, layout, config, drawChart }
+    }
+});
+</script>

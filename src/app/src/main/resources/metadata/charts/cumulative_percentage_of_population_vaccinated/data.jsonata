@@ -1,8 +1,8 @@
 [
   {
-    "x": data.month,
-    "y": data.$round(healthcare_workers / $$.params.population * 100),
-    "customdata": data.healthcare_workers,
+    "x": cumulative_percent_pop_vacced.month,
+    "y": cumulative_percent_pop_vacced.$round(healthcare_workers / $$.params.population * 100),
+    "customdata": cumulative_percent_pop_vacced.healthcare_workers,
     "textposition": "auto",
     "name": "Healthcare workers",
     "marker": {
@@ -12,9 +12,9 @@
     "hovertemplate": "%{y:,.0f}%<br>%{customdata:,.3r}<extra></extra>"
   },
   {
-    "x": data.month,
-    "y": data.$round(over_65_years / $$.params.population * 100),
-    "customdata": data.over_65_years,
+    "x": cumulative_percent_pop_vacced.month,
+    "y": cumulative_percent_pop_vacced.$round(over_65_years / $$.params.population * 100),
+    "customdata": cumulative_percent_pop_vacced.over_65_years,
     "textposition": "auto",
     "name": "65+ years",
     "marker": {
@@ -24,9 +24,9 @@
     "hovertemplate": "%{y:,.0f}%<br>%{customdata:,.3r}<extra></extra>"
   },
   {
-    "x": data.month,
-    "y": data.$round(working_age / $$.params.population * 100),
-    "customdata": data.working_age,
+    "x": cumulative_percent_pop_vacced.month,
+    "y": cumulative_percent_pop_vacced.$round(working_age / $$.params.population * 100),
+    "customdata": cumulative_percent_pop_vacced.working_age,
     "textposition": "auto",
     "name": "Working age",
     "marker": {

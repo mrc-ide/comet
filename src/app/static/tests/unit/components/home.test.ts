@@ -4,12 +4,14 @@ import Home from "@/views/Home.vue";
 import { mockRootState } from "../../mocks";
 
 describe("Home", () => {
-    it("gets metadata on mount", () => {
+    it("gets metadata and results on mount", () => {
         const mockGetMetadata = jest.fn();
+        const mockGetResults = jest.fn();
         const $store = createStore({
             state: mockRootState(),
             actions: {
-                getMetadata: mockGetMetadata
+                getMetadata: mockGetMetadata,
+                getResults: mockGetResults
             }
         });
 
@@ -18,5 +20,6 @@ describe("Home", () => {
         });
 
         expect(mockGetMetadata.mock.calls.length).toBe(1);
+        expect(mockGetResults.mock.calls.length).toBe(1);
     });
 });

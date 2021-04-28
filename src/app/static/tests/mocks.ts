@@ -30,6 +30,7 @@ export function mockRootState(state: Partial<RootState> = {}): RootState {
         count: 0,
         apiInfo: null,
         metadata: null,
+        results: null,
         ...state
     };
 }

@@ -17,11 +17,13 @@ export default defineComponent({
     },
     methods: {
         ...mapActions([
-            "getMetadata"
+            "getMetadata",
+            "getResults"
         ])
     },
     mounted() {
         this.getMetadata();
+        this.getResults();
     }
 });
 </script>

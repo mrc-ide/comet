@@ -1,3 +1,5 @@
+import { Schema } from "ajv";
+
 export interface ApiError {
     error: string
     detail: string | null
@@ -18,7 +20,7 @@ export interface ChartMetadata {
     config: unknown,
     data: string,
     layout: string,
-    inputSchema: unknown
+    inputSchema: Schema
 }
 
 export interface Metadata {

@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import Plotly, { Config } from "plotly.js";
-import Ajv, {Schema} from "ajv";
+import Ajv from "ajv";
 import { ChartMetadata, Data } from "@/types";
 import { computed, defineComponent, onMounted, PropType, ref, watch } from "vue";
 import jsonata from "jsonata";
@@ -18,11 +18,16 @@ export default defineComponent( {
     },
     setup(props) {
         const chart = ref(null);
-        const data = computed(() => {
-            return jsonata(props.chartMetadata.data).evaluate({
+
+        const inputData = computed(() => {
+            return {
                 ...props.chartData,
                 ...props.layoutData
-            });
+            };
+        });
+
+        const data = computed(() => {
+            return jsonata(props.chartMetadata.data).evaluate(inputData.value);
         });
         const layout = computed(() => {
             return jsonata(props.chartMetadata.layout).evaluate({
@@ -36,11 +41,8 @@ export default defineComponent( {
 
         function validate() {
             const ajv = new Ajv();
-            const ajvValidate = ajv.compile(props.chartMetadata.inputSchema as Schema); //TODO: make the state type of this Schema
-            const valid = ajvValidate({
-                ...props.chartData,
-                ...props.layoutData
-            }); //TODO: make full inputdata a computed property
+            const ajvValidate = ajv.compile(props.chartMetadata.inputSchema);
+            const valid = ajvValidate(inputData.value);
 
             if (!valid) {
                 console.error(ajvValidate.errors);
@@ -63,7 +65,7 @@ export default defineComponent( {
             drawChart();
         });
 
-        return { chart, data, layout, config, drawChart }
+        return { chart, data, layout, config };
     }
 });
 </script>

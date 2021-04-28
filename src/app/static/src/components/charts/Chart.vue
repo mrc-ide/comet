@@ -36,7 +36,10 @@ export default defineComponent( {
             });
         });
         const config = computed(() => {
-            return props.chartMetadata.config as Partial<Config>;
+            return jsonata(props.chartMetadata.config).evaluate({
+                ...props.layoutData,
+                data: data.value
+            });
         });
 
         function validate() {

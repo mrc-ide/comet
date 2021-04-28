@@ -6,7 +6,7 @@ Comet is a web application which provides access to CovidSim model results using
 
 ```shell
 npm install --prefix=src/app/static/
-./scripts/run-dependencies.sh
+./scripts/run-dev-dependencies.sh
 src/gradlew -p src :app:bootRun
 ```
 

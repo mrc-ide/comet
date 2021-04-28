@@ -17,7 +17,7 @@ export interface ApiInfo {
 }
 
 export interface ChartMetadata {
-    config: unknown,
+    config: string,
     data: string,
     layout: string,
     inputSchema: Schema

@@ -19,7 +19,7 @@ class MetadataTests: EndpointTests() {
         val firstChart = chartsJson[0]
         assertThat(firstChart["id"].asText()).isNotBlank()
         assertThat(firstChart["collapsed"].asBoolean()).isNotNull()
-        assertThat(firstChart["config"]).isInstanceOf(ObjectNode::class.java)
+        assertThat(firstChart["config"].asText()).isNotBlank()
         assertThat(firstChart["data"].asText()).isNotBlank()
         assertThat(firstChart["layout"].asText()).isNotBlank()
         assertThat(firstChart["inputSchema"]).isInstanceOf(ObjectNode::class.java)

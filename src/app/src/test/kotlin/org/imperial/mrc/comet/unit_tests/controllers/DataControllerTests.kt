@@ -27,7 +27,7 @@ class DataControllerTests {
     }
 
     private fun createTestResource(fileName: String, contents: String): URL {
-        val fullPath = "$TMP_DIR/fileName"
+        val fullPath = "$TMP_DIR/$fileName"
 
         val file = File(fullPath)
         file.createNewFile()

@@ -17,12 +17,6 @@ class MainController(
     private val logger: Logger = LoggerFactory.getLogger(MainController::class.java)
 ) {
 
-    @GetMapping("/random")
-    fun random(@RequestParam min: Int, @RequestParam max: Int): Response {
-        logger.info("random {} {}", kv("min", min), kv("max", max))
-        return Response(Random.nextInt(min, max))
-    }
-
     @GetMapping("/api-info")
     fun apiInfo(): ResponseEntity<String> {
         logger.info("api-info")

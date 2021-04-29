@@ -1,30 +1,21 @@
 package org.imperial.mrc.comet.controllers
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
-import com.fasterxml.jackson.module.kotlin.readValue
-import org.imperial.mrc.comet.models.Response
+import org.imperial.mrc.comet.clients.APIClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
-import java.io.FileNotFoundException
-import java.net.URL
+import org.springframework.web.bind.annotation.RequestBody
 
 @RestController
 class DataController(
     private val logger: Logger = LoggerFactory.getLogger(DataController::class.java),
-    private val classLoader: ClassLoader = DataController::class.java.classLoader
+    private val apiClient: APIClient
 ) {
-    @GetMapping("/results")
-    fun results(): Response {
-        logger.info("results")
-
-        // NB this implementation to return fixed test data will be replaced with getting real results from cometr
-        val fileName = "data.json"
-        val url: URL? = classLoader.getResource(fileName)
-        val resultsText = url?.readText() ?: throw FileNotFoundException("Resource file '$fileName' not found")
-        val results = ObjectMapper().readValue<ObjectNode>(resultsText)
-        return Response(results)
+    @PostMapping("/results")
+    fun results(@RequestBody params: Map<String, Any?>): ResponseEntity<String> {
+        logger.info("results") //TODO: log params?
+        return apiClient.results(params) //TODO May need to wrap this in a response
     }
 }

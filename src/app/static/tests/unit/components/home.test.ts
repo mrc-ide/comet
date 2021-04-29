@@ -38,7 +38,7 @@ describe("Home", () => {
                     ]
                 } as any,
                 results: { value: "results" },
-                chartLayoutData: { value: "chartLayoutData" }
+                paramValues: { value: "chartLayoutData" }
             })
         });
 
@@ -56,7 +56,7 @@ describe("Home", () => {
             state: mockRootState({
                 metadata: null,
                 results: { value: "results" },
-                chartLayoutData: { value: "chartLayoutData" }
+                paramValues: { value: "chartLayoutData" }
             })
         });
 

@@ -16,8 +16,8 @@ export const actions: ActionTree<RootState, RootState> = {
         const { data } = await axios.get("/metadata");
         commit("setMetadata", data.data);
     },
-    async getResults({ commit }) {
-        const { data } = await axios.get("/results");
+    async getResults({ commit, state }) {
+        const { data } = await axios.post("/results", state.paramValues);
         commit("setResults", data.data);
     }
 };

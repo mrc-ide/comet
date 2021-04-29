@@ -19,7 +19,7 @@
             Chart
         },
         props: {
-            chartMetadata: { type: Array as PropType<ChartMetadata[]>, required: true },
+            chartMetadata: { type: Object as PropType<ChartMetadata[]>, required: true },
             chartData: { type: Object as PropType<Data>},
             layoutData: { type: Object as PropType<Data>, required: true }
         },

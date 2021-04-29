@@ -5,6 +5,7 @@ jest.mock("plotly.js", () => ({
 }));
 /* eslint-disable import/first */
 import * as plotly from "plotly.js";
+import { nextTick } from "vue";
 import { ChartMetadata } from "@/types";
 import { shallowMount } from "@vue/test-utils";
 import Chart from "@/components/charts/Chart.vue";
@@ -79,6 +80,72 @@ describe("Chart", () => {
         });
         expect(plotlyParams[3]).toStrictEqual({
             responsive: true,
+            height: 6
+        });
+    });
+
+    it("invokes plotly again on data change", async () => {
+        const mockPlotlyReact = jest.spyOn(plotly, "react");
+
+        const props = { chartMetadata, chartData, layoutData };
+        const wrapper = shallowMount(Chart, { props });
+
+        wrapper.setProps({
+            chartData: {
+                xVals: [10, 20, 30],
+                yVals: [40, 50, 60]
+            }
+        });
+        await nextTick();
+
+        expect(mockPlotlyReact.mock.calls.length).toBe(2);
+        const plotlyParams = mockPlotlyReact.mock.calls[1];
+        expect(plotlyParams[0].constructor.name).toBe("HTMLDivElement");
+        expect(plotlyParams[1]).toStrictEqual({
+            x: [10, 20, 30],
+            y: [40, 50, 60]
+        });
+        expect(plotlyParams[2]).toStrictEqual({
+            margin: {
+                t: 0,
+                l: 10
+            }
+        });
+        expect(plotlyParams[3]).toStrictEqual({
+            responsive: true,
+            height: 60
+        });
+    });
+
+    it("invokes plotly again on layout change", async () => {
+        const mockPlotlyReact = jest.spyOn(plotly, "react");
+
+        const props = { chartMetadata, chartData, layoutData };
+        const wrapper = shallowMount(Chart, { props });
+
+        wrapper.setProps({
+            layoutData: {
+                topMargin: 15,
+                responsive: false
+            }
+        });
+        await nextTick();
+
+        expect(mockPlotlyReact.mock.calls.length).toBe(2);
+        const plotlyParams = mockPlotlyReact.mock.calls[1];
+        expect(plotlyParams[0].constructor.name).toBe("HTMLDivElement");
+        expect(plotlyParams[1]).toStrictEqual({
+            x: [1, 2, 3],
+            y: [4, 5, 6]
+        });
+        expect(plotlyParams[2]).toStrictEqual({
+            margin: {
+                t: 15,
+                l: 1
+            }
+        });
+        expect(plotlyParams[3]).toStrictEqual({
+            responsive: false,
             height: 6
         });
     });

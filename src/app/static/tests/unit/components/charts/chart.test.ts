@@ -59,9 +59,13 @@ const chartMetadata: ChartMetadata = {
 };
 
 describe("Chart", () => {
-    it("invokes Plotly on render with expected parameters", () => {
-        const mockPlotlyReact = jest.spyOn(plotly, "react");
+    const mockPlotlyReact = jest.spyOn(plotly, "react");
 
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("invokes Plotly on render with expected parameters", () => {
         const props = { chartMetadata, chartData, layoutData };
         shallowMount(Chart, { props });
 
@@ -85,8 +89,6 @@ describe("Chart", () => {
     });
 
     it("invokes plotly again on data change", async () => {
-        const mockPlotlyReact = jest.spyOn(plotly, "react");
-
         const props = { chartMetadata, chartData, layoutData };
         const wrapper = shallowMount(Chart, { props });
 
@@ -118,8 +120,6 @@ describe("Chart", () => {
     });
 
     it("invokes plotly again on layout change", async () => {
-        const mockPlotlyReact = jest.spyOn(plotly, "react");
-
         const props = { chartMetadata, chartData, layoutData };
         const wrapper = shallowMount(Chart, { props });
 

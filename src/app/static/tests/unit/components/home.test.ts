@@ -1,7 +1,8 @@
 // Mock the import of plotly to avoid import failures in non-browser context
-jest.mock('plotly.js', () => ({
-  react: jest.fn()
-}))
+jest.mock("plotly.js", () => ({
+    react: jest.fn()
+}));
+/* eslint-disable import/first */
 import { createStore } from "vuex";
 import { shallowMount } from "@vue/test-utils";
 import Home from "@/views/Home.vue";
@@ -30,33 +31,37 @@ describe("Home", () => {
 
     it("renders Charts component with expected props", () => {
         const $store = createStore({
-          state: mockRootState({
-              metadata: {charts: [{value: "metadata"}]} as any,
-              results: {value: "results"},
-              chartLayoutData: {value: "chartLayoutData"}
-          })
+            state: mockRootState({
+                metadata: {
+                    charts: [
+                        { value: "metadata" }
+                    ]
+                } as any,
+                results: { value: "results" },
+                chartLayoutData: { value: "chartLayoutData" }
+            })
         });
 
         const wrapper = shallowMount(Home, {
-          global: { mocks: { $store } }
+            global: { mocks: { $store } }
         });
         const charts = wrapper.findComponent(Charts);
-        expect(charts.props("chartMetadata")).toStrictEqual([{value: "metadata"}]);
-        expect(charts.props("chartData")).toStrictEqual({value: "results"});
-        expect(charts.props("layoutData")).toStrictEqual({value: "chartLayoutData"});
+        expect(charts.props("chartMetadata")).toStrictEqual([{ value: "metadata" }]);
+        expect(charts.props("chartData")).toStrictEqual({ value: "results" });
+        expect(charts.props("layoutData")).toStrictEqual({ value: "chartLayoutData" });
     });
 
     it("does not render Charts component if no metadata", () => {
         const $store = createStore({
             state: mockRootState({
                 metadata: null,
-                results: {value: "results"},
-                chartLayoutData: {value: "chartLayoutData"}
+                results: { value: "results" },
+                chartLayoutData: { value: "chartLayoutData" }
             })
         });
 
         const wrapper = shallowMount(Home, {
-          global: { mocks: { $store } }
+            global: { mocks: { $store } }
         });
         const charts = wrapper.findComponent(Charts);
         expect(charts.exists()).toBe(false);

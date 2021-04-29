@@ -3,13 +3,20 @@
 </template>
 
 <script lang="ts">
-import Plotly, { Config } from "plotly.js";
+import Plotly from "plotly.js";
 import Ajv from "ajv";
 import { ChartMetadata, Data } from "@/types";
-import { computed, defineComponent, onMounted, PropType, ref, watch } from "vue";
+import {
+    computed,
+    defineComponent,
+    onMounted,
+    PropType,
+    ref,
+    watch
+} from "vue";
 import jsonata from "jsonata";
 
-export default defineComponent( {
+export default defineComponent({
     name: "Chart",
     props: {
         chartMetadata: { type: Object as PropType<ChartMetadata>, required: true },
@@ -68,7 +75,12 @@ export default defineComponent( {
             drawChart();
         });
 
-        return { chart, data, layout, config };
+        return {
+            chart,
+            data,
+            layout,
+            config
+        };
     }
 });
 </script>

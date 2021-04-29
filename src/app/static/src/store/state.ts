@@ -1,4 +1,4 @@
-import {ApiInfo, Data, Metadata} from "@/types";
+import { ApiInfo, Data, Metadata } from "@/types";
 
 export interface RootState {
   count: number

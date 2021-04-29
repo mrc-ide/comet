@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "time_series": {
+    "timeSeries": {
       "type": "array",
       "items": {
         "type": "object",
@@ -9,29 +9,29 @@
           "date": {
             "type": "string"
           },
-          "counterfactual_current_infections": {
+          "counterfactualCurrentInfections": {
             "type": "number"
           },
-          "counterfactual_deaths": {
+          "counterfactualDeaths": {
             "type": "number"
           },
-          "current_infections": {
+          "currentInfections": {
             "type": "number"
           },
           "deaths": {
             "type": "number"
           },
-          "reported_deaths": {
+          "reportedDeaths": {
             "type": "integer"
           }
         },
         "required": [
           "date",
-          "counterfactual_current_infections",
-          "counterfactual_deaths",
-          "current_infections",
+          "counterfactualCurrentInfections",
+          "counterfactualDeaths",
+          "currentInfections",
           "deaths",
-          "reported_deaths"
+          "reportedDeaths"
         ]
       }
     },
@@ -64,7 +64,7 @@
     }
   },
   "required": [
-    "time_series",
+    "timeSeries",
     "params"
   ]
 }

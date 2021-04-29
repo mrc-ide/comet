@@ -1,7 +1,7 @@
 [
   {
-    "x": time_series.date,
-    "y": time_series.counterfactual_hospitalisations,
+    "x": timeSeries.date,
+    "y": timeSeries.counterfactualHospitalisations,
     "mode": "lines",
     "name": "Counterfactual hospitalisations",
     "visible": true,
@@ -12,8 +12,8 @@
     "hovertemplate": "%{y:,.0f}<extra></extra>"
   },
   {
-    "x": time_series.date,
-    "y": time_series.counterfactual_critical_care,
+    "x": timeSeries.date,
+    "y": timeSeries.counterfactualCriticalCare,
     "mode": "lines",
     "name": "Counterfactual critical care",
     "visible": true,
@@ -24,8 +24,8 @@
     "hovertemplate": "%{y:,.0f}<extra></extra>"
   },
   {
-    "x": time_series.date,
-    "y": time_series.hospitalisations,
+    "x": timeSeries.date,
+    "y": timeSeries.hospitalisations,
     "mode": "lines",
     "name": "Hospitalisations",
     "visible": true,
@@ -36,8 +36,8 @@
     "hovertemplate": "%{y:,.0f}<extra></extra>"
   },
   {
-    "x": time_series.date,
-    "y": time_series.critical_care,
+    "x": timeSeries.date,
+    "y": timeSeries.criticalCare,
     "mode": "lines",
     "name": "Critical care",
     "visible": true,

@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "time_series": {
+    "timeSeries": {
       "type": "array",
       "items": {
         "type": "object",
@@ -9,25 +9,25 @@
           "date": {
             "type": "string"
           },
-          "counterfactual_hospitalisations": {
+          "counterfactualHospitalisations": {
             "type": "number"
           },
-          "counterfactual_critical_care": {
+          "counterfactualCriticalCare": {
             "type": "number"
           },
           "hospitalisations": {
             "type": "number"
           },
-          "critical_care": {
+          "criticalCare": {
             "type": "number"
           }
         },
         "required": [
           "date",
-          "counterfactual_hospitalisations",
-          "counterfactual_critical_care",
+          "counterfactualHospitalisations",
+          "counterfactualCriticalCare",
           "hospitalisations",
-          "critical_care"
+          "criticalCare"
         ]
       }
     },
@@ -61,14 +61,14 @@
         }
       },
       "required": [
-        "general_beds",
-        "critical_beds",
+        "generalBeds",
+        "criticalBeds",
         "phases"
       ]
     }
   },
   "required": [
-    "time_series",
+    "timeSeries",
     "params"
   ]
 }

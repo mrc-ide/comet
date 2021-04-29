@@ -31,6 +31,7 @@ export function mockRootState(state: Partial<RootState> = {}): RootState {
         apiInfo: null,
         metadata: null,
         results: null,
+        chartLayoutData: null,
         ...state
     };
 }

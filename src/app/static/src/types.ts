@@ -17,6 +17,7 @@ export interface ApiInfo {
 }
 
 export interface ChartMetadata {
+    id: string,
     config: string,
     data: string,
     layout: string,

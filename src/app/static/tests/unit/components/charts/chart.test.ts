@@ -1,14 +1,12 @@
-import {ChartMetadata} from "@/types";
 // Mock the import of plotly so that we can spy on its exported 'react' method - need to do this
 // before importing Chart
 jest.mock('plotly.js', () => ({
   react: jest.fn()
 }));
-import Simple from "@/components/charts/simple.vue"
-import {shallowMount} from "@vue/test-utils";
 import * as plotly from "plotly.js";
-
-import Chart from "@/components/charts/Chart.vue"
+import {ChartMetadata} from "@/types";
+import {shallowMount} from "@vue/test-utils";
+import Chart from "@/components/charts/Chart.vue";
 
 const chartData = {
   xVals: [1, 2, 3],
@@ -21,6 +19,7 @@ const layoutData = {
 };
 
 const chartMetadata: ChartMetadata = {
+  id: "test",
   data: `{
               "x": xVals,
               "y": yVals

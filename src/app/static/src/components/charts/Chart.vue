@@ -37,7 +37,6 @@ export default defineComponent({
             return jsonata(props.chartMetadata.data).evaluate(inputData.value);
         });
         const layout = computed(() => {
-            console.log(JSON.stringify({data: data.value}))
             return jsonata(props.chartMetadata.layout).evaluate({
                 ...props.layoutData,
                 data: data.value

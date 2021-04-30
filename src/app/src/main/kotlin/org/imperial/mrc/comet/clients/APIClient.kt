@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 
 interface APIClient {
     fun info(): ResponseEntity<String>
-    fun results(params: Map<String, Any?>): ResponseEntity<String>
+    fun results(request: Any): ResponseEntity<String>
     fun knownFailure(): ResponseEntity<String>
 }
 
@@ -27,8 +27,8 @@ class FuelAPIClient(private val appProperties: AppProperties) : APIClient {
                 .toResponseEntity()
     }
 
-    override fun results(params: Map<String, Any?>): ResponseEntity<String> {
-        val json = ObjectMapper().writeValueAsString(params)
+    override fun results(request: Any): ResponseEntity<String> {
+        val json = ObjectMapper().writeValueAsString(request)
         return "${appProperties.apiUrl}/nimue/run"
                 .httpPost()
                 .jsonBody(json)

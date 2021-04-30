@@ -14,8 +14,8 @@ class DataController(
     private val apiClient: APIClient
 ) {
     @PostMapping("/results")
-    fun results(@RequestBody params: Map<String, Any?>): ResponseEntity<String> {
-        logger.info("results") //TODO: log params?
-        return apiClient.results(params) //TODO May need to wrap this in a response
+    fun results(@RequestBody request: Any): ResponseEntity<String> {
+        logger.info("results")
+        return apiClient.results(request)
     }
 }

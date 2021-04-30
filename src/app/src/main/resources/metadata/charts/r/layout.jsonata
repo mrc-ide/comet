@@ -9,7 +9,7 @@
       "2023-01-01"
     ]
   },
-  "shapes": params[].phases#$pos[$pos!=0].{
+  "shapes": params[].rt#$pos[$pos=0].{
     "type": "line",
     "x0": start,
     "y0": 0,

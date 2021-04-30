@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "fvps": {
+    "fullyVaccinatedPersons": {
       "type": "array",
       "items": {
         "type": "object",
@@ -29,6 +29,6 @@
     }
   },
   "required": [
-    "fvps"
+    "fullyVaccinatedPersons"
   ]
 }

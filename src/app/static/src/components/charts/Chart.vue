@@ -34,9 +34,14 @@ export default defineComponent({
         });
 
         const data = computed(() => {
+            const cd = jsonata("timeSeries.counterfactualDeaths").evaluate(inputData.value);
+            console.log("CD: " + JSON.stringify(cd))
             return jsonata(props.chartMetadata.data).evaluate(inputData.value);
         });
         const layout = computed(() => {
+            //const types = jsonata("(data.coun)").evaluate({data: data.value});
+            //console.log("TYPES: " + JSON.stringify(types));
+
             return jsonata(props.chartMetadata.layout).evaluate({
                 ...props.layoutData,
                 data: data.value

@@ -2,12 +2,12 @@
   "title": {
     "text": "Epidemic trajectory"
   },
-  "shapes": params[].phases#$pos[$pos!=0].{
+  "shapes": params[].rt#$pos[$pos=0].{
     "type": "line",
     "x0": start,
     "y0": 0,
     "x1": start,
-    "y1": $max($$.data[visible=true or $not($exists(visible))].y),
+    "y1": $max($$.data[$not($type(y)='null')][visible=true or $not($exists(visible))].y),
     "line": {
       "color": "black",
       "width": 1,
@@ -18,7 +18,7 @@
     "autorange": false,
     "hoverformat": ",f"
   }, params.log ? (
-  $nticks := $length($string($floor($max(data[visible=true or $not($exists(visible))].y)))) + 1;
+  $nticks := $length($string($floor($max(data[$not($type(y)='null')][visible=true or $not($exists(visible))].y)))) + 1;
   {
     "type": "log",
     "tickmode": "array",
@@ -31,7 +31,7 @@
     "type": "linear",
     "range": [
       0,
-      1.1 * $max(data[visible=true or $not($exists(visible))].y)
+      1.1 * $max(data[$not($type(y)='null')][visible=true or $not($exists(visible))].y)
     ]
   }]),
   "xaxis": {

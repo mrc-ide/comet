@@ -34,13 +34,23 @@
     "params": {
       "type": "object",
       "properties": {
-        "general_beds": {
-          "type": "number"
+        "healthcare": {
+          "type": "object",
+          "properties": {
+            "general_beds": {
+              "type": "number"
+            },
+            "critical_beds": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "generalBeds",
+            "criticalBeds"
+          ]
         },
-        "critical_beds": {
-          "type": "number"
-        },
-        "phases": {
+
+        "rt": {
           "type": "array",
           "items": {
             "type": "object",
@@ -48,22 +58,21 @@
               "start": {
                 "type": "string"
               },
-              "rt": {
+              "value": {
                 "type": "number"
               }
             },
             "required": [
               "start",
-              "rt"
+              "value"
             ],
             "additionalProperties": false
           }
         }
       },
       "required": [
-        "generalBeds",
-        "criticalBeds",
-        "phases"
+        "healthcare",
+        "rt"
       ]
     }
   },

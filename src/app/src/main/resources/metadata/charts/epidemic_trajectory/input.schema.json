@@ -22,7 +22,7 @@
             "type": "number"
           },
           "reportedDeaths": {
-            "type": "integer"
+            "type": ["integer", "null"]
           }
         },
         "required": [
@@ -38,7 +38,7 @@
     "params": {
       "type": "object",
       "properties": {
-        "phases": {
+        "rt": {
           "type": "array",
           "items": {
             "type": "object",
@@ -46,20 +46,20 @@
               "start": {
                 "type": "string"
               },
-              "rt": {
+              "value": {
                 "type": "number"
               }
             },
             "required": [
               "start",
-              "rt"
+              "value"
             ],
             "additionalProperties": false
           }
         }
       },
       "required": [
-        "phases"
+        "rt"
       ]
     }
   },

@@ -1,7 +1,7 @@
 [
   {
-    "x": data.date,
-    "y": data.rt,
+    "x": time_series.date,
+    "y": time_series.rt,
     "name": "Rt",
     "mode": "lines",
     "hovertemplate": "%{y:,.2f}<extra></extra>",
@@ -11,8 +11,8 @@
     }
   },
   {
-    "x": data.date,
-    "y": data.reff,
+    "x": time_series.date,
+    "y": time_series.reff,
     "name": "Reff",
     "mode": "lines",
     "hovertemplate": "%{y:,.2f}<extra></extra>",

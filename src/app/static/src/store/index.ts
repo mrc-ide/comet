@@ -48,7 +48,7 @@ export default createStore<RootState>({
 
             ],
             "simulation": {
-              "forecastDays": 1095
+              "forecastDays": 730
             }
         }
     },

@@ -1,5 +1,5 @@
 import { actions } from "@/store/actions";
-import {mockAxios, mockRootState, mockSuccess} from "../../mocks";
+import { mockAxios, mockRootState, mockSuccess } from "../../mocks";
 
 describe("actions", () => {
     beforeEach(() => {
@@ -27,7 +27,7 @@ describe("actions", () => {
         const commit = jest.fn();
         await (actions.getResults as any)({ commit, state });
 
-        expect(JSON.parse(mockAxios.history.post[0].data)).toStrictEqual({ param1: "value1"});
+        expect(JSON.parse(mockAxios.history.post[0].data)).toStrictEqual({ param1: "value1" });
 
         expect(commit.mock.calls.length).toBe(1);
         expect(commit.mock.calls[0][0]).toBe("setResults");

@@ -48,6 +48,6 @@ class DataControllerTests {
         val response = sut.results("request")
 
         assertThat(response).isSameAs(mockResponseEntity)
-        verify(mockLogger).info("results")
+        verify(mockLogger).info("results request")
     }
 }

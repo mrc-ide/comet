@@ -13,26 +13,39 @@ class APIClientTests() {
     lateinit var appProperties: AppProperties
 
     companion object {
-        val testResultsRequest =  mapOf(
-            "region" to "TEST",
-            "healthcare" to mapOf("generalBeds" to 314310, "criticalBeds" to 11350),
-            "vaccination" to mapOf(
-                    "efficacyInfection" to 0.9,
-                    "efficacyDisease" to 0.96,
-                    "maxDosesPerWeek" to null,
-                    "strategy" to "HCW and Elderly",
-                    "uptake" to 0.2,
-                    "availability" to 0.9,
-                    "durability" to 1095,
-                    "riskProportion" to 0.1,
-                    "future" to null
-            ),
-            "rt" to listOf(
-                    mapOf("start" to "2021-04-30", "value" to 1.18),
-                    mapOf("start" to "2021-10-31", "value" to 2.40)
-            ),
-            "simulation" to mapOf("forecastDays" to 10)
-        )
+        val testResultsRequest = """
+            {
+                "region": "TEST",
+                "healthcare": {
+                    "generalBeds": 314310,
+                    "criticalBeds": 11350
+                },
+                "vaccination": {
+                    "efficacyInfection": 0.9,
+                    "efficacyDisease": 0.96,
+                    "maxDosesPerWeek": null,
+                    "strategy": "HCW and Elderly",
+                    "uptake": 0.2,
+                    "availability": 0.9,
+                    "durability": 1095,
+                    "riskProportion": 0.1,
+                    "future": null
+                },
+                "rt": [
+                    {
+                        "start": "2021-04-30",
+                        "value": 1.18
+                    },
+                    {
+                        "start": "2021-10-31",
+                        "value": 2.40
+                    }
+                ],
+                "simulation": {
+                    "forecastDays": 10
+                }
+            }
+        """.trimIndent()
     }
 
     @Test

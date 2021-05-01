@@ -14,8 +14,8 @@ class DataController(
     private val apiClient: APIClient
 ) {
     @PostMapping("/results")
-    fun results(@RequestBody request: Any): ResponseEntity<String> {
-        logger.info("results")
+    fun results(@RequestBody request: String): ResponseEntity<String> {
+        logger.info("results $request")
         return apiClient.results(request)
     }
 }

@@ -1,6 +1,5 @@
 package org.imperial.mrc.comet.clients
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.httpGet
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component
 
 interface APIClient {
     fun info(): ResponseEntity<String>
-    fun results(request: Any): ResponseEntity<String>
+    fun results(request: String): ResponseEntity<String>
     fun knownFailure(): ResponseEntity<String>
 }
 
@@ -27,11 +26,10 @@ class FuelAPIClient(private val appProperties: AppProperties) : APIClient {
                 .toResponseEntity()
     }
 
-    override fun results(request: Any): ResponseEntity<String> {
-        val json = ObjectMapper().writeValueAsString(request)
+    override fun results(request: String): ResponseEntity<String> {
         return "${appProperties.apiUrl}/nimue/run"
                 .httpPost()
-                .jsonBody(json)
+                .jsonBody(request)
                 .response()
                 .second
                 .toResponseEntity()

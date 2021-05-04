@@ -1,0 +1,32 @@
+{
+    "controlSections": [
+        {
+            "controlGroups": [
+                {
+                    "label": "Total general beds",
+                    "controls": [
+                        {
+                            "name": "generalBeds",
+                            "type": "number",
+                            "min": 0,
+                            "value": 314210
+                            "required": true
+                        }
+                    ]
+                },
+                {
+                    "label": "Total critical care beds",
+                    "controls": [
+                        {
+                            "name": "criticalBeds",
+                            "type": "number",
+                            "min": 0,
+                            "value": 10353,
+                            "required": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

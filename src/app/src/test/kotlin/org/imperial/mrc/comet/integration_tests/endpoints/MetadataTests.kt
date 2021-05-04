@@ -14,6 +14,7 @@ class MetadataTests: EndpointTests() {
         val responseEntity = testRestTemplate.getForEntity<String>("/metadata")
         assertSuccess(responseEntity, null)
         val responseJson = ObjectMapper().readValue<JsonNode>(responseEntity.body.toString())
+
         val chartsJson = responseJson["data"]["charts"]
         assertThat(chartsJson.count()).isGreaterThan(0)
         val firstChart = chartsJson[0]
@@ -23,5 +24,13 @@ class MetadataTests: EndpointTests() {
         assertThat(firstChart["data"].asText()).isNotBlank()
         assertThat(firstChart["layout"].asText()).isNotBlank()
         assertThat(firstChart["inputSchema"]).isInstanceOf(ObjectNode::class.java)
+
+        val parametersJson = responseJson["data"]["parameterGroups"]
+        assertThat(parametersJson.count()).isGreaterThan(0)
+        val firstParamGroup = parametersJson[0]
+        assertThat(firstParamGroup["id"].asText()).isNotBlank()
+        assertThat(firstParamGroup["label"].asText()).isNotBlank()
+        assertThat(firstParamGroup["type"].asText()).isNotBlank()
+        assertThat(firstParamGroup["config"].asText()).isNotBlank()
     }
 }

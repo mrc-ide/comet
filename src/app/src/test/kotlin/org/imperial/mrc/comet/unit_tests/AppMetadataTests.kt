@@ -52,6 +52,9 @@ class AppMetadataTests {
                             {"id": "chart2", "collapsed": false}
                         ]"""
             )
+            on { getResource("metadata/parameterGroups/parameterGroups.json") } doReturn createTestResource(
+                    "metadata/parameterGroup/parameterGroups.json", "[]"
+            )
 
             on { getResource("metadata/charts/chart1/config.jsonata") } doReturn createTestResource(
                     "metadata/charts/chart1/config.jsonata", """{"testContent": "chart1_config"}"""
@@ -107,6 +110,55 @@ class AppMetadataTests {
         assertThat(chart2["data"].asText()).isEqualTo("chart2_data")
         assertThat(chart2["layout"].asText()).isEqualTo("chart2_layout")
         assertThat(chart2["inputSchema"].toString()).isEqualTo("""{"testContent":"chart2_schema"}""")
+
+        verify(mockLogger).info("AppMetadata constructed")
+    }
+
+    @Test
+    fun `builds parameters metadata`() {
+        val mockLogger = mock<Logger>()
+
+        val mockClassLoader = mock<ClassLoader>() {
+            on { getResource("metadata/parameterGroups/parameterGroups.json") } doReturn createTestResource(
+                    "metadata/parameterGroup/parameterGroups.json",
+                    """[
+                            {"id": "paramGroup1", "label": "One", "type": "dynamicForm"},
+                            {"id": "paramGroup2", "label": "Two", "type": "rt"}
+                        ]"""
+            )
+            on { getResource("metadata/charts/charts.json") } doReturn createTestResource(
+                    "metadata/charts/charts.json", "[]"
+            )
+
+            on { getResource("metadata/parameterGroups/paramGroup1.jsonata") } doReturn createTestResource(
+                    "metadata/parameterGroups/paramGroup1.jsonata", "paramGroup1Config"
+            )
+            on { getResource("metadata/parameterGroups/paramGroup2.jsonata") } doReturn createTestResource(
+                    "metadata/parameterGroups/paramGroup2.jsonata", "paramGroup2Config"
+            )
+        }
+
+        val sut = AppMetadata(mockLogger, mockClassLoader)
+        val metadataResponse = sut.metadata
+
+        assertThat(metadataResponse.errors.isEmpty())
+        assertThat(metadataResponse.status).isEqualTo("success")
+
+        val metadata = metadataResponse.data as ObjectNode
+        val parameterGroups = metadata["parameterGroups"]
+        assertThat(parameterGroups.count()).isEqualTo(2)
+
+        val paramGroup1 = parameterGroups[0]
+        assertThat(paramGroup1["id"].asText()).isEqualTo("paramGroup1")
+        assertThat(paramGroup1["label"].asText()).isEqualTo("One")
+        assertThat(paramGroup1["type"].asText()).isEqualTo("dynamicForm")
+        assertThat(paramGroup1["config"].asText()).isEqualTo("paramGroup1Config")
+
+        val paramGroup2 = parameterGroups[1]
+        assertThat(paramGroup2["id"].asText()).isEqualTo("paramGroup2")
+        assertThat(paramGroup2["label"].asText()).isEqualTo("Two")
+        assertThat(paramGroup2["type"].asText()).isEqualTo("rt")
+        assertThat(paramGroup2["config"].asText()).isEqualTo("paramGroup2Config")
 
         verify(mockLogger).info("AppMetadata constructed")
     }

@@ -7,6 +7,7 @@ import { createStore } from "vuex";
 import { shallowMount } from "@vue/test-utils";
 import Home from "@/views/Home.vue";
 import Charts from "@/components/charts/Charts.vue";
+import { getters } from "@/store";
 import { mockRootState } from "../../mocks";
 
 describe("Home", () => {
@@ -38,8 +39,9 @@ describe("Home", () => {
                     ]
                 } as any,
                 results: { value: "results" },
-                paramValues: { value: "chartLayoutData" }
-            })
+                paramValues: { value: "paramValue" }
+            }),
+            getters
         });
 
         const wrapper = shallowMount(Home, {
@@ -48,7 +50,10 @@ describe("Home", () => {
         const charts = wrapper.findComponent(Charts);
         expect(charts.props("chartMetadata")).toStrictEqual([{ value: "metadata" }]);
         expect(charts.props("chartData")).toStrictEqual({ value: "results" });
-        expect(charts.props("layoutData")).toStrictEqual({ value: "chartLayoutData" });
+        expect(charts.props("layoutData")).toStrictEqual({
+            params: { value: "paramValue" },
+            population: 67890000
+        });
     });
 
     it("does not render Charts component if no metadata", () => {

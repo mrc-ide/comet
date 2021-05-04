@@ -2,9 +2,10 @@ import { createStore } from "vuex";
 import { actions } from "@/store/actions";
 import { mutations } from "@/store/mutations";
 import { RootState } from "@/store/state";
+import { Data } from "@/types";
 
-const getters = {
-    chartLayoutData: (state: RootState) => {
+export const getters = {
+    chartLayoutData: (state: RootState): Data => {
         return {
             params: state.paramValues,
             // This is not a parameter, cannot be edited - will come from cometr regions endpoint

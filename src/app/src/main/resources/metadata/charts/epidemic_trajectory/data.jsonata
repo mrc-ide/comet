@@ -49,7 +49,7 @@
   },
   {
     "x": timeSeries[reportedDeaths != null].date,
-    "y": timeSeries[$type(reportedDeaths)!='null'].reportedDeaths,
+    "y": timeSeries[reportedDeaths != null].reportedDeaths,
     "mode": "markers",
     "name": "Reported deaths",
     "marker": {

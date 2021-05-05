@@ -27,18 +27,4 @@ class MainControllerTests {
         assertThat(result).isSameAs(mockResponseEntity)
         verify(mockLogger).info("api-info")
     }
-
-    @Test
-    fun `gets failure`() {
-        val mockClient = mock<APIClient> {
-            on { knownFailure() } doReturn mockResponseEntity
-        }
-        val mockLogger = mock<Logger>()
-
-        val sut = MainController(mockClient, mockLogger)
-        val result = sut.failure()
-
-        assertThat(result).isSameAs(mockResponseEntity)
-        verify(mockLogger).info("failure")
-    }
 }

@@ -3,7 +3,11 @@
     "text": "R"
   },
   "xaxis": {
-    "autorange": true
+    "autorange": false,
+    "range": [
+      "2020-01-01",
+      "2023-01-01"
+    ]
   },
   "shapes": params[].rt#$pos[$pos=0].{
     "type": "line",

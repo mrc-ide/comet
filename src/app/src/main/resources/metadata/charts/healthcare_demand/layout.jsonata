@@ -5,9 +5,9 @@
   "shapes": [
     {
       "type": "line",
-      "x0": (data.x)[0],
+      "x0": "2020-02-05T00:00:00.000Z",
       "y0": params.healthcare.generalBeds,
-      "x1": (data.x)[-1],
+      "x1": "2022-12-31T00:00:00.000Z",
       "y1": params.healthcare.generalBeds,
       "line": {
         "color": "#ff00fb",
@@ -17,9 +17,9 @@
     },
     {
       "type": "line",
-      "x0": (data.x)[0],
+      "x0": "2020-02-05T00:00:00.000Z",
       "y0": params.healthcare.criticalBeds,
-      "x1": (data.x)[-1],
+      "x1": "2022-12-31T00:00:00.000Z",
       "y1": params.healthcare.criticalBeds,
       "line": {
         "color": "#007f80",
@@ -50,6 +50,10 @@
     "hoverformat": ",f"
   },
   "xaxis": {
-    "autorange": true
+    "autorange": false,
+    "range": [
+      "2020-01-01",
+      "2023-01-01"
+    ]
   }
 }

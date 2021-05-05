@@ -33,7 +33,6 @@
   },
   "required": [
     "cumulativePercentPopulationVaccinated",
-    "params",
     "population"
   ]
 }

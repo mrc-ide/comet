@@ -1,15 +1,11 @@
 package org.imperial.mrc.comet.controllers
 
-import net.logstash.logback.argument.StructuredArguments.kv
 import org.imperial.mrc.comet.clients.APIClient
-import org.imperial.mrc.comet.models.Response
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import kotlin.random.Random
 
 @RestController
 class MainController(
@@ -17,21 +13,10 @@ class MainController(
     private val logger: Logger = LoggerFactory.getLogger(MainController::class.java)
 ) {
 
-    @GetMapping("/random")
-    fun random(@RequestParam min: Int, @RequestParam max: Int): Response {
-        logger.info("random {} {}", kv("min", min), kv("max", max))
-        return Response(Random.nextInt(min, max))
-    }
-
     @GetMapping("/api-info")
     fun apiInfo(): ResponseEntity<String> {
         logger.info("api-info")
         return apiClient.info()
     }
 
-    @GetMapping("/failure")
-    fun failure(): ResponseEntity<String> {
-        logger.info("failure")
-        return apiClient.knownFailure()
-    }
 }

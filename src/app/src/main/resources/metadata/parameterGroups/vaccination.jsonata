@@ -12,7 +12,7 @@
                             "max": 99,
                             "value": 90,
                             "required": true,
-                            "scale": 0.01
+                            "transform": "$/100"
                         }
                     ]
                 },
@@ -26,7 +26,7 @@
                             "max": 100,
                             "value": 96,
                             "required": true,
-                            "scale": 0.01
+                            "transform": "$/100"
                         }
                     ]
                 },
@@ -38,8 +38,7 @@
                             "type": "number",
                             "min": 60,
                             "max": 5000,
-                            "value": 1095,
-                            "required": true
+                            "value": 1095
                         }
                     ]
                 },
@@ -53,7 +52,7 @@
                             "max": 100,
                             "value": 20,
                             "required": true,
-                            "scale": 0.01
+                            "transform": "$/100"
                         }
                     ]
                 },
@@ -97,7 +96,7 @@
                             "max": 99,
                             "value": 80,
                             "required": true,
-                            "scale": 0.01
+                            "transform": "$/100"
                         }
                     ]
                 }

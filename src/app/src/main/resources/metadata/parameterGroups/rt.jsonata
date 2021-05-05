@@ -1,4 +1,4 @@
 [
-    {"start": "2020-01-01T00:00:00.000Z", "value": 1.18),
-    {"start": $now(), "value": 2.45},
+    {"start": $now(), "value": 1.18),
+    {"start": $fromMillis($millis() + (1000 * 60 * 60 *24 * 184)), "value": 2.45},
 ]

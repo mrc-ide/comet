@@ -18,5 +18,4 @@ class MainController(
         logger.info("api-info")
         return apiClient.info()
     }
-
 }

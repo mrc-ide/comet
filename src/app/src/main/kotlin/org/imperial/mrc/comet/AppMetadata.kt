@@ -69,7 +69,7 @@ class AppMetadata(
             val paramGroupId = node["id"].asText()
             val paramGroupFileName = "$PARAMS_ROOT/$paramGroupId.jsonata"
 
-            setResourceContentsAsTextNode(paramGroupNode,"config", paramGroupFileName)
+            setResourceContentsAsTextNode(paramGroupNode, "config", paramGroupFileName)
         }
 
         return paramGroups

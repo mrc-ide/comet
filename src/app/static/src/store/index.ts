@@ -5,7 +5,6 @@ import { RootState } from "@/store/state";
 
 export default createStore<RootState>({
     state: {
-        count: 0,
         apiInfo: null,
         metadata: null,
         results: null,

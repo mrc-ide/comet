@@ -48,7 +48,7 @@
     "hovertemplate": "%{y:,.0f}<extra></extra>"
   },
   {
-    "x": timeSeries[$type(reportedDeaths)!='null'].date,
+    "x": timeSeries[reportedDeaths != null].date,
     "y": timeSeries[$type(reportedDeaths)!='null'].reportedDeaths,
     "mode": "markers",
     "name": "Reported deaths",

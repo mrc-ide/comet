@@ -57,14 +57,6 @@ class APIClientTests() {
     }
 
     @Test
-    fun `can get known failure`() {
-        val sut = FuelAPIClient(appProperties)
-        val result = sut.knownFailure()
-        assertThat(result.statusCodeValue).isEqualTo(404)
-        JSONValidator().validateError(result.body!!, "NOT_FOUND", "Resource not found")
-    }
-
-    @Test
     fun `can get results`() {
         val sut = FuelAPIClient(appProperties)
         val result = sut.results(testResultsRequest)

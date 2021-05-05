@@ -27,7 +27,7 @@
         "dash": "dot"
       }
     },
-    params[].rt#$pos[$pos=0].{
+    params[].rt.{
       "type": "line",
       "x0": start,
       "y0": 0,

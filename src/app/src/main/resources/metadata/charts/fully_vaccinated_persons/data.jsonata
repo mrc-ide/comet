@@ -1,7 +1,7 @@
 [
   {
-    "x": fvps.age,
-    "y": fvps.year_2021,
+    "x": fullyVaccinatedPersons.age,
+    "y": fullyVaccinatedPersons.year2021,
     "name": "2021",
     "marker": {
       "color": "rgba(209, 137, 105, 1)",
@@ -13,8 +13,8 @@
     "hovertemplate": "%{y:,.1f} million<extra></extra>"
   },
   {
-    "x": fvps.age,
-    "y": fvps.year_2022,
+    "x": fullyVaccinatedPersons.age,
+    "y": fullyVaccinatedPersons.year2022,
     "name": "2022",
     "marker": {
       "color": "rgba(158, 108, 144, 1)",
@@ -26,8 +26,8 @@
     "hovertemplate": "%{y:,.1f} million<extra></extra>"
   },
   {
-    "x": fvps.age,
-    "y": fvps.remainder,
+    "x": fullyVaccinatedPersons.age,
+    "y": fullyVaccinatedPersons.remainder,
     "name": "Remainder",
     "marker": {
       "color": "rgba(220, 220, 220, 1)",

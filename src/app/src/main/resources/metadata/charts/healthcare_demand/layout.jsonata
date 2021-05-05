@@ -6,28 +6,28 @@
     {
       "type": "line",
       "x0": "2020-02-05T00:00:00.000Z",
-      "y0": params.general_beds,
+      "y0": params.healthcare.generalBeds,
       "x1": "2022-12-31T00:00:00.000Z",
-      "y1": params.general_beds,
+      "y1": params.healthcare.generalBeds,
       "line": {
         "color": "#ff00fb",
         "width": 1,
-        "dash": "solid"
+        "dash": "dot"
       }
     },
     {
       "type": "line",
       "x0": "2020-02-05T00:00:00.000Z",
-      "y0": params.critical_beds,
+      "y0": params.healthcare.criticalBeds,
       "x1": "2022-12-31T00:00:00.000Z",
-      "y1": params.critical_beds,
+      "y1": params.healthcare.criticalBeds,
       "line": {
         "color": "#007f80",
         "width": 1,
-        "dash": "solid"
+        "dash": "dot"
       }
     },
-    params[].phases#$pos[$pos!=0].{
+    params[].rt.{
       "type": "line",
       "x0": start,
       "y0": 0,

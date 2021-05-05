@@ -10,7 +10,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Charts from "@/components/charts/Charts.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default defineComponent({
     name: "Home",
@@ -20,7 +20,9 @@ export default defineComponent({
     computed: {
         ...mapState([
             "metadata",
-            "results",
+            "results"
+        ]),
+        ...mapGetters([
             "chartLayoutData"
         ])
     },

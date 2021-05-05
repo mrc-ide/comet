@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "cumulative_percent_pop_vacced": {
+    "cumulativePercentPopulationVaccinated": {
       "type": "array",
       "items": {
         "type": "object",
@@ -9,38 +9,30 @@
           "month": {
             "type": "string"
           },
-          "healthcare_workers": {
+          "healthcareWorkers": {
             "type": "number"
           },
-          "over_65_years": {
+          "over65": {
             "type": "number"
           },
-          "working_age": {
+          "workingAge": {
             "type": "number"
           }
         },
         "required": [
           "month",
-          "healthcare_workers",
-          "over_65_years",
-          "working_age"
+          "healthcareWorkers",
+          "over65",
+          "workingAge"
         ]
       }
     },
-    "params": {
-      "type": "object",
-      "properties": {
-        "population": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "population"
-      ]
+    "population": {
+      "type": "number"
     }
   },
   "required": [
-    "cumulative_percent_pop_vacced",
-    "params"
+    "cumulativePercentPopulationVaccinated",
+    "population"
   ]
 }

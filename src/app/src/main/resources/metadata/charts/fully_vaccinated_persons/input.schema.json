@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "fvps": {
+    "fullyVaccinatedPersons": {
       "type": "array",
       "items": {
         "type": "object",
@@ -9,10 +9,10 @@
           "age": {
             "type": "string"
           },
-          "year_2021": {
+          "year2021": {
             "type": "number"
           },
-          "year_2022": {
+          "year2022": {
             "type": "number"
           },
           "remainder": {
@@ -21,14 +21,14 @@
         },
         "required": [
           "age",
-          "year_2021",
-          "year_2022",
+          "year2021",
+          "year2022",
           "remainder"
         ]
       }
     }
   },
   "required": [
-    "fvps"
+    "fullyVaccinatedPersons"
   ]
 }

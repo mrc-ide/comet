@@ -27,11 +27,10 @@ export const mockFailure = (errorMessage: string): ApiResponse => {
 
 export function mockRootState(state: Partial<RootState> = {}): RootState {
     return {
-        count: 0,
         apiInfo: null,
         metadata: null,
         results: null,
-        chartLayoutData: null,
+        paramValues: null,
         ...state
     };
 }

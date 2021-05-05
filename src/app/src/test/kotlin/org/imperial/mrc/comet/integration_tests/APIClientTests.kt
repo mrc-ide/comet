@@ -12,6 +12,42 @@ class APIClientTests() {
     @Autowired
     lateinit var appProperties: AppProperties
 
+    companion object {
+        val testResultsRequest = """
+            {
+                "region": "TEST",
+                "healthcare": {
+                    "generalBeds": 314310,
+                    "criticalBeds": 11350
+                },
+                "vaccination": {
+                    "efficacyInfection": 0.9,
+                    "efficacyDisease": 0.96,
+                    "maxDosesPerWeek": null,
+                    "strategy": "HCW and Elderly",
+                    "uptake": 0.2,
+                    "availability": 0.9,
+                    "durability": 1095,
+                    "riskProportion": 0.1,
+                    "future": null
+                },
+                "rt": [
+                    {
+                        "start": "2021-04-30",
+                        "value": 1.18
+                    },
+                    {
+                        "start": "2021-10-31",
+                        "value": 2.40
+                    }
+                ],
+                "simulation": {
+                    "forecastDays": 10
+                }
+            }
+        """.trimIndent()
+    }
+
     @Test
     fun `can get api info`() {
         val sut = FuelAPIClient(appProperties)
@@ -26,5 +62,13 @@ class APIClientTests() {
         val result = sut.knownFailure()
         assertThat(result.statusCodeValue).isEqualTo(404)
         JSONValidator().validateError(result.body!!, "NOT_FOUND", "Resource not found")
+    }
+
+    @Test
+    fun `can get results`() {
+        val sut = FuelAPIClient(appProperties)
+        val result = sut.results(testResultsRequest)
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "NimueRun")
     }
 }

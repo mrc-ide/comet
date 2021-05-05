@@ -1,7 +1,9 @@
 package org.imperial.mrc.comet.clients
 
 import com.github.kittinunf.fuel.core.Response
+import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.httpPost
 import org.imperial.mrc.comet.AppProperties
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component
 
 interface APIClient {
     fun info(): ResponseEntity<String>
+    fun results(request: String): ResponseEntity<String>
     fun knownFailure(): ResponseEntity<String>
 }
 
@@ -18,6 +21,15 @@ class FuelAPIClient(private val appProperties: AppProperties) : APIClient {
     override fun info(): ResponseEntity<String> {
         return "${appProperties.apiUrl}/"
                 .httpGet()
+                .response()
+                .second
+                .toResponseEntity()
+    }
+
+    override fun results(request: String): ResponseEntity<String> {
+        return "${appProperties.apiUrl}/nimue/run"
+                .httpPost()
+                .jsonBody(request)
                 .response()
                 .second
                 .toResponseEntity()

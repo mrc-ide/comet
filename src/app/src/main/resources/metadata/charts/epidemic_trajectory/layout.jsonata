@@ -2,7 +2,7 @@
   "title": {
     "text": "Epidemic trajectory"
   },
-  "shapes": params[].phases#$pos[$pos!=0].{
+  "shapes": params[].rt.{
     "type": "line",
     "x0": start,
     "y0": 0,

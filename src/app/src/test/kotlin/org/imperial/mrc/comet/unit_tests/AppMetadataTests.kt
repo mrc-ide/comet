@@ -13,6 +13,7 @@ import org.mockito.kotlin.verify
 import org.slf4j.Logger
 import java.io.File
 import java.io.FileNotFoundException
+import java.lang.ClassCastException
 import java.net.URL
 
 class AppMetadataTests {
@@ -177,5 +178,22 @@ class AppMetadataTests {
         assertThatThrownBy{ AppMetadata(mock(), mockClassLoader) }
                 .isInstanceOf(FileNotFoundException::class.java)
                 .hasMessage("Resource file 'metadata/charts/chart1/config.jsonata' not found")
+    }
+
+    @Test
+    fun `throws ClassCastException when parameter group is not object node`() {
+        val mockLogger = mock<Logger>()
+
+        val mockClassLoader = mock<ClassLoader>() {
+            on { getResource("metadata/parameterGroups/parameterGroups.json") } doReturn createTestResource(
+                    "metadata/parameterGroup/parameterGroups.json","[1]"
+            )
+            on { getResource("metadata/charts/charts.json") } doReturn createTestResource(
+                    "metadata/charts/charts.json", "[]"
+            )
+        }
+
+        assertThatThrownBy{ AppMetadata(mockLogger, mockClassLoader) }
+                .isInstanceOf(ClassCastException::class.java)
     }
 }

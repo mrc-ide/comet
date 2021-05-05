@@ -1,6 +1,8 @@
 import axios from "axios";
 import { ActionTree } from "vuex";
 import { RootState } from "@/store/state";
+import { ParameterGroupJsonataMetadata } from "@/types";
+import jsonata from "jsonata";
 
 export const actions: ActionTree<RootState, RootState> = {
     async getApiInfo({ commit }) {
@@ -10,7 +12,14 @@ export const actions: ActionTree<RootState, RootState> = {
     async getMetadata({ commit }) {
         const { data } = await axios.get("/metadata");
 
-        //TODO: map jsonata config here to ParameterGroupMEtadata
+        console.log(data)
+
+        data.data.parameterGroups = data.data.parameterGroups.map((g: ParameterGroupJsonataMetadata) => {
+          console.log(g.id);
+          return {...g, config: jsonata(g.config).evaluate({})}
+        });
+
+        console.log(data.data);
 
         commit("setMetadata", data.data);
     },

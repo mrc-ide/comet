@@ -9,7 +9,7 @@
                             "name": "generalBeds",
                             "type": "number",
                             "min": 0,
-                            "value": 314210
+                            "value": 314210,
                             "required": true
                         }
                     ]

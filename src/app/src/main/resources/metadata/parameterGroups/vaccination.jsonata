@@ -79,7 +79,7 @@
                                 {"id": "HCW and Elderly", "label": "HCW and Elderly"},
                                 {"id": "HCW, Elderly and High-Risk Groups", "label": "HCW, Elderly and High-Risk Groups"},
                                 {"id": "Elderly", "label": "Elderly"},
-                                {"id": "No Prioritisation", "label": "No Prioritisation"},
+                                {"id": "No Prioritisation", "label": "No Prioritisation"}
                             ],
                             "vale": "HCW and Elderly",
                             "required": true

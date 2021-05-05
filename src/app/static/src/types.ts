@@ -30,6 +30,13 @@ export interface Rt {
     value: string
 }
 
+export interface ParameterGroupJsonataMetadata {
+    id: string,
+    label: string,
+    type: "formDynamic" | "rt",
+    config: string
+}
+
 export interface ParameterGroupMetadata {
     id: string,
     label: string,

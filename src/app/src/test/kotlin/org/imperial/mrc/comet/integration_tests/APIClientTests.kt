@@ -19,12 +19,4 @@ class APIClientTests() {
         assertThat(result.statusCodeValue).isEqualTo(200)
         JSONValidator().validateSuccess(result.body!!, "Root")
     }
-
-    @Test
-    fun `can get known failure`() {
-        val sut = FuelAPIClient(appProperties)
-        val result = sut.knownFailure()
-        assertThat(result.statusCodeValue).isEqualTo(404)
-        JSONValidator().validateError(result.body!!, "NOT_FOUND", "Resource not found")
-    }
 }

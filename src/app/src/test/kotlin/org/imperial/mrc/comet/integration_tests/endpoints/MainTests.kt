@@ -15,10 +15,4 @@ class MainTests: EndpointTests() {
         val responseJson = ObjectMapper().readValue<JsonNode>(responseEntity.body.toString())
         assertThat(responseJson["data"]["name"].asText()).isEqualTo("cometr")
     }
-
-    @Test
-    fun `can get known failure`() {
-        val responseEntity = testRestTemplate.getForEntity<String>("/failure")
-        assertFailure(responseEntity, 404)
-    }
 }

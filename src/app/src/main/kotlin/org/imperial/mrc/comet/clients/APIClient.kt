@@ -10,21 +10,12 @@ import org.springframework.stereotype.Component
 
 interface APIClient {
     fun info(): ResponseEntity<String>
-    fun knownFailure(): ResponseEntity<String>
 }
 
 @Component
 class FuelAPIClient(private val appProperties: AppProperties) : APIClient {
     override fun info(): ResponseEntity<String> {
         return "${appProperties.apiUrl}/"
-                .httpGet()
-                .response()
-                .second
-                .toResponseEntity()
-    }
-
-    override fun knownFailure(): ResponseEntity<String> {
-        return "${appProperties.apiUrl}/nonexistent"
                 .httpGet()
                 .response()
                 .second

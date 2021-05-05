@@ -9,6 +9,9 @@ export const actions: ActionTree<RootState, RootState> = {
     },
     async getMetadata({ commit }) {
         const { data } = await axios.get("/metadata");
+
+        //TODO: map jsonata config here to ParameterGroupMEtadata
+
         commit("setMetadata", data.data);
     },
     async getResults({ commit, state }) {

@@ -1,4 +1,5 @@
 import { Schema } from "ajv";
+import { DynamicFormMeta } from "@reside-ic/vue-dynamic-form";
 
 export interface ApiError {
     error: string
@@ -24,8 +25,21 @@ export interface ChartMetadata {
     inputSchema: Schema
 }
 
+export interface Rt {
+    start: string,
+    value: string
+}
+
+export interface ParameterGroupMetadata {
+    id: string,
+    label: string,
+    type: "formDynamic" | "rt",
+    config: DynamicFormMeta | Rt[]
+}
+
 export interface Metadata {
-    charts: ChartMetadata[]
+    charts: ChartMetadata[],
+    parameterGroups: ParameterGroupMetadata[]
 }
 
 export interface Data {

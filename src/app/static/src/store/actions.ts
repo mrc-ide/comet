@@ -11,13 +11,12 @@ export const actions: ActionTree<RootState, RootState> = {
     },
     async getMetadata({ commit }) {
         const { data } = await axios.get("/metadata");
-
-        console.log(data)
-
         data.data.parameterGroups = data.data.parameterGroups.map((g: ParameterGroupJsonataMetadata) => {
-          console.log(g.id);
           return {...g, config: jsonata(g.config).evaluate({})}
         });
+
+        //TODO: remove!
+        data.data.parameterGroups = [];
 
         console.log(data.data);
 

@@ -1,5 +1,5 @@
 import { Schema } from "ajv";
-import { DynamicFormMeta } from "@reside-ic/vue-dynamic-form";
+import { DynamicFormMeta } from "@reside-ic/vue3-dynamic-form";
 
 export interface ApiError {
     error: string

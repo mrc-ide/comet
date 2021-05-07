@@ -18,10 +18,4 @@ class MainController(
         logger.info("api-info")
         return apiClient.info()
     }
-
-    @GetMapping("/failure")
-    fun failure(): ResponseEntity<String> {
-        logger.info("failure")
-        return apiClient.knownFailure()
-    }
 }

@@ -1,0 +1,106 @@
+{
+    "controlSections": [
+        {
+            "controlGroups": [
+                {
+                    "label": "Vaccine Efficacy against infection and mild cases (%)",
+                    "controls": [
+                        {
+                            "name": "efficacyInfection",
+                            "type": "number",
+                            "min": 0,
+                            "max": 99,
+                            "value": 90,
+                            "required": true,
+                            "transform": "$/100"
+                        }
+                    ]
+                },
+                {
+                    "label": "Vaccine Efficacy against hospitalisation and death (%)",
+                    "controls": [
+                        {
+                            "name": "efficacyDisease",
+                            "type": "number",
+                            "min": 90,
+                            "max": 100,
+                            "value": 96,
+                            "required": true,
+                            "transform": "$/100"
+                        }
+                    ]
+                },
+                {
+                    "label": "Vaccine Durability (days)",
+                    "controls": [
+                        {
+                            "name": "durability",
+                            "type": "number",
+                            "min": 60,
+                            "max": 5000,
+                            "value": 1095
+                        }
+                    ]
+                },
+                {
+                    "label": "Vaccine Courses Available (% of population)",
+                    "controls": [
+                        {
+                            "name": "availability",
+                            "type": "number",
+                            "min": 0,
+                            "max": 100,
+                            "value": 20,
+                            "required": true,
+                            "transform": "$/100"
+                        }
+                    ]
+                },
+                {
+                    "label": "Number Receiving First Vaccine Dose Per Week",
+                    "controls": [
+                        {
+                            "name": "maxDosesPerWeek",
+                            "type": "number",
+                            "min": 0,
+                            "max": 64491704,
+                            "value": 1697000,
+                            "required": true
+                        }
+                    ]
+                },
+                {
+                    "label": "Prioritisation & Allocation",
+                    "controls": [
+                        {
+                            "name": "strategy",
+                            "type": "select",
+                            "options": [
+                                {"id": "HCW and Elderly", "label": "HCW and Elderly"},
+                                {"id": "HCW, Elderly and High-Risk Groups", "label": "HCW, Elderly and High-Risk Groups"},
+                                {"id": "Elderly", "label": "Elderly"},
+                                {"id": "No Prioritisation", "label": "No Prioritisation"}
+                            ],
+                            "vale": "HCW and Elderly",
+                            "required": true
+                        }
+                    ]
+                }
+                {
+                    "label": "Vaccine Uptake (% of group targeted)",
+                    "controls": [
+                        {
+                            "name": "uptake",
+                            "type": "number",
+                            "min": 0,
+                            "max": 99,
+                            "value": 80,
+                            "required": true,
+                            "transform": "$/100"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

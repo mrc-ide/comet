@@ -22,6 +22,7 @@ class AppMetadata(
     companion object {
         private const val METADATA_ROOT = "metadata"
         private const val CHARTS_ROOT = "$METADATA_ROOT/charts"
+        private const val PARAMS_ROOT = "$METADATA_ROOT/parameterGroups"
         private val objectMapper = ObjectMapper()
     }
 
@@ -32,6 +33,9 @@ class AppMetadata(
 
         val charts = buildChartsMetadata()
         fullMetadata.set<ArrayNode>("charts", charts)
+
+        val params = buildParametersMetadata()
+        fullMetadata.set<ArrayNode>("parameterGroups", params)
 
         metadata = Response(fullMetadata)
 
@@ -55,6 +59,20 @@ class AppMetadata(
         }
 
         return charts
+    }
+
+    private fun buildParametersMetadata(): ArrayNode {
+        val paramGroupsText = readFromResource("$PARAMS_ROOT/parameterGroups.json")
+        val paramGroups = objectMapper.readValue<ArrayNode>(paramGroupsText)
+        for (node in paramGroups) {
+            val paramGroupNode = node as ObjectNode
+            val paramGroupId = node["id"].asText()
+            val paramGroupFileName = "$PARAMS_ROOT/$paramGroupId.jsonata"
+
+            setResourceContentsAsTextNode(paramGroupNode, "config", paramGroupFileName)
+        }
+
+        return paramGroups
     }
 
     private fun setResourceContentsAsTextNode(parentNode: ObjectNode, name: String, resourcePath: String) {

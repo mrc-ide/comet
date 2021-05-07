@@ -1,0 +1,5 @@
+[
+  {"id": "healthcare", "label": "Healthcare capacity", "type": "dynamicForm"},
+  {"id":  "rt", "label":  "Social restrictions", "type":  "rt"},
+  {"id":  "vaccination", "label":  "Vaccination", "type": "dynamicForm"}
+]

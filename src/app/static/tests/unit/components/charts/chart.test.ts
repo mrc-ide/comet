@@ -5,7 +5,7 @@ jest.mock("plotly.js", () => ({
 }));
 /* eslint-disable import/first */
 import * as plotly from "plotly.js";
-import { nextTick } from "vue";
+import Vue from "vue";
 import { ChartMetadata } from "@/types";
 import { shallowMount } from "@vue/test-utils";
 import Chart from "@/components/charts/Chart.vue";
@@ -98,7 +98,7 @@ describe("Chart", () => {
                 yVals: [40, 50, 60]
             }
         });
-        await nextTick();
+        await Vue.nextTick();
 
         expect(mockPlotlyReact.mock.calls.length).toBe(2);
         const plotlyParams = mockPlotlyReact.mock.calls[1];
@@ -129,7 +129,7 @@ describe("Chart", () => {
                 responsive: false
             }
         });
-        await nextTick();
+        await Vue.nextTick();
 
         expect(mockPlotlyReact.mock.calls.length).toBe(2);
         const plotlyParams = mockPlotlyReact.mock.calls[1];

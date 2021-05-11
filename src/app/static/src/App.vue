@@ -32,4 +32,9 @@
 body {
     padding-top: 5rem;
 }
+
+@media only screen and (min-width : 1200px) {
+  .container { max-width: 1500px; }
+}
+
 </style>

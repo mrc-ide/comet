@@ -1,6 +1,7 @@
 {
     "controlSections": [
         {
+            "label": "Vaccination",
             "controlGroups": [
                 {
                     "label": "Vaccine Efficacy against infection and mild cases (%)",

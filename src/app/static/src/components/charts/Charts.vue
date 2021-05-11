@@ -9,8 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { ChartMetadata, Data } from "@/types";
+import { defineComponent } from "@vue/composition-api";
 import Chart from "./Chart.vue";
 
 export default defineComponent({
@@ -19,9 +18,9 @@ export default defineComponent({
         Chart
     },
     props: {
-        chartMetadata: { type: Array as PropType<ChartMetadata[]>, required: true },
-        chartData: { type: Object as PropType<Data> },
-        layoutData: { type: Object as PropType<Data>, required: true }
+        chartMetadata: Array,
+        chartData: Object,
+        layoutData: Object
     }
 });
 </script>

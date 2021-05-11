@@ -1,5 +1,5 @@
 import { Schema } from "ajv";
-import { DynamicFormMeta } from "@reside-ic/vue3-dynamic-form";
+import { DynamicFormMeta } from "@reside-ic/vue-dynamic-form";
 
 export interface ApiError {
     error: string
@@ -32,15 +32,13 @@ export interface Rt {
 
 export interface ParameterGroupJsonataMetadata {
     id: string,
-    label: string,
-    type: "formDynamic" | "rt",
+    type: "dynamicForm" | "rt",
     config: string
 }
 
 export interface ParameterGroupMetadata {
     id: string,
-    label: string,
-    type: "formDynamic" | "rt",
+    type: "dynamicForm" | "rt",
     config: DynamicFormMeta | Rt[]
 }
 

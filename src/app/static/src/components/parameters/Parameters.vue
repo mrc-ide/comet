@@ -1,15 +1,20 @@
 <template>
-  <div v-for="paramGroup in paramGroupMetadata">
-    Here's a param group
-    <dynamic-form v-if="paramGroup.type == 'dynamicForm'"
-                  v-model="paramGroup.config"></dynamic-form>
-  </div>>
+  <div>
+    <div v-for="paramGroup in readOnlyParamGroups" :key="paramGroup.id">
+      <dynamic-form v-if="paramGroup.type == 'dynamicForm'"
+                    v-model="paramGroup.config"></dynamic-form>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
-import { DynamicForm } from "@reside-ic/vue3-dynamic-form";
+import { computed, defineComponent} from "@vue/composition-api";
+import {DynamicControlSection, DynamicForm, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
 import { ParameterGroupMetadata } from "@/types";
+
+interface Props {
+    paramGroupMetadata: Array<ParameterGroupMetadata>
+}
 
 export default defineComponent({
     name: "Parameters",
@@ -17,7 +22,34 @@ export default defineComponent({
         DynamicForm
     },
     props: {
-        paramGroupMetadata: { type: Array as PropType<ParameterGroupMetadata[]>, required: true }
+        paramGroupMetadata: Object
+    },
+    setup(props: Props) {
+        // Display readonly parameters as collapsible panels //TODO: split this up - getCollapsibleForm as separate method
+        const readOnlyParamGroups = computed(() => {
+            return props.paramGroupMetadata.map((metadata: ParameterGroupMetadata) => {
+                if (metadata.type === "dynamicForm") {
+                    const collapsibleSections = (metadata.config as DynamicFormMeta).controlSections
+                        .map((section: DynamicControlSection) => {
+                            return {
+                                ...section,
+                                collapsible: true,
+                                collapsed: true
+                            };
+                        });
+                    return {
+                        ...metadata,
+                        config: {
+                            controlSections: collapsibleSections
+                        }
+                    };
+                } else {
+                    return metadata;
+                }
+            });
+        });
+
+        return { readOnlyParamGroups };
     }
 });
 </script>

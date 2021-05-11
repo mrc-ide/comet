@@ -1,9 +1,11 @@
 // Mock the import of plotly to avoid import failures in non-browser context
+import {RootState} from "@/store/state";
+
 jest.mock("plotly.js", () => ({
     react: jest.fn()
 }));
 /* eslint-disable import/first */
-import { createStore } from "vuex";
+import Vuex from "vuex";
 import { shallowMount } from "@vue/test-utils";
 import Home from "@/views/Home.vue";
 import Charts from "@/components/charts/Charts.vue";
@@ -14,7 +16,7 @@ describe("Home", () => {
     it("gets metadata and results on mount", () => {
         const mockGetMetadata = jest.fn();
         const mockGetResults = jest.fn();
-        const $store = createStore({
+        const $store = new Vuex.Store<RootState>({
             state: mockRootState(),
             actions: {
                 getMetadata: mockGetMetadata,
@@ -31,7 +33,7 @@ describe("Home", () => {
     });
 
     it("renders Charts component with expected props", () => {
-        const $store = createStore({
+        const $store = new Vuex.Store<RootState>({
             state: mockRootState({
                 metadata: {
                     charts: [
@@ -57,7 +59,7 @@ describe("Home", () => {
     });
 
     it("does not render Charts component if no metadata", () => {
-        const $store = createStore({
+        const $store = new Vuex.Store<RootState>({
             state: mockRootState({
                 metadata: null,
                 results: { value: "results" },

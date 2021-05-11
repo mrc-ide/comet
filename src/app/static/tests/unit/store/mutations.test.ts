@@ -4,7 +4,7 @@ import { mockRootState } from "../../mocks";
 describe("mutations", () => {
     it("sets metadata", () => {
         const state = mockRootState();
-        const mockMetadata = { charts: [] };
+        const mockMetadata = { charts: [], parameterGroups: [] };
         mutations.setMetadata(state, mockMetadata);
         expect(state.metadata).toBe(mockMetadata);
     });

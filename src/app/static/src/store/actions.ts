@@ -15,11 +15,6 @@ export const actions: ActionTree<RootState, RootState> = {
           return {...g, config: jsonata(g.config).evaluate({})}
         });
 
-        //TODO: remove!
-        data.data.parameterGroups = [];
-
-        console.log(data.data);
-
         commit("setMetadata", data.data);
     },
     async getResults({ commit, state }) {

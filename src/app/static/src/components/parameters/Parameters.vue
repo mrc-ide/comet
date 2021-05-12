@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { computed, defineComponent} from "@vue/composition-api";
-import {DynamicControlSection, DynamicForm, DynamicFormMeta} from "@reside-ic/vue-dynamic-form";
+import { DynamicControlSection, DynamicForm, DynamicFormMeta } from "@reside-ic/vue-dynamic-form";
 import { ParameterGroupMetadata } from "@/types";
 
 interface Props {
@@ -23,7 +23,7 @@ export default defineComponent({
         DynamicForm
     },
     props: {
-        paramGroupMetadata: Object
+        paramGroupMetadata: Array
     },
     setup(props: Props) {
         // Display readonly parameters as collapsible panels

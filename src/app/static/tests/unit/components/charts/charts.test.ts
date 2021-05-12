@@ -9,7 +9,7 @@ import { shallowMount } from "@vue/test-utils";
 
 describe("Charts", () => {
     it("renders Chart components with expected props", () => {
-        const props = {
+        const propsData = {
             chartMetadata: [
                 { id: "chartMetadata1" } as any,
                 { id: "chartMetadata2" } as any
@@ -17,7 +17,7 @@ describe("Charts", () => {
             chartData: { value: "chartData" },
             layoutData: { value: "layoutData" }
         };
-        const wrapper = shallowMount(Charts, { props });
+        const wrapper = shallowMount(Charts, { propsData });
 
         const charts = wrapper.findAllComponents(Chart);
         expect(charts.length).toBe(2);

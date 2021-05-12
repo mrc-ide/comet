@@ -11,12 +11,13 @@ import Home from "@/views/Home.vue";
 import Charts from "@/components/charts/Charts.vue";
 import { getters } from "@/store";
 import { mockRootState } from "../../mocks";
+import Parameters from "@/components/parameters/Parameters.vue";
 
 describe("Home", () => {
     it("gets metadata and results on mount", () => {
         const mockGetMetadata = jest.fn();
         const mockGetResults = jest.fn();
-        const $store = new Vuex.Store<RootState>({
+        const store = new Vuex.Store<RootState>({
             state: mockRootState(),
             actions: {
                 getMetadata: mockGetMetadata,
@@ -24,20 +25,21 @@ describe("Home", () => {
             }
         });
 
-        shallowMount(Home, {
-            global: { mocks: { $store } }
-        });
+        shallowMount(Home, { store });
 
         expect(mockGetMetadata.mock.calls.length).toBe(1);
         expect(mockGetResults.mock.calls.length).toBe(1);
     });
 
-    it("renders Charts component with expected props", () => {
-        const $store = new Vuex.Store<RootState>({
+    it("renders Charts and Parameters component with expected props", () => {
+        const store = new Vuex.Store<RootState>({
             state: mockRootState({
                 metadata: {
                     charts: [
                         { value: "metadata" }
+                    ],
+                    parameterGroups: [
+                        { value: "paramMetadata" }
                     ]
                 } as any,
                 results: { value: "results" },
@@ -46,9 +48,7 @@ describe("Home", () => {
             getters
         });
 
-        const wrapper = shallowMount(Home, {
-            global: { mocks: { $store } }
-        });
+        const wrapper = shallowMount(Home, { store });
         const charts = wrapper.findComponent(Charts);
         expect(charts.props("chartMetadata")).toStrictEqual([{ value: "metadata" }]);
         expect(charts.props("chartData")).toStrictEqual({ value: "results" });
@@ -56,10 +56,15 @@ describe("Home", () => {
             params: { value: "paramValue" },
             population: 67890000
         });
+
+        const parameters = wrapper.findComponent(Parameters);
+        expect(parameters.props("paramGroupMetadata")).toStrictEqual([
+            { value: "paramMetadata" }
+        ]);
     });
 
-    it("does not render Charts component if no metadata", () => {
-        const $store = new Vuex.Store<RootState>({
+    it("does not render Charts or Parameters component if no metadata", () => {
+        const store = new Vuex.Store<RootState>({
             state: mockRootState({
                 metadata: null,
                 results: { value: "results" },
@@ -67,10 +72,11 @@ describe("Home", () => {
             })
         });
 
-        const wrapper = shallowMount(Home, {
-            global: { mocks: { $store } }
-        });
+        const wrapper = shallowMount(Home, { store });
         const charts = wrapper.findComponent(Charts);
         expect(charts.exists()).toBe(false);
+
+        const parameters = wrapper.findComponent(Parameters);
+        expect(parameters.exists()).toBe(false);
     });
 });

@@ -1,1 +1,22 @@
 $body-bg: #eee;
+
+.dynamic-form {
+  h3 {
+    font-size: 1.3rem;
+
+    svg {  //collapse chevrons
+      float: right;
+    }
+  }
+
+  .dynamic-form-readonly-value {
+    font-weight: bold;
+    padding-top: 7px;
+  }
+
+  collapse {
+    background-color: #f7f7f7;
+  }
+}
+
+

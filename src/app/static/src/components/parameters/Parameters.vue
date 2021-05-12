@@ -2,7 +2,8 @@
   <div>
     <div v-for="paramGroup in readOnlyParamGroups" :key="paramGroup.id">
       <dynamic-form v-if="paramGroup.type == 'dynamicForm'"
-                    v-model="paramGroup.config"></dynamic-form>
+                    v-model="paramGroup.config"
+                    :readonly="true"></dynamic-form>
     </div>
   </div>
 </template>
@@ -25,27 +26,29 @@ export default defineComponent({
         paramGroupMetadata: Object
     },
     setup(props: Props) {
-        // Display readonly parameters as collapsible panels //TODO: split this up - getCollapsibleForm as separate method
+        // Display readonly parameters as collapsible panels
+        const collapseSections = (config: DynamicFormMeta) => {
+            return config.controlSections.map((section: DynamicControlSection) => {
+                return {
+                    ...section,
+                    collapsible: true,
+                    collapsed: true
+                };
+            });
+        };
+
         const readOnlyParamGroups = computed(() => {
             return props.paramGroupMetadata.map((metadata: ParameterGroupMetadata) => {
                 if (metadata.type === "dynamicForm") {
-                    const collapsibleSections = (metadata.config as DynamicFormMeta).controlSections
-                        .map((section: DynamicControlSection) => {
-                            return {
-                                ...section,
-                                collapsible: true,
-                                collapsed: true
-                            };
-                        });
+                    const controlSections = collapseSections(metadata.config as DynamicFormMeta);
                     return {
                         ...metadata,
                         config: {
-                            controlSections: collapsibleSections
+                            controlSections
                         }
                     };
-                } else {
-                    return metadata;
                 }
+                return metadata;
             });
         });
 

@@ -82,11 +82,11 @@
                                 {"id": "Elderly", "label": "Elderly"},
                                 {"id": "No Prioritisation", "label": "No Prioritisation"}
                             ],
-                            "vale": "HCW and Elderly",
+                            "value": "HCW and Elderly",
                             "required": true
                         }
                     ]
-                }
+                },
                 {
                     "label": "Vaccine Uptake (% of group targeted)",
                     "controls": [

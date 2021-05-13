@@ -1,4 +1,4 @@
-import CompositionApi from '@vue/composition-api';
+import CompositionApi from "@vue/composition-api";
 import Vue from "vue";
 import Vuex from "vuex";
 

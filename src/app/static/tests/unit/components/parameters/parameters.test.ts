@@ -48,9 +48,9 @@ describe("Parameters", () => {
         });
         expect(dynForms.at(1).props("readonly")).toStrictEqual(true);
         expect(dynForms.at(1).props("formMeta")).toStrictEqual({
-          controlSections: [
-            { label: "cs2.1", collapsible: true, collapsed: true }
-          ]
+            controlSections: [
+                { label: "cs2.1", collapsible: true, collapsed: true }
+            ]
         });
     });
 });

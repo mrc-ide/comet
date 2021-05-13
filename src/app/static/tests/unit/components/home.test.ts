@@ -1,6 +1,4 @@
 // Mock the import of plotly to avoid import failures in non-browser context
-import {RootState} from "@/store/state";
-
 jest.mock("plotly.js", () => ({
     react: jest.fn()
 }));
@@ -9,9 +7,10 @@ import Vuex from "vuex";
 import { shallowMount } from "@vue/test-utils";
 import Home from "@/views/Home.vue";
 import Charts from "@/components/charts/Charts.vue";
+import Parameters from "@/components/parameters/Parameters.vue";
+import { RootState } from "@/store/state";
 import { getters } from "@/store";
 import { mockRootState } from "../../mocks";
-import Parameters from "@/components/parameters/Parameters.vue";
 
 describe("Home", () => {
     it("gets metadata and results on mount", () => {

@@ -13,9 +13,10 @@ export const actions: ActionTree<RootState, RootState> = {
         const { data } = await axios.get("/metadata");
 
         // populate any dynamic values in the config by evaluating the jsonata
-        data.data.parameterGroups = data.data.parameterGroups.map((g: ParameterGroupJsonataMetadata) => {
-          return {...g, config: jsonata(g.config).evaluate({})}
-        });
+        data.data.parameterGroups = data.data.parameterGroups
+            .map((g: ParameterGroupJsonataMetadata) => {
+                return { ...g, config: jsonata(g.config).evaluate({}) };
+            });
 
         commit("setMetadata", data.data);
     },

@@ -4,7 +4,7 @@ import { actions } from "@/store/actions";
 import { mutations } from "@/store/mutations";
 import { RootState } from "@/store/state";
 import { Data } from "@/types";
-import CompositionApi from '@vue/composition-api';
+import CompositionApi from "@vue/composition-api";
 
 Vue.use(Vuex);
 Vue.use(CompositionApi);

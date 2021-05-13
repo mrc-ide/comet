@@ -1,4 +1,4 @@
-import VueRouter, {RouteConfig} from "vue-router";
+import VueRouter, { RouteConfig } from "vue-router";
 import Vue from "vue";
 import Home from "../views/Home.vue";
 
@@ -19,8 +19,8 @@ const routes: Array<RouteConfig> = [
 ];
 
 const router = new VueRouter({
-  mode: "history",
-  routes
+    mode: "history",
+    routes
 });
 
 Vue.use(VueRouter);

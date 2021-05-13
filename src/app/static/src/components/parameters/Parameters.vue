@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent} from "@vue/composition-api";
+import { computed, defineComponent } from "@vue/composition-api";
 import { DynamicControlSection, DynamicForm, DynamicFormMeta } from "@reside-ic/vue-dynamic-form";
 import { ParameterGroupMetadata } from "@/types";
 

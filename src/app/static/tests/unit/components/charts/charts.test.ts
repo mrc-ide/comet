@@ -21,17 +21,17 @@ describe("Charts", () => {
 
         const charts = wrapper.findAllComponents(Chart);
         expect(charts.length).toBe(2);
-        expect(charts[0].props("chartMetadata")).toStrictEqual({ id: "chartMetadata1" });
-        expect(charts[0].props("layoutData")).toStrictEqual({ value: "layoutData" });
-        expect(charts[0].props("chartData")).toStrictEqual({ value: "chartData" });
+        expect(charts.at(0).props("chartMetadata")).toStrictEqual({ id: "chartMetadata1" });
+        expect(charts.at(0).props("layoutData")).toStrictEqual({ value: "layoutData" });
+        expect(charts.at(0).props("chartData")).toStrictEqual({ value: "chartData" });
 
-        expect(charts[1].props("chartMetadata")).toStrictEqual({ id: "chartMetadata2" });
-        expect(charts[1].props("layoutData")).toStrictEqual({ value: "layoutData" });
-        expect(charts[1].props("chartData")).toStrictEqual({ value: "chartData" });
+        expect(charts.at(1).props("chartMetadata")).toStrictEqual({ id: "chartMetadata2" });
+        expect(charts.at(1).props("layoutData")).toStrictEqual({ value: "layoutData" });
+        expect(charts.at(1).props("chartData")).toStrictEqual({ value: "chartData" });
     });
 
     it("renders no charts if no chartData", () => {
-        const props = {
+        const propsData = {
             chartMetadata: [
                 { id: "chartMetadata1" } as any,
                 { id: "chartMetadata2" } as any
@@ -39,7 +39,7 @@ describe("Charts", () => {
             chartData: null,
             layoutData: { value: "layoutData" }
         };
-        const wrapper = shallowMount(Charts, { props });
+        const wrapper = shallowMount(Charts, { propsData });
 
         const charts = wrapper.findAllComponents(Chart);
         expect(charts.length).toBe(0);

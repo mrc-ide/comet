@@ -29,7 +29,6 @@ class MetadataTests: EndpointTests() {
         assertThat(parametersJson.count()).isGreaterThan(0)
         val firstParamGroup = parametersJson[0]
         assertThat(firstParamGroup["id"].asText()).isNotBlank()
-        assertThat(firstParamGroup["label"].asText()).isNotBlank()
         assertThat(firstParamGroup["type"].asText()).isNotBlank()
         assertThat(firstParamGroup["config"].asText()).isNotBlank()
     }

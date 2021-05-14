@@ -5,10 +5,18 @@
                 :paramValues="paramValues"
                 @updateMetadata="setParameterMetadata"
                 @updateValues="updateParameterValues"></Parameters>
-    <Charts class="col-md-8" v-if="metadata"
-            :chart-metadata="metadata.charts"
-            :chart-data="results"
-            :layout-data="chartLayoutData"></Charts>
+    <div class="col-md-8">
+      <Charts v-if="metadata"
+              :chart-metadata="metadata.charts"
+              :chart-data="results"
+              :layout-data="chartLayoutData"></Charts>
+      <div v-if="fetchingResults" id="fetching-results">
+        <div id="fetching-results-msg">
+          <loading-spinner size="xs"></loading-spinner>
+          Fetching results...
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,19 +25,22 @@
 import Vue from "vue";
 import Charts from "@/components/charts/Charts.vue";
 import Parameters from "@/components/parameters/Parameters.vue";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 export default Vue.extend({
     name: "Home",
     components: {
         Charts,
-        Parameters
+        Parameters,
+        LoadingSpinner
     },
     computed: {
         ...mapState([
             "metadata",
             "paramValues",
-            "results"
+            "results",
+            "fetchingResults"
         ]),
         ...mapGetters([
             "chartLayoutData"

@@ -5,4 +5,5 @@ export interface RootState {
   metadata: Metadata | null
   results: Data | null
   paramValues: Data | null
+  fetchingResults: boolean
 }

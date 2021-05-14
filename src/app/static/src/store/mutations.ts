@@ -16,5 +16,8 @@ export const mutations = {
     },
     setParameterValues(state: RootState, paramValues: Data): void {
         state.paramValues = paramValues;
+    },
+    setFetchingResults(state: RootState, fetchingResults: boolean): void {
+        state.fetchingResults = fetchingResults;
     }
 };

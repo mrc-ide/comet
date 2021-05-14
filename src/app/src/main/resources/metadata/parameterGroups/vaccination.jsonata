@@ -95,7 +95,7 @@
                             "type": "number",
                             "min": 0,
                             "max": 99,
-                            "value": 80,
+                            "value": 20,
                             "required": true,
                             "transform": "$/100"
                         }

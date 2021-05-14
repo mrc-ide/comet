@@ -1,7 +1,10 @@
 <template>
   <div class="home row">
     <Parameters class="col-md-4" v-if="metadata"
-                :paramGroupMetadata="metadata.parameterGroups"></Parameters>
+                :paramGroupMetadata="metadata.parameterGroups"
+                :paramValues="paramValues"
+                @updateMetadata="setParameterMetadata"
+                @updateValues="updateParameterValues"></Parameters>
     <Charts class="col-md-8" v-if="metadata"
             :chart-metadata="metadata.charts"
             :chart-data="results"
@@ -11,12 +14,12 @@
 
 <script lang="ts">
 
-import { defineComponent } from "@vue/composition-api";
+import Vue from "vue";
 import Charts from "@/components/charts/Charts.vue";
 import Parameters from "@/components/parameters/Parameters.vue";
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
-export default defineComponent({
+export default Vue.extend({
     name: "Home",
     components: {
         Charts,
@@ -25,6 +28,7 @@ export default defineComponent({
     computed: {
         ...mapState([
             "metadata",
+            "paramValues",
             "results"
         ]),
         ...mapGetters([
@@ -34,7 +38,11 @@ export default defineComponent({
     methods: {
         ...mapActions([
             "getMetadata",
-            "getResults"
+            "getResults",
+            "updateParameterValues"
+        ]),
+        ...mapMutations([
+            "setParameterMetadata"
         ])
     },
     mounted() {

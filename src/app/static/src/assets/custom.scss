@@ -1,4 +1,5 @@
 $body-bg: #eee;
+$theme-blue: #003e74;
 
 .dynamic-form {
   h3 {
@@ -30,6 +31,10 @@ $body-bg: #eee;
     background-color: #fafafa;
     padding-left: 1rem;
   }
+}
+
+.btn-action {
+  @include button-variant($theme-blue, darken($theme-blue, 10%))
 }
 
 

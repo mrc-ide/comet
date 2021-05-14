@@ -5,7 +5,7 @@ jest.mock("plotly.js", () => ({
 }));
 /* eslint-disable import/first */
 import * as plotly from "plotly.js";
-import { nextTick } from "vue";
+import Vue from "vue";
 import { ChartMetadata } from "@/types";
 import { shallowMount } from "@vue/test-utils";
 import Chart from "@/components/charts/Chart.vue";
@@ -66,8 +66,8 @@ describe("Chart", () => {
     });
 
     it("invokes Plotly on render with expected parameters", () => {
-        const props = { chartMetadata, chartData, layoutData };
-        shallowMount(Chart, { props });
+        const propsData = { chartMetadata, chartData, layoutData };
+        shallowMount(Chart, { propsData });
 
         expect(mockPlotlyReact.mock.calls.length).toBe(1);
         const plotlyParams = mockPlotlyReact.mock.calls[0];
@@ -89,8 +89,8 @@ describe("Chart", () => {
     });
 
     it("invokes plotly again on data change", async () => {
-        const props = { chartMetadata, chartData, layoutData };
-        const wrapper = shallowMount(Chart, { props });
+        const propsData = { chartMetadata, chartData, layoutData };
+        const wrapper = shallowMount(Chart, { propsData });
 
         wrapper.setProps({
             chartData: {
@@ -98,7 +98,7 @@ describe("Chart", () => {
                 yVals: [40, 50, 60]
             }
         });
-        await nextTick();
+        await Vue.nextTick();
 
         expect(mockPlotlyReact.mock.calls.length).toBe(2);
         const plotlyParams = mockPlotlyReact.mock.calls[1];
@@ -120,8 +120,8 @@ describe("Chart", () => {
     });
 
     it("invokes plotly again on layout change", async () => {
-        const props = { chartMetadata, chartData, layoutData };
-        const wrapper = shallowMount(Chart, { props });
+        const propsData = { chartMetadata, chartData, layoutData };
+        const wrapper = shallowMount(Chart, { propsData });
 
         wrapper.setProps({
             layoutData: {
@@ -129,7 +129,7 @@ describe("Chart", () => {
                 responsive: false
             }
         });
-        await nextTick();
+        await Vue.nextTick();
 
         expect(mockPlotlyReact.mock.calls.length).toBe(2);
         const plotlyParams = mockPlotlyReact.mock.calls[1];
@@ -152,7 +152,7 @@ describe("Chart", () => {
 
     it("throws error if input data fails schema validation", () => {
         const badData = { zVals: [0, 1, 2] };
-        const props = { chartMetadata, chartData: badData, layoutData };
-        expect(() => shallowMount(Chart, { props })).toThrowError("Data validation failed");
+        const propsData = { chartMetadata, chartData: badData, layoutData };
+        expect(() => shallowMount(Chart, { propsData })).toThrowError("Data validation failed");
     });
 });

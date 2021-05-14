@@ -10,20 +10,25 @@ import {
     computed,
     defineComponent,
     onMounted,
-    PropType,
     ref,
     watch
-} from "vue";
+} from "@vue/composition-api";
 import jsonata from "jsonata";
+
+interface Props {
+    chartMetadata: ChartMetadata,
+    chartData: Data,
+    layoutData: Data
+}
 
 export default defineComponent({
     name: "Chart",
     props: {
-        chartMetadata: { type: Object as PropType<ChartMetadata>, required: true },
-        chartData: { type: Object as PropType<Data>, required: true },
-        layoutData: { type: Object as PropType<Data>, required: true }
+        chartMetadata: Object,
+        chartData: Object,
+        layoutData: Object
     },
-    setup(props) {
+    setup(props: Props) {
         const chart = ref(null);
 
         const inputData = computed(() => {

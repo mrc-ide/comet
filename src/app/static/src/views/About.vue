@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import Vue from "vue";
 import { mapActions, mapState } from "vuex";
 
-export default defineComponent({
+export default Vue.extend({
     name: "About",
     props: {
         heading: {

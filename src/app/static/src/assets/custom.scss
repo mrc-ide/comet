@@ -1,1 +1,35 @@
 $body-bg: #eee;
+
+.dynamic-form {
+  h3 {
+    font-size: 1.3rem;
+
+    svg {  //collapse chevrons
+      float: right;
+    }
+  }
+
+  .row {
+    label {
+      max-width: 60%;
+      flex: 0 0 60%;
+    }
+
+    & > div {
+      max-width: 40%;
+      flex: 0 0 40%;
+    }
+
+    .dynamic-form-readonly-value {
+      padding-top: 7px;
+    }
+
+  }
+
+  .collapse {
+    background-color: #fafafa;
+    padding-left: 1rem;
+  }
+}
+
+

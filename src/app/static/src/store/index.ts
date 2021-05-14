@@ -1,8 +1,13 @@
-import { createStore } from "vuex";
+import Vue from "vue";
+import Vuex from "vuex";
 import { actions } from "@/store/actions";
 import { mutations } from "@/store/mutations";
 import { RootState } from "@/store/state";
 import { Data } from "@/types";
+import CompositionApi from "@vue/composition-api";
+
+Vue.use(Vuex);
+Vue.use(CompositionApi);
 
 export const getters = {
     chartLayoutData: (state: RootState): Data => {
@@ -14,7 +19,7 @@ export const getters = {
     }
 };
 
-export default createStore<RootState>({
+export default new Vuex.Store<RootState>({
     state: {
         apiInfo: null,
         metadata: null,

@@ -6,8 +6,14 @@ describe("actions", () => {
         mockAxios.reset();
     });
 
-    it("fetches metadata", async () => {
-        const mockMetadata = { charts: [] };
+    it("fetches metadata and evaluates paramGroups", async () => {
+        const mockMetadata = {
+            charts: [],
+            parameterGroups: [
+                { id: "pg1", config: "{\"value\": 5 + 1}" },
+                { id: "pg2", config: "{\"value\": 5 - 1}" }
+            ]
+        };
         mockAxios.onGet("/metadata")
             .reply(200, mockSuccess(mockMetadata));
         const commit = jest.fn();
@@ -15,7 +21,13 @@ describe("actions", () => {
 
         expect(commit.mock.calls.length).toBe(1);
         expect(commit.mock.calls[0][0]).toBe("setMetadata");
-        expect(commit.mock.calls[0][1]).toStrictEqual(mockMetadata);
+        expect(commit.mock.calls[0][1]).toStrictEqual({
+            charts: [],
+            parameterGroups: [
+                { id: "pg1", config: { value: 6 } },
+                { id: "pg2", config: { value: 4 } }
+            ]
+        });
     });
 
     it("fetches results", async () => {

@@ -13,7 +13,7 @@
       <div v-if="fetchingResults" id="fetching-results">
         <div id="fetching-results-msg">
           <loading-spinner size="xs"></loading-spinner>
-          Fetching results...
+          Updating analysis...
         </div>
       </div>
     </div>
@@ -21,14 +21,13 @@
 </template>
 
 <script lang="ts">
-
-import Vue from "vue";
+import {defineComponent} from "@vue/composition-api";
 import Charts from "@/components/charts/Charts.vue";
 import Parameters from "@/components/parameters/Parameters.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
-export default Vue.extend({
+export default defineComponent({
     name: "Home",
     components: {
         Charts,

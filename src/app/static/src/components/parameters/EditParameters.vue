@@ -12,14 +12,14 @@
       <button class="btn btn-action"
               @click="updateParameters">OK</button>
       <button class="btn btn-secondary"
-              @click="$emit('cancel')">Cancel</button>
+              @click="cancel">Cancel</button>
     </template>
   </modal>
 </div>
 </template>
 
 <script lang="ts">
-    import {computed, defineComponent, Ref, ref} from "@vue/composition-api";
+import { computed, defineComponent, Ref, ref } from "@vue/composition-api";
 import { DynamicForm, DynamicFormMeta, DynamicFormData } from "@reside-ic/vue-dynamic-form";
 import Modal from "@/components/Modal.vue";
 import { ParameterGroupMetadata } from "@/types";
@@ -58,13 +58,18 @@ export default defineComponent({
             (form.value as any).submit();
         }
 
+        function cancel() {
+            context.emit("cancel");
+            formMetaInternal.value = null;
+        }
+
         function formSubmitted(newValues: DynamicFormData) {
             if (formMetaInternal.value) {
                 const newParamGroup = { ...props.paramGroup, config: formMetaInternal.value };
                 context.emit("update", newParamGroup, newValues);
                 formMetaInternal.value = null; // update from prop on next open
             } else {
-                context.emit("cancel"); // OK pressed with no values changed
+                cancel();
             }
         }
 
@@ -72,6 +77,7 @@ export default defineComponent({
             form,
             formMetaInternal,
             formMeta,
+            cancel,
             updateParameters,
             formSubmitted
         };

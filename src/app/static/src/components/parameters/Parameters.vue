@@ -88,7 +88,10 @@ export default defineComponent({
             editParamGroupId.value = "";
         }
 
-        function updateParameters(newParamGroup: ParameterGroupMetadata, newValues: DynamicFormData) {
+        function updateParameters(
+            newParamGroup: ParameterGroupMetadata,
+            newValues: DynamicFormData
+        ) {
             closeModal();
 
             const groupId = newParamGroup.id;
@@ -99,7 +102,10 @@ export default defineComponent({
 
             const newParamValues = { ...props.paramValues };
             // Retain any values which are not currently editable e.g. vaccination/future
-            newParamValues[groupId] = { ...(props.paramValues[groupId] as Record<string, unknown>), ...newValues };
+            newParamValues[groupId] = {
+                ...(props.paramValues[groupId] as Record<string, unknown>),
+                ...newValues
+            };
             context.emit("updateValues", newParamValues);
         }
 

@@ -21,11 +21,16 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "@vue/composition-api";
+import { defineComponent } from "@vue/composition-api";
 import Charts from "@/components/charts/Charts.vue";
 import Parameters from "@/components/parameters/Parameters.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import {
+    mapActions,
+    mapGetters,
+    mapMutations,
+    mapState
+} from "vuex";
 
 export default defineComponent({
     name: "Home",

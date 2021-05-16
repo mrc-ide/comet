@@ -6,38 +6,38 @@ import EditParameters from "@/components/parameters/EditParameters.vue";
 
 describe("Parameters", () => {
     const paramGroupMetadata = [
-      {
-        id: "pg1",
-        type: "dynamicForm",
-        config: {
-          controlSections: [
-            {
-              label: "cs1.1",
-              control: {
-                value: "old1"
-              }
-            },
-            {
-              label: "cs1.2"
+        {
+            id: "pg1",
+            type: "dynamicForm",
+            config: {
+                controlSections: [
+                    {
+                        label: "cs1.1",
+                        control: {
+                            value: "old1"
+                        }
+                    },
+                    {
+                        label: "cs1.2"
+                    }
+                ]
             }
-          ]
-        }
-      },
-      {
-        id: "pg2",
-        type: "rt"
-      },
-      {
-        id: "pg3",
-        type: "dynamicForm",
-        config: {
-          controlSections: [
-            {
-              label: "cs2.1"
+        },
+        {
+            id: "pg2",
+            type: "rt"
+        },
+        {
+            id: "pg3",
+            type: "dynamicForm",
+            config: {
+                controlSections: [
+                    {
+                        label: "cs2.1"
+                    }
+                ]
             }
-          ]
         }
-      }
     ] as any;
 
     const paramValues = {
@@ -67,7 +67,7 @@ describe("Parameters", () => {
                 {
                     label: "cs1.1",
                     control: {
-                      value: "old1"
+                        value: "old1"
                     },
                     collapsible: true,
                     collapsed: true
@@ -125,21 +125,21 @@ describe("Parameters", () => {
         await Vue.nextTick();
 
         const newParamGroup = {
-          id: "pg1",
-          type: "dynamicForm",
-          config: {
-            controlSections: [
-              {
-                label: "cs1.1",
-                control: {
-                  value: "new1"
-                }
-              },
-              {
-                label: "cs1.2"
-              }
-            ]
-          }
+            id: "pg1",
+            type: "dynamicForm",
+            config: {
+                controlSections: [
+                    {
+                        label: "cs1.1",
+                        control: {
+                            value: "new1"
+                        }
+                    },
+                    {
+                        label: "cs1.2"
+                    }
+                ]
+            }
         };
 
         const newParamValues = { value1: "new1" };
@@ -150,25 +150,27 @@ describe("Parameters", () => {
         expect(editParams.props("open")).toBe(false);
         expect(editParams.props("paramGroup")).toBe(undefined);
 
-        expect(wrapper.emitted("updateMetadata")!!.length).toBe(1);
-        expect(wrapper.emitted("updateMetadata")!![0][0]).toStrictEqual( [
+        const updateMetadata = wrapper.emitted("updateMetadata")!;
+        expect(updateMetadata.length).toBe(1);
+        expect(updateMetadata[0][0]).toStrictEqual([
             newParamGroup,
             paramGroupMetadata[1],
             paramGroupMetadata[2]
         ]);
 
-        expect(wrapper.emitted("updateValues")!!.length).toBe(1);
-        expect(wrapper.emitted("updateValues")!![0][0]).toStrictEqual( {
-          pg1: {
-            value1: "new1",
-            value2: "unchanged"
-          },
-          pg2: {
-            value3: "val3"
-          },
-          pg3: {
-            value4: "val4"
-          }
+        const updateValues = wrapper.emitted("updateValues")!;
+        expect(updateValues.length).toBe(1);
+        expect(updateValues[0][0]).toStrictEqual({
+            pg1: {
+                value1: "new1",
+                value2: "unchanged"
+            },
+            pg2: {
+                value3: "val3"
+            },
+            pg3: {
+                value4: "val4"
+            }
         });
     });
 });

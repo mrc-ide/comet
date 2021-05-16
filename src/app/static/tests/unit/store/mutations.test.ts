@@ -17,7 +17,7 @@ describe("mutations", () => {
     });
 
     it("sets parameter metadata", () => {
-        const state = mockRootState({ metadata: { charts: [], parameterGroups: []} as any});
+        const state = mockRootState({ metadata: { charts: [], parameterGroups: [] } as any });
         const newParamMetadata = [
             { id: "group1" },
             { id: "group2" }

@@ -56,7 +56,7 @@ export default new Vuex.Store<RootState>({
                 forecastDays: 730
             }
         },
-      fetchingResults: false
+        fetchingResults: false
     },
     getters,
     mutations,

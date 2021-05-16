@@ -1,6 +1,4 @@
 // Mock the import of plotly to avoid import failures in non-browser context
-import LoadingSpinner from "@/components/LoadingSpinner.vue";
-
 jest.mock("plotly.js", () => ({
     react: jest.fn()
 }));
@@ -103,7 +101,7 @@ describe("Home", () => {
         const mockSetParameterMetadata = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-              metadata: {} as any,
+                metadata: {} as any
             }),
             mutations: {
                 setParameterMetadata: mockSetParameterMetadata
@@ -111,7 +109,7 @@ describe("Home", () => {
         });
 
         const wrapper = shallowMount(Home, { store });
-        const mockParameterMetadata = [ { id: "grp1" } ];
+        const mockParameterMetadata = [{ id: "grp1" }];
         const parameters = wrapper.findComponent(Parameters);
         parameters.vm.$emit("updateMetadata", mockParameterMetadata);
         await Vue.nextTick();
@@ -123,7 +121,7 @@ describe("Home", () => {
         const mockUpdateParameterValues = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                metadata: {} as any,
+                metadata: {} as any
             }),
             actions: {
                 updateParameterValues: mockUpdateParameterValues

@@ -19,7 +19,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Ref, ref } from "@vue/composition-api";
+import {
+    computed,
+    defineComponent,
+    Ref,
+    ref
+} from "@vue/composition-api";
 import { DynamicForm, DynamicFormMeta, DynamicFormData } from "@reside-ic/vue-dynamic-form";
 import Modal from "@/components/Modal.vue";
 import { ParameterGroupMetadata } from "@/types";
@@ -40,7 +45,7 @@ export default defineComponent({
         DynamicForm
     },
     setup(props: Props, context) {
-        const form = ref(null);
+        const form: Ref<HTMLFormElement | null> = ref(null);
         const formMetaInternal: Ref<DynamicFormMeta | null> = ref(null);
 
         const formMeta = computed({
@@ -55,7 +60,7 @@ export default defineComponent({
         });
 
         function updateParameters() {
-            (form.value as any).submit();
+            (form.value as HTMLFormElement).submit();
         }
 
         function cancel() {

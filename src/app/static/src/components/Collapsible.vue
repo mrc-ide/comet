@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 @click="toggleOpen" :class="cursor-pointer">
+    <h3 @click="toggleOpen" class="cursor-pointer">
       {{heading}}
       <component style="vertical-align: initial"
                  :is="chevronComponent"></component>

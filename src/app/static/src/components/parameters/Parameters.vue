@@ -1,17 +1,22 @@
 <template>
   <div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
-      <div v-if="paramGroup.type == 'dynamicForm'" class="clearfix">
-        <collapsible class="collapsible" :initial-open="false" :heading="paramGroup.label">
-          <dynamic-form v-if="paramGroup.type == 'dynamicForm'"
-                      v-model="paramGroup.config"
-                      :readonly="true"></dynamic-form>
-          <button class="btn btn-action float-right mb-3"
-                  @click="editParameters(paramGroup.id)">Edit</button>
+      <div v-if="paramGroup.type == 'dynamicForm'">
+        <collapsible class="collapsible mt-2" :initial-open="false" :heading="paramGroup.label">
+          <div class="parameter-panel">
+            <dynamic-form v-if="paramGroup.type == 'dynamicForm'"
+                        v-model="paramGroup.config"
+                        :readonly="true"></dynamic-form>
+            <button class="btn btn-action float-right mb-3 mr-3"
+                    @click="editParameters(paramGroup.id)">Edit</button>
+            <span class="clearfix"></span>
+          </div>
         </collapsible>
       </div>
     </div>
     <edit-parameters
+      class="edit-parameters"
+      v-if="editParamGroup"
       :open="modalOpen"
       :paramGroup="editParamGroup"
       @cancel="closeModal"
@@ -49,32 +54,6 @@ export default defineComponent({
         paramValues: Object
     },
     setup(props: Props, context) {
-        // Display readonly parameters as collapsible panels
-        /*const collapseSections = (config: DynamicFormMeta) => {
-            return config.controlSections.map((section: DynamicControlSection) => {
-                return {
-                    ...section,
-                    collapsible: true,
-                    collapsed: true
-                };
-            });
-        };
-
-        const readOnlyParamGroups = computed(() => {
-            return props.paramGroupMetadata.map((metadata: ParameterGroupMetadata) => {
-                if (metadata.type === "dynamicForm") {
-                    const controlSections = collapseSections(metadata.config as DynamicFormMeta);
-                    return {
-                        ...metadata,
-                        config: {
-                            controlSections
-                        }
-                    };
-                }
-                return metadata;
-            });
-        });*/
-
         const modalOpen = ref(false);
         const editParamGroupId = ref("");
 
@@ -114,7 +93,6 @@ export default defineComponent({
         }
 
         return {
-            //readOnlyParamGroups,
             modalOpen,
             editParamGroupId,
             editParamGroup,

@@ -1,6 +1,7 @@
 <template>
 <div>
   <modal :open="open">
+    <h3>Edit {{paramGroup.label}} parameters</h3>
     <dynamic-form
       v-if="open"
       ref="form"

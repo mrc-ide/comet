@@ -31,6 +31,7 @@
 
 body {
     padding-top: 5rem;
+    background-color: #eee;
 }
 
 @media only screen and (min-width : 1200px) {

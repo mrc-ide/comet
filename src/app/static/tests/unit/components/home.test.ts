@@ -81,6 +81,17 @@ describe("Home", () => {
         expect(parameters.exists()).toBe(false);
     });
 
+    it("does not render Charts when fetching results", () => {
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                fetchingResults: true
+            })
+        });
+        const wrapper = shallowMount(Home, { store });
+        const charts = wrapper.findComponent(Charts);
+        expect(charts.exists()).toBe(false);
+    });
+
     it("renders fetching results indicator only when fetching results", () => {
         let store = new Vuex.Store<RootState>({ state: mockRootState() });
         let wrapper = shallowMount(Home, { store });

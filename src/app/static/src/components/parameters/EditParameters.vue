@@ -8,9 +8,11 @@
       v-model="formMeta"
       :include-submit-button="false"
       @submit="formSubmitted"
+      @validate="formValidated"
     ></dynamic-form>
     <template v-slot:footer>
       <button class="btn btn-action"
+              :disabled="!valid"
               @click="updateParameters">OK</button>
       <button class="btn btn-secondary"
               @click="cancel">Cancel</button>
@@ -48,6 +50,7 @@ export default defineComponent({
     setup(props: Props, context) {
         const form: Ref<HTMLFormElement | null> = ref(null);
         const formMetaInternal: Ref<DynamicFormMeta | null> = ref(null);
+        const valid = ref(false);
 
         const formMeta = computed({
             get: () => {
@@ -69,6 +72,10 @@ export default defineComponent({
             formMetaInternal.value = null;
         }
 
+        function formValidated(formValid: boolean) {
+            valid.value = formValid;
+        }
+
         function formSubmitted(newValues: DynamicFormData) {
             if (formMetaInternal.value) {
                 const newParamGroup = { ...props.paramGroup, config: formMetaInternal.value };
@@ -83,8 +90,10 @@ export default defineComponent({
             form,
             formMetaInternal,
             formMeta,
+            valid,
             cancel,
             updateParameters,
+            formValidated,
             formSubmitted
         };
     }

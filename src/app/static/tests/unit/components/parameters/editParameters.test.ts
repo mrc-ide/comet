@@ -79,6 +79,8 @@ describe("EditParameters", () => {
 
     it("Emits cancel event when OK button clicked with no form changes", async () => {
         const wrapper = getWrapper();
+        wrapper.setData({ valid: true });
+        await Vue.nextTick();
         wrapper.find(".btn-action").trigger("click");
         await Vue.nextTick();
         expect(wrapper.emitted("cancel")!.length).toBe(1);
@@ -114,5 +116,20 @@ describe("EditParameters", () => {
         wrapper.find(".btn-secondary").trigger("click");
         await Vue.nextTick();
         expect(wrapper.findComponent(DynamicForm).props("formMeta")).toBe(paramGroup.config);
+    });
+
+    it("updates OK button disabled in response to form validate", async () => {
+        const wrapper = getWrapper();
+        const ok = wrapper.find(".btn-action");
+        expect(ok.attributes("disabled")).toBe("disabled");
+
+        const form = wrapper.findComponent(DynamicForm);
+        form.vm.$emit("validate", true);
+        await Vue.nextTick();
+        expect(ok.attributes("disabled")).toBeUndefined();
+
+        form.vm.$emit("validate", false);
+        await Vue.nextTick();
+        expect(ok.attributes("disabled")).toBe("disabled");
     });
 });

@@ -6,7 +6,7 @@
                 @updateMetadata="setParameterMetadata"
                 @updateValues="updateParameterValues"></Parameters>
     <div class="col-md-8">
-      <Charts v-if="metadata"
+      <Charts v-if="metadata && !fetchingResults"
               :chart-metadata="metadata.charts"
               :chart-data="results"
               :layout-data="chartLayoutData"></Charts>

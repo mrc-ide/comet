@@ -27,14 +27,12 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import {
-    DynamicControlSection,
     DynamicForm,
-    DynamicFormData,
-    DynamicFormMeta
+    DynamicFormData
 } from "@reside-ic/vue-dynamic-form";
 import { Data, ParameterGroupMetadata } from "@/types";
-import EditParameters from "./EditParameters.vue";
 import Collapsible from "@/components/Collapsible.vue";
+import EditParameters from "./EditParameters.vue";
 
 interface Props {
     paramGroupMetadata: Array<ParameterGroupMetadata>

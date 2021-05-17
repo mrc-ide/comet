@@ -9,7 +9,7 @@ describe("Parameters", () => {
     const paramGroupMetadata = [
         {
             id: "pg1",
-            label:"Group 1",
+            label: "Group 1",
             type: "dynamicForm",
             config: {
                 controlSections: [

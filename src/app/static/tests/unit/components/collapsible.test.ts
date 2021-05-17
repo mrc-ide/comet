@@ -1,11 +1,10 @@
-import {shallowMount} from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Collapsible from "@/components/Collapsible.vue";
 import { ChevronDownIcon, ChevronUpIcon } from "vue-feather-icons";
 import { BCollapse } from "bootstrap-vue";
 
 describe("Collapsible", () => {
-
     function getWrapper(propsData = { initialOpen: true, heading: "Test Heading" }) {
         return shallowMount(Collapsible, {
             propsData,

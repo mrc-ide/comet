@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div v-for="paramGroup in readOnlyParamGroups" :key="paramGroup.id">
+    <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
       <div v-if="paramGroup.type == 'dynamicForm'" class="clearfix">
-        <dynamic-form v-if="paramGroup.type == 'dynamicForm'"
-                    v-model="paramGroup.config"
-                    :readonly="true"></dynamic-form>
-        <button class="btn btn-action float-right mb-3"
-                @click="editParameters(paramGroup.id)">Edit</button>
+        <collapsible class="collapsible" :initial-open="false" :heading="paramGroup.label">
+          <dynamic-form v-if="paramGroup.type == 'dynamicForm'"
+                      v-model="paramGroup.config"
+                      :readonly="true"></dynamic-form>
+          <button class="btn btn-action float-right mb-3"
+                  @click="editParameters(paramGroup.id)">Edit</button>
+        </collapsible>
       </div>
     </div>
     <edit-parameters
@@ -28,6 +30,7 @@ import {
 } from "@reside-ic/vue-dynamic-form";
 import { Data, ParameterGroupMetadata } from "@/types";
 import EditParameters from "./EditParameters.vue";
+import Collapsible from "@/components/Collapsible.vue";
 
 interface Props {
     paramGroupMetadata: Array<ParameterGroupMetadata>
@@ -38,7 +41,8 @@ export default defineComponent({
     name: "Parameters",
     components: {
         DynamicForm,
-        EditParameters
+        EditParameters,
+        Collapsible
     },
     props: {
         paramGroupMetadata: Array,
@@ -46,7 +50,7 @@ export default defineComponent({
     },
     setup(props: Props, context) {
         // Display readonly parameters as collapsible panels
-        const collapseSections = (config: DynamicFormMeta) => {
+        /*const collapseSections = (config: DynamicFormMeta) => {
             return config.controlSections.map((section: DynamicControlSection) => {
                 return {
                     ...section,
@@ -69,7 +73,7 @@ export default defineComponent({
                 }
                 return metadata;
             });
-        });
+        });*/
 
         const modalOpen = ref(false);
         const editParamGroupId = ref("");
@@ -110,7 +114,7 @@ export default defineComponent({
         }
 
         return {
-            readOnlyParamGroups,
+            //readOnlyParamGroups,
             modalOpen,
             editParamGroupId,
             editParamGroup,

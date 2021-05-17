@@ -1,7 +1,6 @@
 {
     "controlSections": [
         {
-            "label": "Healthcare capacity",
             "controlGroups": [
                 {
                     "label": "Total general beds",

@@ -1,6 +1,6 @@
 <template>
   <div class="home row">
-    <Parameters class="col-md-4" v-if="metadata"
+    <Parameters class="parameters col-md-4" v-if="metadata"
                 :paramGroupMetadata="metadata.parameterGroups"
                 :paramValues="paramValues"
                 @updateMetadata="setParameterMetadata"

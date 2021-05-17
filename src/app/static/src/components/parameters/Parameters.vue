@@ -16,7 +16,6 @@
     </div>
     <edit-parameters
       class="edit-parameters"
-      v-if="editParamGroup"
       :open="modalOpen"
       :paramGroup="editParamGroup"
       @cancel="closeModal"

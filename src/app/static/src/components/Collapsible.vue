@@ -43,9 +43,9 @@ export default Vue.extend<Data, Methods, {}, Props>({
     computed: {
         chevronComponent() {
             if (this.open) {
-                return "chevron-up-icon"
+                return "chevron-up-icon";
             }
-            return "chevron-down-icon"
+            return "chevron-down-icon";
         }
     },
     methods: {

@@ -29,7 +29,7 @@ interface Data {
     open: boolean
 }
 
-export default Vue.extend<Data, Methods, Record<string, never>, Props>({
+export default Vue.extend<Data, Methods, unknown, Props>({
     name: "DynamicFormControlSection",
     data() {
         return {

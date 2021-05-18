@@ -1,4 +1,4 @@
-$body-bg: #eee;
+$theme-blue: #003e74;
 
 .dynamic-form {
   h3 {
@@ -30,6 +30,28 @@ $body-bg: #eee;
     background-color: #fafafa;
     padding-left: 1rem;
   }
+}
+
+.btn-action {
+  @include button-variant($theme-blue, darken($theme-blue, 10%))
+}
+
+#fetching-results {
+  background-color: rgba(0,0,0,0.2);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+#fetching-results-msg {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5rem;
+  width: 14rem;
+  background: white;
+  padding: 1rem;
 }
 
 

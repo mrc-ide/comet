@@ -39,7 +39,8 @@
                             "type": "number",
                             "min": 60,
                             "max": 5000,
-                            "value": 1095
+                            "value": 1095,
+                            "required": true
                         }
                     ]
                 },
@@ -51,7 +52,7 @@
                             "type": "number",
                             "min": 0,
                             "max": 100,
-                            "value": 20,
+                            "value": 90,
                             "required": true,
                             "transform": "$/100"
                         }
@@ -80,7 +81,7 @@
                                 {"id": "HCW and Elderly", "label": "HCW and Elderly"},
                                 {"id": "HCW, Elderly and High-Risk Groups", "label": "HCW, Elderly and High-Risk Groups"},
                                 {"id": "Elderly", "label": "Elderly"},
-                                {"id": "No Prioritisation", "label": "No Prioritisation"}
+                                {"id": "All", "label": "No Prioritisation"}
                             ],
                             "value": "HCW and Elderly",
                             "required": true
@@ -95,7 +96,7 @@
                             "type": "number",
                             "min": 0,
                             "max": 99,
-                            "value": 80,
+                            "value": 20,
                             "required": true,
                             "transform": "$/100"
                         }

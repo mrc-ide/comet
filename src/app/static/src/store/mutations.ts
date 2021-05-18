@@ -1,5 +1,10 @@
 import { RootState } from "@/store/state";
-import { ApiInfo, Metadata, Data } from "@/types";
+import {
+    ApiInfo,
+    Metadata,
+    Data,
+    ParameterGroupMetadata
+} from "@/types";
 
 export const mutations = {
     setApiInfo(state: RootState, apiInfo: ApiInfo): void {
@@ -10,5 +15,14 @@ export const mutations = {
     },
     setResults(state: RootState, results: Data): void {
         state.results = results;
+    },
+    setParameterMetadata(state: RootState, paramMetadata: Array<ParameterGroupMetadata>): void {
+        state.metadata!.parameterGroups = paramMetadata;
+    },
+    setParameterValues(state: RootState, paramValues: Data): void {
+        state.paramValues = paramValues;
+    },
+    setFetchingResults(state: RootState, fetchingResults: boolean): void {
+        state.fetchingResults = fetchingResults;
     }
 };

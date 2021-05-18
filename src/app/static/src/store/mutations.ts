@@ -1,9 +1,9 @@
 import { RootState } from "@/store/state";
 import {
-    ApiInfo,
-    Metadata,
-    Data,
-    ParameterGroupMetadata
+  ApiInfo,
+  Metadata,
+  Data,
+  ParameterGroupMetadata, ErrorInfo
 } from "@/types";
 
 export const mutations = {
@@ -24,5 +24,11 @@ export const mutations = {
     },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;
+        if (fetchingResults) {
+            state.errors = []; //reset errors too
+        }
+    },
+    setErrors(state: RootState, errors: Array<ErrorInfo>): void {
+        state.errors = errors;
     }
 };

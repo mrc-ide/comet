@@ -1,10 +1,13 @@
 <template>
   <div class="home row">
-    <Parameters class="col-md-4" v-if="metadata"
-                :paramGroupMetadata="metadata.parameterGroups"
-                :paramValues="paramValues"
-                @updateMetadata="setParameterMetadata"
-                @updateValues="updateParameterValues"></Parameters>
+    <div class="col-md-4">
+      <Errors :errors="errors"></Errors>
+      <Parameters v-if="metadata"
+                  :paramGroupMetadata="metadata.parameterGroups"
+                  :paramValues="paramValues"
+                  @updateMetadata="setParameterMetadata"
+                  @updateValues="updateParameterValues"></Parameters>
+    </div>
     <div class="col-md-8">
       <Charts v-if="metadata && !fetchingResults"
               :chart-metadata="metadata.charts"
@@ -31,12 +34,14 @@ import {
     mapMutations,
     mapState
 } from "vuex";
+import Errors from "@/components/Errors.vue";
 
 export default defineComponent({
     name: "Home",
     components: {
         Charts,
         Parameters,
+        Errors,
         LoadingSpinner
     },
     computed: {
@@ -44,7 +49,8 @@ export default defineComponent({
             "metadata",
             "paramValues",
             "results",
-            "fetchingResults"
+            "fetchingResults",
+            "errors"
         ]),
         ...mapGetters([
             "chartLayoutData"

@@ -1,10 +1,12 @@
 <template>
   <div class="home row">
-    <Parameters class="parameters col-md-4" v-if="metadata"
-                :paramGroupMetadata="metadata.parameterGroups"
-                :paramValues="paramValues"
-                @updateMetadata="setParameterMetadata"
-                @updateValues="updateParameterValues"></Parameters>
+    <div class="col-md-4">
+      <Parameters class="parameters" v-if="metadata"
+                  :paramGroupMetadata="metadata.parameterGroups"
+                  :paramValues="paramValues"
+                  @updateMetadata="setParameterMetadata"
+                  @updateValues="updateParameterValues"></Parameters>
+    </div>
     <div class="col-md-8">
       <Charts v-if="metadata && !fetchingResults"
               :chart-metadata="metadata.charts"

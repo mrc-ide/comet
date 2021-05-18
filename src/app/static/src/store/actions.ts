@@ -1,7 +1,7 @@
 import axios, {AxiosError} from "axios";
-import { ActionTree } from "vuex";
+import {ActionTree, Commit} from "vuex";
 import { RootState } from "@/store/state";
-import { ParameterGroupJsonataMetadata } from "@/types";
+import {ErrorInfo, ParameterGroupJsonataMetadata} from "@/types";
 import jsonata from "jsonata";
 
 export const actions: ActionTree<RootState, RootState> = {
@@ -9,6 +9,8 @@ export const actions: ActionTree<RootState, RootState> = {
         await axios.get("/api-info")
           .then(({ data }) => {
               commit("setApiInfo", data.data);
+          }).catch((e: AxiosError) => {
+            commitErrors(e, commit);
           });
     },
     async getMetadata({ commit }) {
@@ -21,9 +23,8 @@ export const actions: ActionTree<RootState, RootState> = {
                 });
 
               commit("setMetadata", data.data);
-          }).catch(({ response }) => {
-              commit("setErrors", response.data && response.data.errors);
-              //TODO: Could be message if no response from server - handle in common method
+          }).catch((e: AxiosError) => {
+              commitErrors(e, commit);
           });
     },
     async getResults({ commit, state }) {
@@ -31,8 +32,8 @@ export const actions: ActionTree<RootState, RootState> = {
         await axios.post("/results", state.paramValues)
           .then(({ data }) => {
               commit("setResults", data.data);
-          }).catch(({ response }) => {
-              commit("setErrors", response.data && response.data.errors);
+          }).catch((e: AxiosError) => {
+              commitErrors(e, commit);
           });
 
         commit("setFetchingResults", false);
@@ -42,3 +43,15 @@ export const actions: ActionTree<RootState, RootState> = {
         dispatch("getResults");
     }
 };
+
+function commitErrors(e: AxiosError, commit: Commit) {
+    let errors: Array<ErrorInfo>;
+    if (e.response && e.response.data) {
+        errors = e.response.data.errors;
+    } else if (e.message) {
+        errors = [{ error: e.message }] ;
+    } else {
+        errors = [{ error: "Unable to contact server " }];
+    }
+    commit("setErrors", errors);
+}

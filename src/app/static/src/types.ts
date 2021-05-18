@@ -53,5 +53,5 @@ export interface Data {
 
 export interface ErrorInfo {
   error: string,
-  detail: string
+  detail?: string
 }

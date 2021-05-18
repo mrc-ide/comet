@@ -1,7 +1,6 @@
 <template>
   <div class="home row">
     <div class="col-md-4">
-      <Errors :errors="errors"></Errors>
       <Parameters v-if="metadata"
                   :paramGroupMetadata="metadata.parameterGroups"
                   :paramValues="paramValues"
@@ -9,6 +8,7 @@
                   @updateValues="updateParameterValues"></Parameters>
     </div>
     <div class="col-md-8">
+      <Errors :errors="errors"></Errors>
       <Charts v-if="metadata && !fetchingResults"
               :chart-metadata="metadata.charts"
               :chart-data="results"

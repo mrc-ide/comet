@@ -23,6 +23,7 @@ export const actions: ActionTree<RootState, RootState> = {
               commit("setMetadata", data.data);
           }).catch(({ response }) => {
               commit("setErrors", response.data && response.data.errors);
+              //TODO: Could be message if no response from server - handle in common method
           });
     },
     async getResults({ commit, state }) {

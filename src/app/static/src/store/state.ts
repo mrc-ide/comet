@@ -1,4 +1,9 @@
-import {ApiInfo, Data, ErrorInfo, Metadata} from "@/types";
+import {
+    ApiInfo,
+    Data,
+    ErrorInfo,
+    Metadata
+} from "@/types";
 
 export interface RootState {
   apiInfo: ApiInfo | null

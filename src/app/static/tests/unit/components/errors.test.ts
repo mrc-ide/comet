@@ -1,16 +1,16 @@
-import {shallowMount} from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Errors from "@/components/Errors.vue";
-import {BAlert} from "bootstrap-vue";
+import { BAlert } from "bootstrap-vue";
 
 describe("Errors", () => {
     it("renders as expected with one errors", () => {
         const propsData = {
-          errors: [
-            {error: "ERROR_1", detail: "first error"}
-          ]
+            errors: [
+                { error: "ERROR_1", detail: "first error" }
+            ]
         };
-        const wrapper = shallowMount(Errors, {propsData});
+        const wrapper = shallowMount(Errors, { propsData });
         const alert = wrapper.findComponent(BAlert);
         expect(alert.props("variant")).toBe("danger");
         expect(alert.props("show")).toBe(true);
@@ -25,11 +25,11 @@ describe("Errors", () => {
     it("renders as expected with two errors", () => {
         const propsData = {
             errors: [
-                { error: "ERROR_1", detail: "first error"},
+                { error: "ERROR_1", detail: "first error" },
                 { error: "ERROR_2" }
             ]
         };
-        const wrapper = shallowMount(Errors, {propsData});
+        const wrapper = shallowMount(Errors, { propsData });
         const alert = wrapper.findComponent(BAlert);
         expect(alert.props("variant")).toBe("danger");
         expect(alert.props("show")).toBe(true);
@@ -43,19 +43,19 @@ describe("Errors", () => {
     });
 
     it("renders no alert if errors is empty", () => {
-        const propsData = { errors:[] };
-        const wrapper = shallowMount(Errors, {propsData});
+        const propsData = { errors: [] };
+        const wrapper = shallowMount(Errors, { propsData });
         const alert = wrapper.findComponent(BAlert);
         expect(alert.exists()).toBe(false);
     });
 
     it("emits dismissed event", async () => {
         const propsData = {
-          errors: [
-            {error: "ERROR_1", detail: "first error"}
-          ]
+            errors: [
+                { error: "ERROR_1", detail: "first error" }
+            ]
         };
-        const wrapper = shallowMount(Errors, {propsData});
+        const wrapper = shallowMount(Errors, { propsData });
         const alert = wrapper.findComponent(BAlert);
         alert.vm.$emit("dismissed");
         await Vue.nextTick();

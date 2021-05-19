@@ -148,12 +148,11 @@ describe("Home", () => {
         expect(mockUpdateParameterValues.mock.calls[0][1]).toBe(mockParameterValues);
     });
 
-    it("renders errors, and sets errors to empty when dismissed from Errors component",
-        async () => {
+    it("renders and dismissed errors", async () => {
         const mockSetErrors = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                errors: [{error: "an error"}]
+                errors: [{ error: "an error" }]
             }),
             mutations: {
                 setErrors: mockSetErrors

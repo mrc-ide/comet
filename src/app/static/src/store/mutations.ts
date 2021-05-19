@@ -1,9 +1,10 @@
 import { RootState } from "@/store/state";
 import {
-  ApiInfo,
-  Metadata,
-  Data,
-  ParameterGroupMetadata, ErrorInfo
+    ApiInfo,
+    Metadata,
+    Data,
+    ParameterGroupMetadata,
+    ErrorInfo
 } from "@/types";
 
 export const mutations = {

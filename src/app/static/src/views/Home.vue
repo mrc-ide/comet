@@ -8,7 +8,7 @@
                   @updateValues="updateParameterValues"></Parameters>
     </div>
     <div class="col-md-8">
-      <Errors :errors="errors"></Errors>
+      <Errors :errors="errors" @dismissed="setErrors([])"></Errors>
       <Charts v-if="metadata && !fetchingResults"
               :chart-metadata="metadata.charts"
               :chart-data="results"
@@ -63,7 +63,8 @@ export default defineComponent({
             "updateParameterValues"
         ]),
         ...mapMutations([
-            "setParameterMetadata"
+            "setParameterMetadata",
+            "setErrors"
         ])
     },
     mounted() {

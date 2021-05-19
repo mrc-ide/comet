@@ -24,9 +24,6 @@ export const mutations = {
     },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;
-        if (fetchingResults) {
-            state.errors = []; //reset errors too
-        }
     },
     setErrors(state: RootState, errors: Array<ErrorInfo>): void {
         state.errors = errors;

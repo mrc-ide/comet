@@ -10,7 +10,7 @@ export const actions: ActionTree<RootState, RootState> = {
           .then(({ data }) => {
               commit("setApiInfo", data.data);
           }).catch((e: AxiosError) => {
-            commitErrors(e, commit);
+              commitErrors(e, commit);
           });
     },
     async getMetadata({ commit }) {
@@ -29,6 +29,7 @@ export const actions: ActionTree<RootState, RootState> = {
     },
     async getResults({ commit, state }) {
         commit("setFetchingResults", true);
+        commit("setErrors", []);
         await axios.post("/results", state.paramValues)
           .then(({ data }) => {
               commit("setResults", data.data);
@@ -51,7 +52,7 @@ function commitErrors(e: AxiosError, commit: Commit) {
     } else if (e.message) {
         errors = [{ error: e.message }] ;
     } else {
-        errors = [{ error: "Unable to contact server " }];
+        errors = [{ error: "Unable to contact server" }];
     }
     commit("setErrors", errors);
 }

@@ -1,5 +1,5 @@
 import { actions } from "@/store/actions";
-import { mockAxios, mockRootState, mockSuccess } from "../../mocks";
+import {mockAxios, mockFailure, mockRootState, mockSuccess} from "../../mocks";
 
 describe("actions", () => {
     beforeEach(() => {
@@ -41,13 +41,15 @@ describe("actions", () => {
 
         expect(JSON.parse(mockAxios.history.post[0].data)).toStrictEqual({ param1: "value1" });
 
-        expect(commit.mock.calls.length).toBe(3);
+        expect(commit.mock.calls.length).toBe(4);
         expect(commit.mock.calls[0][0]).toBe("setFetchingResults");
         expect(commit.mock.calls[0][1]).toBe(true);
-        expect(commit.mock.calls[1][0]).toBe("setResults");
-        expect(commit.mock.calls[1][1]).toStrictEqual(mockResults);
-        expect(commit.mock.calls[2][0]).toBe("setFetchingResults");
-        expect(commit.mock.calls[2][1]).toBe(false);
+        expect(commit.mock.calls[1][0]).toBe("setErrors");
+        expect(commit.mock.calls[1][1]).toStrictEqual([]);
+        expect(commit.mock.calls[2][0]).toBe("setResults");
+        expect(commit.mock.calls[2][1]).toStrictEqual(mockResults);
+        expect(commit.mock.calls[3][0]).toBe("setFetchingResults");
+        expect(commit.mock.calls[3][1]).toBe(false);
     });
 
     it("updates parameter values", async () => {
@@ -65,5 +67,44 @@ describe("actions", () => {
         expect(commit.mock.calls[0][1]).toBe(mockParams);
         expect(dispatch.mock.calls.length).toBe(1);
         expect(dispatch.mock.calls[0][0]).toBe("getResults");
+    });
+
+    it("get metadata commits errors", async () => {
+        mockAxios.onGet("/metadata")
+          .reply(400, mockFailure("Metadata failed"));
+
+        const commit = jest.fn();
+        await (actions.getMetadata as any)({ commit });
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe("setErrors");
+        expect(commit.mock.calls[0][1]).toStrictEqual(
+          [{error: "OTHER_ERROR", detail: "Metadata failed"}]);
+    });
+
+    it("get results commits errors", async () => {
+        mockAxios.onPost("/results")
+          .networkError();
+
+        const commit = jest.fn();
+        const state = mockRootState();
+        await (actions.getResults as any)({ commit, state });
+
+        expect(commit.mock.calls.length).toBe(4);
+        expect(commit.mock.calls[0][0]).toBe("setFetchingResults");
+        expect(commit.mock.calls[0][1]).toBe(true);
+        expect(commit.mock.calls[1][0]).toBe("setErrors");
+        expect(commit.mock.calls[1][1]).toStrictEqual([]);
+        expect(commit.mock.calls[2][0]).toBe("setErrors");
+        expect(commit.mock.calls[2][1]).toStrictEqual([{error: "Network Error"}]);
+        expect(commit.mock.calls[3][0]).toBe("setFetchingResults");
+        expect(commit.mock.calls[3][1]).toBe(false);
+    });
+
+    it("get api info commits errors", async () => {
+        const commit = jest.fn();
+        await (actions.getApiInfo as any)({ commit });
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe("setErrors");
+        expect(commit.mock.calls[0][1]).toStrictEqual([{error: "Request failed with status code 404"}]);
     });
 });

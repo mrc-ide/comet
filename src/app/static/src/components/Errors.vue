@@ -1,12 +1,16 @@
 <template>
   <div>
-    <b-alert v-for="(error, idx) in errors"
-         v-bind:key="idx"
+    <b-alert v-if="errors.length > 0"
          variant="danger"
          show
-         dismissible>
-      <strong>An error occurred:</strong>
-      {{ error.detail || error.error }}
+         dismissible
+         @dismissed="$emit('dismissed')">
+      <strong>{{errors.length > 1 ? "Errors occurred:" : "An error occurred:"}}</strong>
+      <ul>
+        <li v-for="(error, idx) in errors" :key="idx">
+          {{ error.detail || error.error }}
+        </li>
+      </ul>
     </b-alert>
   </div>
 </template>

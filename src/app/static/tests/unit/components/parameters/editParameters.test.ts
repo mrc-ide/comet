@@ -7,11 +7,11 @@ import { DynamicForm } from "@reside-ic/vue-dynamic-form";
 describe("EditParameters", () => {
     const paramGroup = {
         id: "healthcare",
+        label: "Healthcare capacity",
         type: "dynamicForm",
         config: {
             controlSections: [
                 {
-                    label: "Healthcare capacity",
                     controlGroups: [
                         {
                             label: "Total general beds",
@@ -31,11 +31,11 @@ describe("EditParameters", () => {
 
     const modifiedParamGroup = {
         id: "healthcare",
+        label: "Healthcare capacity",
         type: "dynamicForm",
         config: {
             controlSections: [
                 {
-                    label: "Healthcare capacity",
                     controlGroups: [
                         {
                             label: "Total general beds",
@@ -60,6 +60,7 @@ describe("EditParameters", () => {
 
     it("renders as expected", () => {
         let wrapper = getWrapper();
+        expect(wrapper.find("h3").text()).toBe("Edit Healthcare capacity parameters");
         expect(wrapper.findComponent(DynamicForm).props("formMeta")).toBe(paramGroup.config);
         expect(wrapper.findComponent(Modal).props("open")).toBe(true);
         expect(wrapper.find(".btn-action").text()).toBe("OK");

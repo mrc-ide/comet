@@ -3,11 +3,13 @@ import Vue from "vue";
 import Parameters from "@/components/parameters/Parameters.vue";
 import { DynamicForm } from "@reside-ic/vue-dynamic-form";
 import EditParameters from "@/components/parameters/EditParameters.vue";
+import Collapsible from "@/components/Collapsible.vue";
 
 describe("Parameters", () => {
     const paramGroupMetadata = [
         {
             id: "pg1",
+            label: "Group 1",
             type: "dynamicForm",
             config: {
                 controlSections: [
@@ -25,10 +27,12 @@ describe("Parameters", () => {
         },
         {
             id: "pg2",
+            label: "Group 2",
             type: "rt"
         },
         {
             id: "pg3",
+            label: "Group 3",
             type: "dynamicForm",
             config: {
                 controlSections: [
@@ -57,30 +61,22 @@ describe("Parameters", () => {
         return shallowMount(Parameters, { propsData: { paramGroupMetadata, paramValues } });
     }
 
-    it("renders dynamicForm parameter groups with collapsed control sections", () => {
+    it("renders collapsible dynamicForm parameter groups", () => {
         const wrapper = getWrapper();
-        const dynForms = wrapper.findAllComponents(DynamicForm);
-        expect(dynForms.length).toBe(2);
-        expect(dynForms.at(0).props("readonly")).toStrictEqual(true);
-        expect(dynForms.at(0).props("formMeta")).toStrictEqual({
-            controlSections: [
-                {
-                    label: "cs1.1",
-                    control: {
-                        value: "old1"
-                    },
-                    collapsible: true,
-                    collapsed: true
-                },
-                { label: "cs1.2", collapsible: true, collapsed: true }
-            ]
-        });
-        expect(dynForms.at(1).props("readonly")).toStrictEqual(true);
-        expect(dynForms.at(1).props("formMeta")).toStrictEqual({
-            controlSections: [
-                { label: "cs2.1", collapsible: true, collapsed: true }
-            ]
-        });
+        const collapsibles = wrapper.findAllComponents(Collapsible);
+        expect(collapsibles.length).toBe(2);
+
+        expect(collapsibles.at(0).props("initialOpen")).toBe(false);
+        expect(collapsibles.at(0).props("heading")).toBe("Group 1");
+        const form1 = collapsibles.at(0).findComponent(DynamicForm);
+        expect(form1.props("readonly")).toStrictEqual(true);
+        expect(form1.props("formMeta")).toStrictEqual(paramGroupMetadata[0].config);
+
+        expect(collapsibles.at(1).props("initialOpen")).toBe(false);
+        expect(collapsibles.at(1).props("heading")).toBe("Group 3");
+        const form2 = collapsibles.at(1).findComponent(DynamicForm);
+        expect(form2.props("readonly")).toStrictEqual(true);
+        expect(form2.props("formMeta")).toStrictEqual(paramGroupMetadata[2].config);
     });
 
     it("renders Edit buttons", () => {

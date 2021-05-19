@@ -1,4 +1,4 @@
-import { actions } from "@/store/actions";
+import { actions, commitErrors } from "@/store/actions";
 import {
     mockAxios,
     mockFailure,
@@ -87,6 +87,23 @@ describe("actions", () => {
         );
     });
 
+    it("gets api info", async () => {
+        const mockApiInfo = {
+            name: "cometr",
+            version: {
+                cometr: "0.1.0",
+                nimue: "0.2.0"
+            }
+        };
+        mockAxios.onGet("/api-info")
+            .reply(200, mockSuccess(mockApiInfo));
+        const commit = jest.fn();
+        await (actions.getApiInfo as any)({ commit });
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe("setApiInfo");
+        expect(commit.mock.calls[0][1]).toStrictEqual(mockApiInfo);
+    });
+
     it("get results commits errors", async () => {
         mockAxios.onPost("/results").networkError();
 
@@ -112,6 +129,16 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe("setErrors");
         expect(commit.mock.calls[0][1]).toStrictEqual([
             { error: "Request failed with status code 404" }
+        ]);
+    });
+
+    it("commitErrors commits empty error", () => {
+        const commit = jest.fn();
+        commitErrors({} as any, commit);
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe("setErrors");
+        expect(commit.mock.calls[0][1]).toStrictEqual([
+            { error: "Unable to contact server" }
         ]);
     });
 });

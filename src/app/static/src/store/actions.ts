@@ -4,7 +4,7 @@ import { RootState } from "@/store/state";
 import { ErrorInfo, ParameterGroupJsonataMetadata } from "@/types";
 import jsonata from "jsonata";
 
-function commitErrors(e: AxiosError, commit: Commit) {
+export function commitErrors(e: AxiosError, commit: Commit): void {
     let errors: Array<ErrorInfo>;
     if (e.response && e.response.data) {
         errors = e.response.data.errors;

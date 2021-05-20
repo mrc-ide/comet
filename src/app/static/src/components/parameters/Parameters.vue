@@ -1,15 +1,17 @@
 <template>
   <div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
-      <div v-if="paramGroup.type == 'dynamicForm'">
+      <div>
         <collapsible class="collapsible mt-2" :initial-open="false" :heading="paramGroup.label">
           <div class="parameter-panel">
-            <dynamic-form v-if="paramGroup.type == 'dynamicForm'"
-                        v-model="paramGroup.config"
-                        :readonly="true"></dynamic-form>
-            <button class="btn btn-action float-right mb-3 mr-3"
-                    @click="editParameters(paramGroup.id)">Edit</button>
-            <span class="clearfix"></span>
+            <div v-if="paramGroup.type == 'dynamicForm'">
+              <dynamic-form v-model="paramGroup.config"
+                          :readonly="true"></dynamic-form>
+              <button class="btn btn-action float-right mb-3 mr-3"
+                      @click="editParameters(paramGroup.id)">Edit</button>
+              <span class="clearfix"></span>
+            </div>
+            <phases v-if="paramGroup.type == 'rt'" phases="paramGroup.config"></phases>
           </div>
         </collapsible>
       </div>

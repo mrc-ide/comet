@@ -141,4 +141,20 @@ describe("actions", () => {
             { error: "Unable to contact server" }
         ]);
     });
+
+    it("commitErrors commits 'error' on response data'", () => {
+        const commit = jest.fn();
+        commitErrors({
+            response: {
+                data: {
+                    error: "Test Error"
+                }
+            }
+        } as any, commit);
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe("setErrors");
+        expect(commit.mock.calls[0][1]).toStrictEqual([
+            { error: "Test Error" }
+        ]);
+    });
 });

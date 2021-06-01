@@ -4,7 +4,7 @@ import Errors from "@/components/Errors.vue";
 import { BAlert } from "bootstrap-vue";
 
 describe("Errors", () => {
-    it("renders as expected with one errors", () => {
+    it("renders as expected with one error", () => {
         const propsData = {
             errors: [
                 { error: "ERROR_1", detail: "first error" }

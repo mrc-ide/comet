@@ -4,13 +4,13 @@ plugins {
     kotlin("plugin.spring") version kotlinVersion
     id("org.springframework.boot") version "2.4.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("io.gitlab.arturbosch.detekt") version "1.16.0"
+    id("io.gitlab.arturbosch.detekt") version "1.17.0"
     application
     jacoco
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -24,7 +24,7 @@ dependencies {
     testImplementation("org.leadpony.justify:justify:1.1.0")
     testImplementation("org.leadpony.joy:joy:1.1.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.0")
 }
 
 detekt {

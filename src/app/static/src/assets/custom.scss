@@ -1,39 +1,53 @@
 $theme-blue: #003e74;
 
-.dynamic-form {
-  h3 {
-    font-size: 1.3rem;
+.parameters {
+  .collapsible {
+    h3 {
+      font-size: 1.3rem;
 
-    svg {  //collapse chevrons
-      float: right;
+      svg { //collapse chevrons
+        float: right;
+      }
     }
   }
 
-  .row {
-    label {
-      max-width: 60%;
-      flex: 0 0 60%;
-    }
-
-    & > div {
-      max-width: 40%;
-      flex: 0 0 40%;
-    }
-
-    .dynamic-form-readonly-value {
-      padding-top: 7px;
-    }
-
-  }
-
-  .collapse {
+  .parameter-panel {
     background-color: #fafafa;
     padding-left: 1rem;
+
+    .dynamic-form {
+      .row {
+        label {
+          max-width: 60%;
+          flex: 0 0 60%;
+        }
+
+        & > div {
+          max-width: 40%;
+          flex: 0 0 40%;
+        }
+
+        .dynamic-form-readonly-value {
+          padding-top: 7px;
+        }
+
+      }
+    }
+  }
+
+  .edit-parameters {
+    h3 {
+      margin-bottom: 1.5rem;
+    }
   }
 }
 
 .btn-action {
   @include button-variant($theme-blue, darken($theme-blue, 10%))
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 #fetching-results {

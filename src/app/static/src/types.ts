@@ -38,6 +38,7 @@ export interface ParameterGroupJsonataMetadata {
 
 export interface ParameterGroupMetadata {
     id: string,
+    label: string,
     type: "dynamicForm" | "rt",
     config: DynamicFormMeta | Rt[]
 }

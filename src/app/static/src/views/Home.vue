@@ -68,8 +68,12 @@ export default defineComponent({
         ])
     },
     mounted() {
-        this.getMetadata();
-        this.getResults();
+        if (!this.metadata) {
+            this.getMetadata();
+        }
+        if (!this.results) {
+            this.getResults();
+        }
     }
 });
 </script>

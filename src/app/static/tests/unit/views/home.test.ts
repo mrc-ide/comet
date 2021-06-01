@@ -32,6 +32,48 @@ describe("Home", () => {
         expect(mockGetResults.mock.calls.length).toBe(1);
     });
 
+    it("does not get metadata if already set", () => {
+        const mockGetMetadata = jest.fn();
+        const mockGetResults = jest.fn();
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                metadata: {
+                    charts: []
+                } as any
+            }),
+            actions: {
+                getMetadata: mockGetMetadata,
+                getResults: mockGetResults
+            }
+        });
+
+        shallowMount(Home, { store });
+
+        expect(mockGetMetadata.mock.calls.length).toBe(0);
+        expect(mockGetResults.mock.calls.length).toBe(1);
+    });
+
+    it("does not get results if already set", () => {
+        const mockGetMetadata = jest.fn();
+        const mockGetResults = jest.fn();
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                results: {
+                    timeSeries: []
+                } as any
+            }),
+            actions: {
+                getMetadata: mockGetMetadata,
+                getResults: mockGetResults
+            }
+        });
+
+        shallowMount(Home, { store });
+
+        expect(mockGetMetadata.mock.calls.length).toBe(1);
+        expect(mockGetResults.mock.calls.length).toBe(0);
+    });
+
     it("renders Charts and Parameters component with expected props", () => {
         const store = new Vuex.Store<RootState>({
             state: mockRootState({

@@ -11,7 +11,11 @@
                       @click="editParameters(paramGroup.id)">Edit</button>
               <span class="clearfix"></span>
             </div>
-            <phases v-if="paramGroup.type == 'rt'" phases="paramGroup.config"></phases>
+            <phases
+              v-if="paramGroup.type == 'rt'"
+              :phases="paramGroup.config"
+              :forecastEnd="forecastEnd"
+            ></phases>
           </div>
         </collapsible>
       </div>
@@ -35,10 +39,12 @@ import {
 import { Data, ParameterGroupMetadata } from "@/types";
 import Collapsible from "@/components/Collapsible.vue";
 import EditParameters from "./EditParameters.vue";
+import Phases from "./Phases.vue";
 
 interface Props {
     paramGroupMetadata: Array<ParameterGroupMetadata>
     paramValues: Data
+    forecastEnd: Date
 }
 
 export default defineComponent({
@@ -46,11 +52,13 @@ export default defineComponent({
     components: {
         DynamicForm,
         EditParameters,
-        Collapsible
+        Collapsible,
+        Phases
     },
     props: {
         paramGroupMetadata: Array,
-        paramValues: Object
+        paramValues: Object,
+        forecastEnd: Date
     },
     setup(props: Props, context) {
         const modalOpen = ref(false);

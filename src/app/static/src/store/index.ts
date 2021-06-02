@@ -1,23 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { actions } from "@/store/actions";
+import { getters } from "@/store/getters";
 import { mutations } from "@/store/mutations";
 import { RootState } from "@/store/state";
-import { Data } from "@/types";
 import CompositionApi from "@vue/composition-api";
 
 Vue.use(Vuex);
 Vue.use(CompositionApi);
 
-export const getters = {
-    chartLayoutData: (state: RootState): Data => {
-        return {
-            params: state.paramValues,
-            // This is not a parameter, cannot be edited - will come from cometr regions endpoint
-            population: 67890000
-        };
-    }
-};
+export const forecastDays = 730;
 
 export default new Vuex.Store<RootState>({
     state: {
@@ -53,7 +45,7 @@ export default new Vuex.Store<RootState>({
                 }
             ],
             simulation: {
-                forecastDays: 730
+                forecastDays
             }
         },
         fetchingResults: false

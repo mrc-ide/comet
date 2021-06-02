@@ -1,5 +1,11 @@
 <template>
-
+  <div>
+    <div v-for="phase in displayPhases" :key="phase.index">
+      <span class="font-weight-bold">Phase {{phase.index}}</span> ({{phase.days}} days)
+      <div class="mb-3">{{phase.start}}-{{phase.end}}</div>
+      <div>Rt: <span class="font-weight-bold">{{phase.value}}</span></div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -7,11 +13,11 @@ import { defineComponent } from "@vue/composition-api";
 import { Rt } from "@/types";
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+
 dayjs.extend(duration);
 
 interface Props {
     phases: Array<Rt>,
-    forecastStart: Date,
     forecastEnd: Date
 }
 
@@ -27,7 +33,7 @@ export default defineComponent({
     name: "Phases",
     props: {
         phases: Array,
-        forecastDays: Number
+        forecastEnd: Date
     },
     setup(props: Props) {
         const displayPhases = props.phases.map((rt, idx) => {
@@ -36,7 +42,7 @@ export default defineComponent({
             if (idx < props.phases.length - 1) {
                 endDate = dayjs(props.phases[idx + 1].start).subtract(1, "day");
             } else {
-                endDate = props.forecastEnd;
+                endDate = dayjs(props.forecastEnd);
             }
 
             const days = startDate.diff(endDate, "day");

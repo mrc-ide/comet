@@ -4,6 +4,7 @@
       <Parameters class="parameters" v-if="metadata"
                   :paramGroupMetadata="metadata.parameterGroups"
                   :paramValues="paramValues"
+                  :forecastEnd="forecastEnd"
                   @updateMetadata="setParameterMetadata"
                   @updateValues="updateParameterValues"></Parameters>
     </div>
@@ -49,7 +50,8 @@ export default defineComponent({
             "fetchingResults"
         ]),
         ...mapGetters([
-            "chartLayoutData"
+            "chartLayoutData",
+            "forecastEnd"
         ])
     },
     methods: {

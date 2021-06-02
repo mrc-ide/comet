@@ -10,7 +10,7 @@ import Home from "@/views/Home.vue";
 import Charts from "@/components/charts/Charts.vue";
 import Parameters from "@/components/parameters/Parameters.vue";
 import { RootState } from "@/store/state";
-import { getters } from "@/store";
+import { getters } from "@/store/getters";
 import { mockRootState } from "../../mocks";
 
 describe("Home", () => {

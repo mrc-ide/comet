@@ -6,7 +6,7 @@ import jsonata from "jsonata";
 
 export function commitErrors(e: AxiosError, commit: Commit): void {
     let errors: Array<ErrorInfo>;
-    if (e.response && e.response.data && e.response.data.errors) {
+    if (e.response?.data.errors) {
         errors = e.response.data.errors;
     } else if (e.response && e.response.data && e.response.data.error) {
         errors = [{ error: e.response.data.error }];

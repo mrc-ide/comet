@@ -11,7 +11,8 @@ dayjs.extend(duration);
 
 interface Props {
     phases: Array<Rt>,
-    forecastDays: number
+    forecastStart: Date,
+    forecastEnd: Date
 }
 
 interface displayPhase {
@@ -30,22 +31,14 @@ export default defineComponent({
     },
     setup(props: Props) {
         const displayPhases = props.phases.map((rt, idx) => {
-            //const startDate = new Date(Date.parse(rt.start));
             const startDate = dayjs(rt.start);
             let endDate;
             if (idx < props.phases.length - 1) {
-                //const nextStart = Date.parse(props.phases[idx + 1].start);
-                //const nextStart = ;
-                //endDate = new Date(nextStart);
-                //endDate.setDate(endDate.getDate() - 1);
                 endDate = dayjs(props.phases[idx + 1].start).subtract(1, "day");
             } else {
-                //endDate = new Date();
-                //endDate.setDate(endDate.getDate() + props.forecastDays);
-                endDate = dayjs().add(props.forecastDays, "day");
+                endDate = props.forecastEnd;
             }
 
-            //const days = endDate === startDate ? 0 : Math.floor((endDate.valueOf() - startDate.valueOf())/(1000*60*60*24));
             const days = startDate.diff(endDate, "day");
             const format = "DD/MM/YY";
 
@@ -55,8 +48,11 @@ export default defineComponent({
                 start: startDate.format(format),
                 end: endDate.format(format),
                 value: rt.value
-            }
-       });
+            };
+        });
+        return {
+            displayPhases
+        };
     }
 });
 </script>

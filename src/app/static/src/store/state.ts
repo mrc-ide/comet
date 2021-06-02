@@ -1,4 +1,9 @@
-import { ApiInfo, Data, Metadata } from "@/types";
+import {
+    ApiInfo,
+    Data,
+    ErrorInfo,
+    Metadata
+} from "@/types";
 
 export interface RootState {
   apiInfo: ApiInfo | null
@@ -6,4 +11,5 @@ export interface RootState {
   results: Data | null
   paramValues: Data | null
   fetchingResults: boolean
+  errors: Array<ErrorInfo>
 }

@@ -51,3 +51,8 @@ export interface Metadata {
 export interface Data {
   [k: string]: unknown;
 }
+
+export interface ErrorInfo {
+  error: string,
+  detail?: string
+}

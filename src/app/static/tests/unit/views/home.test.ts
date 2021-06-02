@@ -9,6 +9,7 @@ import { shallowMount } from "@vue/test-utils";
 import Home from "@/views/Home.vue";
 import Charts from "@/components/charts/Charts.vue";
 import Parameters from "@/components/parameters/Parameters.vue";
+import Errors from "@/components/Errors.vue";
 import { RootState } from "@/store/state";
 import { getters } from "@/store";
 import { mockRootState } from "../../mocks";
@@ -29,6 +30,48 @@ describe("Home", () => {
 
         expect(mockGetMetadata.mock.calls.length).toBe(1);
         expect(mockGetResults.mock.calls.length).toBe(1);
+    });
+
+    it("does not get metadata if already set", () => {
+        const mockGetMetadata = jest.fn();
+        const mockGetResults = jest.fn();
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                metadata: {
+                    charts: []
+                } as any
+            }),
+            actions: {
+                getMetadata: mockGetMetadata,
+                getResults: mockGetResults
+            }
+        });
+
+        shallowMount(Home, { store });
+
+        expect(mockGetMetadata.mock.calls.length).toBe(0);
+        expect(mockGetResults.mock.calls.length).toBe(1);
+    });
+
+    it("does not get results if already set", () => {
+        const mockGetMetadata = jest.fn();
+        const mockGetResults = jest.fn();
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                results: {
+                    timeSeries: []
+                } as any
+            }),
+            actions: {
+                getMetadata: mockGetMetadata,
+                getResults: mockGetResults
+            }
+        });
+
+        shallowMount(Home, { store });
+
+        expect(mockGetMetadata.mock.calls.length).toBe(1);
+        expect(mockGetResults.mock.calls.length).toBe(0);
     });
 
     it("renders Charts and Parameters component with expected props", () => {
@@ -145,5 +188,25 @@ describe("Home", () => {
         await Vue.nextTick();
         expect(mockUpdateParameterValues.mock.calls.length).toBe(1);
         expect(mockUpdateParameterValues.mock.calls[0][1]).toBe(mockParameterValues);
+    });
+
+    it("renders and dismissed errors", async () => {
+        const mockSetErrors = jest.fn();
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                errors: [{ error: "an error" }]
+            }),
+            mutations: {
+                setErrors: mockSetErrors
+            }
+        });
+        const wrapper = shallowMount(Home, { store });
+        const errors = wrapper.findComponent(Errors);
+        expect(errors.props("errors")).toBe(store.state.errors);
+
+        errors.vm.$emit("dismissed");
+        await Vue.nextTick();
+        expect(mockSetErrors.mock.calls.length).toBe(1);
+        expect(mockSetErrors.mock.calls[0][1]).toStrictEqual([]);
     });
 });

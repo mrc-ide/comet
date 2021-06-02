@@ -1,6 +1,7 @@
 <template>
   <div class="about">
     <h1>{{ heading }}</h1>
+    <errors :errors="errors" @dismissed="setErrors([])"></errors>
     <h2>API versions</h2>
     <p>API Name: {{apiName}}</p>
     <div v-for="(value, key) in apiVersion" :key="key">{{key}}: {{value}}</div>
@@ -9,19 +10,24 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
+import Errors from "@/components/Errors.vue";
 
 export default Vue.extend({
     name: "About",
     props: {
         heading: {
             type: String,
-            default: "This is an about page"
+            default: "About comet"
         }
+    },
+    components: {
+        Errors
     },
     computed: {
         ...mapState([
-            "apiInfo"
+            "apiInfo",
+            "errors"
         ]),
         apiName(): string {
             return this.apiInfo && this.apiInfo.name;
@@ -33,6 +39,9 @@ export default Vue.extend({
     methods: {
         ...mapActions([
             "getApiInfo"
+        ]),
+        ...mapMutations([
+            "setErrors"
         ])
     },
     mounted() {

@@ -8,6 +8,7 @@
                   @updateValues="updateParameterValues"></Parameters>
     </div>
     <div class="col-md-8">
+      <Errors :errors="errors" @dismissed="setErrors([])"></Errors>
       <Charts v-if="metadata && !fetchingResults"
               :chart-metadata="metadata.charts"
               :chart-data="results"
@@ -33,12 +34,14 @@ import {
     mapMutations,
     mapState
 } from "vuex";
+import Errors from "@/components/Errors.vue";
 
 export default defineComponent({
     name: "Home",
     components: {
         Charts,
         Parameters,
+        Errors,
         LoadingSpinner
     },
     computed: {
@@ -46,7 +49,8 @@ export default defineComponent({
             "metadata",
             "paramValues",
             "results",
-            "fetchingResults"
+            "fetchingResults",
+            "errors"
         ]),
         ...mapGetters([
             "chartLayoutData"
@@ -59,12 +63,17 @@ export default defineComponent({
             "updateParameterValues"
         ]),
         ...mapMutations([
-            "setParameterMetadata"
+            "setParameterMetadata",
+            "setErrors"
         ])
     },
     mounted() {
-        this.getMetadata();
-        this.getResults();
+        if (!this.metadata) {
+            this.getMetadata();
+        }
+        if (!this.results) {
+            this.getResults();
+        }
     }
 });
 </script>

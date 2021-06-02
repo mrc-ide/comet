@@ -4,6 +4,7 @@
       <Parameters class="parameters" v-if="metadata"
                   :paramGroupMetadata="metadata.parameterGroups"
                   :paramValues="paramValues"
+                  :forecastStart="forecastStart"
                   :forecastEnd="forecastEnd"
                   @updateMetadata="setParameterMetadata"
                   @updateValues="updateParameterValues"></Parameters>
@@ -51,6 +52,7 @@ export default defineComponent({
         ]),
         ...mapGetters([
             "chartLayoutData",
+            "forecastStart",
             "forecastEnd"
         ])
     },

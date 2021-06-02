@@ -4,7 +4,7 @@
       <div>
         <collapsible class="collapsible mt-2" :initial-open="false" :heading="paramGroup.label">
           <div class="parameter-panel">
-            <div v-if="paramGroup.type == 'dynamicForm'">
+            <div v-if="paramGroup.type == 'dynamicForm'" class="standard-parameters">
               <dynamic-form v-model="paramGroup.config"
                           :readonly="true"></dynamic-form>
               <button class="btn btn-action float-right mb-3 mr-3"
@@ -15,6 +15,7 @@
               v-if="paramGroup.type == 'rt'"
               :phases="paramGroup.config"
               :forecastEnd="forecastEnd"
+              :forecastStart="forecastStart"
             ></phases>
           </div>
         </collapsible>
@@ -44,6 +45,7 @@ import Phases from "./Phases.vue";
 interface Props {
     paramGroupMetadata: Array<ParameterGroupMetadata>
     paramValues: Data
+    forecastStart: Date
     forecastEnd: Date
 }
 
@@ -58,6 +60,7 @@ export default defineComponent({
     props: {
         paramGroupMetadata: Array,
         paramValues: Object,
+        forecastStart: Date,
         forecastEnd: Date
     },
     setup(props: Props, context) {

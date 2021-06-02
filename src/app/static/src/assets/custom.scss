@@ -13,25 +13,36 @@ $theme-blue: #003e74;
 
   .parameter-panel {
     background-color: #fafafa;
-    padding-left: 1rem;
 
-    .dynamic-form {
-      .row {
-        label {
-          max-width: 60%;
-          flex: 0 0 60%;
+    .standard-parameters {
+      padding-left: 1rem;
+
+      .dynamic-form {
+        .row {
+          label {
+            max-width: 60%;
+            flex: 0 0 60%;
+          }
+
+          & > div {
+            max-width: 40%;
+            flex: 0 0 40%;
+          }
+
+          .dynamic-form-readonly-value {
+            padding-top: 7px;
+          }
+
         }
-
-        & > div {
-          max-width: 40%;
-          flex: 0 0 40%;
-        }
-
-        .dynamic-form-readonly-value {
-          padding-top: 7px;
-        }
-
       }
+    }
+
+    .phase-odd {
+      background-color: #d4effc;
+    }
+
+    .phase-even {
+      background-color: #ffe4e4;
     }
   }
 

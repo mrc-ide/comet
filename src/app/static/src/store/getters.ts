@@ -11,6 +11,10 @@ export const getters = {
         population: 67890000
       };
     },
+    forecastStart: (state: RootState) => {
+        // NB This will be updated from today to the day after last reporting day
+        return Date()
+    },
     forecastEnd: (state: RootState) => {
         // NB counting from today for now, but this will be updated to count from last reporting
         // day in country data

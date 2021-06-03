@@ -1,9 +1,19 @@
 <template>
   <div>
+    <div class="phase-block-container">
+      <div
+        v-for="phaseBlock in phaseBlocks"
+        :key="phaseBlock.index"
+        class="phase-block"
+        :class="phaseClassFromIndex(phaseBlock.index)"
+        :style="`height:${phaseBlock.height}%; width:${phaseBlock.width}%; left: ${phaseBlock.left}%`"
+      ></div>
+    </div>
+    <div class="phase-block-base mb-2"></div>
     <div v-for="phase in displayPhases"
          :key="phase.index"
          class="p-2 m-2"
-         :class="phase.index % 2 ? 'phase-odd' : 'phase-even'">
+         :class="phaseClassFromIndex(phase.index)">
       <span class="font-weight-bold">Phase {{phase.index}}</span> ({{phase.days}} days)
       <div class="mb-3">{{phase.start}}-{{phase.end}}</div>
       <div>Rt: <span class="font-weight-bold">{{phase.value}}</span></div>
@@ -73,32 +83,37 @@ export default defineComponent({
             };
         });
 
-        const totalDays = dayjs(props.forecastEnd).diff(dayjs(props.forecastStart, "day"));
-        const daysAsPercent = (days: number) => {
-            return (days / totalDays) * 100;
-        };
+        alert(props.forecastStart)
+        alert(props.forecastEnd)
+        const totalDays = dayjs(props.forecastEnd).diff(dayjs(props.forecastStart), "day");
+        alert("totalDays: " + totalDays)
+        const daysAsPercent = (days: number) => (days / totalDays) * 100;
 
-        const maxRt = Math.max(...props.phases.map(p => parseFloat(p.value));
-        const rtAsPercent = (rt: number) => {
-            return (rt / maxRt) * 100''
-        };
+        const maxRt = Math.max(...props.phases.map(p => parseFloat(p.value)));
+        const rtAsPercent = (rt: number) => (rt / maxRt) * 100;
 
         let lastRight = daysAsPercent(dayjs(displayPhases[0].startDate).diff(dayjs(props.forecastStart, "day")));
         const phaseBlocks = displayPhases.map((displayPhase) => {
+            const width = daysAsPercent(displayPhase.days);
             const result = {
                 index: displayPhase.index,
-                left: lastRight,
-                width: daysAsPercent(displayPhase.days),
-                height: rtAsPercent(parseFloat(displayPhase.value))
+                left: lastRight.toFixed(2),
+                width: width.toFixed(2),
+                height: rtAsPercent(parseFloat(displayPhase.value)).toFixed(2)
             };
-            lastRight += result.width;
+            lastRight += width;
 
             return result;
         });
 
+        const phaseClassFromIndex = (index: number) => (index % 2 ? "phase-odd" : "phase-even");
+
+        alert(JSON.stringify(phaseBlocks));
+
         return {
             displayPhases,
-            phaseBlocks
+            phaseBlocks,
+            phaseClassFromIndex
         };
     }
 });

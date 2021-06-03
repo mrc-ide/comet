@@ -37,12 +37,29 @@ $theme-blue: #003e74;
       }
     }
 
+    .phase-block-container {
+      position: relative;
+      width: 100%;
+      height: 5rem;
+    }
+
+    .phase-block {
+      position: absolute;
+      bottom: 0px;
+    }
+
     .phase-odd {
       background-color: #d4effc;
     }
 
     .phase-even {
       background-color: #ffe4e4;
+    }
+
+    .phase-block-base {
+      width: 100%;
+      height: 0.1rem;
+      background-color: #555555;
     }
   }
 

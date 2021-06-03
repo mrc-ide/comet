@@ -12,11 +12,13 @@
     <div class="phase-block-base"></div>
     <div v-for="phase in displayPhases"
          :key="phase.index"
-         class="p-2 mt-2"
+         class="phase-description p-2 mt-2"
          :class="phaseClassFromIndex(phase.index)">
-      <span class="font-weight-bold">Phase {{phase.index}}</span> ({{phase.days}} days)
-      <div class="mb-3">{{phase.start}} - {{phase.end}}</div>
-      <div>Rt: <span class="font-weight-bold">{{phase.value}}</span></div>
+      <div class="phase-header">
+        <span class="font-weight-bold">Phase {{phase.index}}</span> ({{phase.days}} days)
+      </div>
+      <div class="phase-dates mb-3">{{phase.start}} - {{phase.end}}</div>
+      <div class="phase-rt">Rt: <span class="font-weight-bold">{{phase.value}}</span></div>
     </div>
   </div>
 </template>
@@ -72,7 +74,7 @@ export default defineComponent({
                 endDate = dayjs(props.forecastEnd);
             }
 
-            const days = daysBetween(startDate, endDate);
+            const days = daysBetween(startDate, endDate) + 1; // include last day
             const format = "DD/MM/YY";
 
             return {
@@ -85,7 +87,7 @@ export default defineComponent({
             };
         });
 
-        const totalDays = daysBetween(props.forecastStart, props.forecastEnd);
+        const totalDays = daysBetween(props.forecastStart, props.forecastEnd) + 1;
         const daysAsPercent = (days: number) => (days / totalDays) * 100;
 
         const maxRt = Math.max(...props.phases.map((p) => parseFloat(p.value)));

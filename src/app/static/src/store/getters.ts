@@ -14,11 +14,11 @@ export const getters = {
     },
     forecastStart: (): Date => {
         // NB This will be updated from today to the day after last reporting day
-        return new Date();
+        return dayjs().startOf("day").toDate();
     },
     forecastEnd: (): Date => {
         // NB counting from today for now, but this will be updated to count from last reporting
         // day in country data
-        return dayjs().add(forecastDays, "days").toDate();
+        return dayjs().startOf("day").add(forecastDays, "days").toDate();
     }
 };

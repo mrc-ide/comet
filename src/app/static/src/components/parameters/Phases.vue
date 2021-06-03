@@ -1,21 +1,21 @@
 <template>
-  <div>
+  <div class="p-2">
     <div class="phase-block-container">
       <div
-        v-for="phaseBlock in phaseBlocks"
-        :key="phaseBlock.index"
+        v-for="block in phaseBlocks"
+        :key="block.index"
         class="phase-block"
-        :class="phaseClassFromIndex(phaseBlock.index)"
-        :style="`height:${phaseBlock.height}%; width:${phaseBlock.width}%; left: ${phaseBlock.left}%`"
+        :class="phaseClassFromIndex(block.index)"
+        :style="`height:${block.height}; width:${block.width}; left: ${block.left}`"
       ></div>
     </div>
-    <div class="phase-block-base mb-2"></div>
+    <div class="phase-block-base"></div>
     <div v-for="phase in displayPhases"
          :key="phase.index"
-         class="p-2 m-2"
+         class="p-2 mt-2"
          :class="phaseClassFromIndex(phase.index)">
       <span class="font-weight-bold">Phase {{phase.index}}</span> ({{phase.days}} days)
-      <div class="mb-3">{{phase.start}}-{{phase.end}}</div>
+      <div class="mb-3">{{phase.start}} - {{phase.end}}</div>
       <div>Rt: <span class="font-weight-bold">{{phase.value}}</span></div>
     </div>
   </div>
@@ -24,8 +24,8 @@
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
 import { Rt } from "@/types";
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
+import dayjs, { Dayjs } from "dayjs";
+import duration from "dayjs/plugin/duration";
 
 dayjs.extend(duration);
 
@@ -35,21 +35,20 @@ interface Props {
     forecastEnd: Date
 }
 
-interface displayPhase {
+interface DisplayPhase {
     index: number
     days: number
-    startDate: Date,
-    endDate: Date,
+    startDate: Dayjs,
     start: string
     end: string
-    value: number
+    value: string
 }
 
-interface phaseBlock {
+interface PhaseBlock {
     index: number
-    width: number,
-    left: number,
-    height: number
+    width: string,
+    left: string,
+    height: string
 }
 
 export default defineComponent({
@@ -60,7 +59,11 @@ export default defineComponent({
         forecastEnd: Date
     },
     setup(props: Props) {
-        const displayPhases = props.phases.map((rt, idx) => {
+        const daysBetween = (start: Date | Dayjs, end: Date | Dayjs) => {
+            return dayjs(end).diff(dayjs(start), "day");
+        };
+
+        const displayPhases: Array<DisplayPhase> = props.phases.map((rt, idx) => {
             const startDate = dayjs(rt.start);
             let endDate;
             if (idx < props.phases.length - 1) {
@@ -69,46 +72,42 @@ export default defineComponent({
                 endDate = dayjs(props.forecastEnd);
             }
 
-            const days = endDate.diff(startDate, "day");
+            const days = daysBetween(startDate, endDate);
             const format = "DD/MM/YY";
 
             return {
                 index: idx + 1,
                 days,
                 startDate,
-                endDate,
                 start: startDate.format(format),
                 end: endDate.format(format),
                 value: rt.value
             };
         });
 
-        alert(props.forecastStart)
-        alert(props.forecastEnd)
-        const totalDays = dayjs(props.forecastEnd).diff(dayjs(props.forecastStart), "day");
-        alert("totalDays: " + totalDays)
+        const totalDays = daysBetween(props.forecastStart, props.forecastEnd);
         const daysAsPercent = (days: number) => (days / totalDays) * 100;
 
-        const maxRt = Math.max(...props.phases.map(p => parseFloat(p.value)));
+        const maxRt = Math.max(...props.phases.map((p) => parseFloat(p.value)));
         const rtAsPercent = (rt: number) => (rt / maxRt) * 100;
 
-        let lastRight = daysAsPercent(dayjs(displayPhases[0].startDate).diff(dayjs(props.forecastStart, "day")));
-        const phaseBlocks = displayPhases.map((displayPhase) => {
+        const formatPercent = (value: number) => `${value.toFixed(2)}%`;
+
+        let nextLeft = daysAsPercent(daysBetween(props.forecastStart, displayPhases[0].startDate));
+        const phaseBlocks: Array<PhaseBlock> = displayPhases.map((displayPhase) => {
             const width = daysAsPercent(displayPhase.days);
             const result = {
                 index: displayPhase.index,
-                left: lastRight.toFixed(2),
-                width: width.toFixed(2),
-                height: rtAsPercent(parseFloat(displayPhase.value)).toFixed(2)
+                left: formatPercent(nextLeft),
+                width: formatPercent(width),
+                height: formatPercent(rtAsPercent(parseFloat(displayPhase.value)))
             };
-            lastRight += width;
+            nextLeft += width;
 
             return result;
         });
 
         const phaseClassFromIndex = (index: number) => (index % 2 ? "phase-odd" : "phase-even");
-
-        alert(JSON.stringify(phaseBlocks));
 
         return {
             displayPhases,

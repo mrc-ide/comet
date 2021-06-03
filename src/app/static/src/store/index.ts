@@ -1,15 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { actions } from "@/store/actions";
-import { getters } from "@/store/getters";
+import { getters, forecastDays } from "@/store/getters";
 import { mutations } from "@/store/mutations";
 import { RootState } from "@/store/state";
 import CompositionApi from "@vue/composition-api";
 
 Vue.use(Vuex);
 Vue.use(CompositionApi);
-
-export const forecastDays = 730;
 
 export default new Vuex.Store<RootState>({
     state: {

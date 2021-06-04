@@ -3,7 +3,8 @@ import {
     ApiInfo,
     Metadata,
     Data,
-    ParameterGroupMetadata
+    ParameterGroupMetadata,
+    ErrorInfo
 } from "@/types";
 
 export const mutations = {
@@ -24,5 +25,8 @@ export const mutations = {
     },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;
+    },
+    setErrors(state: RootState, errors: Array<ErrorInfo>): void {
+        state.errors = errors;
     }
 };

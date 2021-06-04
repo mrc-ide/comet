@@ -32,6 +32,7 @@ export function mockRootState(state: Partial<RootState> = {}): RootState {
         results: null,
         paramValues: null,
         fetchingResults: false,
+        errors: [],
         ...state
     };
 }

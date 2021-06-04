@@ -41,4 +41,11 @@ describe("mutations", () => {
         mutations.setFetchingResults(state, true);
         expect(state.fetchingResults).toBe(true);
     });
+
+    it("sets errors", () => {
+        const state = mockRootState();
+        const errors = [{ error: "an error" }];
+        mutations.setErrors(state, errors);
+        expect(state.errors).toBe(errors);
+    });
 });

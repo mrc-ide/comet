@@ -65,12 +65,14 @@ describe("Parameters", () => {
     const forecastEnd = new Date("2021-06-01");
 
     function getWrapper() {
-        return shallowMount(Parameters, { propsData: {
-            paramGroupMetadata,
-            paramValues,
-            forecastStart,
-            forecastEnd
-        } });
+        return shallowMount(Parameters, {
+            propsData: {
+                paramGroupMetadata,
+                paramValues,
+                forecastStart,
+                forecastEnd
+            }
+        });
     }
 
     it("renders collapsible dynamicForm and phases parameter groups", () => {

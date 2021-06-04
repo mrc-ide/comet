@@ -1,4 +1,4 @@
-import {shallowMount} from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import Phases from "@/components/parameters/Phases.vue";
 
 describe("Phases", () => {
@@ -7,7 +7,8 @@ describe("Phases", () => {
             { start: "2021-01-01", value: "2" },
             { start: "2021-01-03", value: "8" }
         ];
-        const wrapper = shallowMount(Phases, { propsData: {
+        const wrapper = shallowMount(Phases, {
+            propsData: {
                 phases,
                 forecastStart: new Date("2021-01-01"),
                 forecastEnd: new Date("2021-01-10")
@@ -39,15 +40,16 @@ describe("Phases", () => {
 
     it("renders as expected when first phase starts after forecastStart", () => {
         const phases = [
-          { start: "2021-01-01", value: "1.5" },
-          { start: "2021-01-03", value: "0.5" }
+            { start: "2021-01-01", value: "1.5" },
+            { start: "2021-01-03", value: "0.5" }
         ];
 
-        const wrapper = shallowMount(Phases, { propsData: {
-            phases,
-            forecastStart: new Date("2020-12-31"),
-            forecastEnd: new Date("2021-01-04")
-          }
+        const wrapper = shallowMount(Phases, {
+            propsData: {
+                phases,
+                forecastStart: new Date("2020-12-31"),
+                forecastEnd: new Date("2021-01-04")
+            }
         });
 
         const phaseBlocks = wrapper.findAll(".phase-block-container .phase-block");

@@ -13,12 +13,12 @@ export const getters = {
         };
     },
     forecastStart: (): Date => {
-        // NB This will be updated from today to the day after last reporting day
+        // NB This will be updated from today to the day after last reporting day  mrc-2442
         return dayjs().startOf("day").toDate();
     },
     forecastEnd: (): Date => {
         // NB counting from today for now, but this will be updated to count from last reporting
-        // day in country data
+        // day in country data in mrc-2442
         return dayjs().startOf("day").add(forecastDays, "days").toDate();
     }
 };

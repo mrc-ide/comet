@@ -45,7 +45,11 @@ describe("Home", () => {
                 results: { value: "results" },
                 paramValues: { value: "paramValue" }
             }),
-            getters
+            getters: {
+                ...getters,
+                forecastStart: () => new Date("2021-01-01"),
+                forecastEnd: () => new Date("2021-06-01")
+            }
         });
 
         const wrapper = shallowMount(Home, { store });
@@ -62,6 +66,8 @@ describe("Home", () => {
             { value: "paramMetadata" }
         ]);
         expect(parameters.props("paramValues")).toStrictEqual({ value: "paramValue" });
+        expect(parameters.props("forecastStart")).toStrictEqual(new Date("2021-01-01"));
+        expect(parameters.props("forecastEnd")).toStrictEqual(new Date("2021-06-01"));
     });
 
     it("does not render Charts or Parameters component if no metadata", () => {

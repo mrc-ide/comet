@@ -4,6 +4,7 @@ import Parameters from "@/components/parameters/Parameters.vue";
 import { DynamicForm } from "@reside-ic/vue-dynamic-form";
 import EditParameters from "@/components/parameters/EditParameters.vue";
 import Collapsible from "@/components/Collapsible.vue";
+import Phases from "@/components/parameters/Phases.vue";
 
 describe("Parameters", () => {
     const paramGroupMetadata = [
@@ -28,7 +29,10 @@ describe("Parameters", () => {
         {
             id: "pg2",
             label: "Group 2",
-            type: "rt"
+            type: "rt",
+            config: [
+                { start: "2021-01-01", value: "1" }
+            ]
         },
         {
             id: "pg3",
@@ -57,14 +61,22 @@ describe("Parameters", () => {
         }
     };
 
+    const forecastStart = new Date("2021-01-01");
+    const forecastEnd = new Date("2021-06-01");
+
     function getWrapper() {
-        return shallowMount(Parameters, { propsData: { paramGroupMetadata, paramValues } });
+        return shallowMount(Parameters, { propsData: {
+            paramGroupMetadata,
+            paramValues,
+            forecastStart,
+            forecastEnd
+        } });
     }
 
-    it("renders collapsible dynamicForm parameter groups", () => {
+    it("renders collapsible dynamicForm and phases parameter groups", () => {
         const wrapper = getWrapper();
         const collapsibles = wrapper.findAllComponents(Collapsible);
-        expect(collapsibles.length).toBe(2);
+        expect(collapsibles.length).toBe(3);
 
         expect(collapsibles.at(0).props("initialOpen")).toBe(false);
         expect(collapsibles.at(0).props("heading")).toBe("Group 1");
@@ -73,8 +85,15 @@ describe("Parameters", () => {
         expect(form1.props("formMeta")).toStrictEqual(paramGroupMetadata[0].config);
 
         expect(collapsibles.at(1).props("initialOpen")).toBe(false);
-        expect(collapsibles.at(1).props("heading")).toBe("Group 3");
-        const form2 = collapsibles.at(1).findComponent(DynamicForm);
+        expect(collapsibles.at(1).props("heading")).toBe("Group 2");
+        const phases = collapsibles.at(1).findComponent(Phases);
+        expect(phases.props("forecastStart")).toBe(forecastStart);
+        expect(phases.props("forecastEnd")).toBe(forecastEnd);
+        expect(phases.props("phases")).toStrictEqual(paramGroupMetadata[1].config);
+
+        expect(collapsibles.at(2).props("initialOpen")).toBe(false);
+        expect(collapsibles.at(2).props("heading")).toBe("Group 3");
+        const form2 = collapsibles.at(2).findComponent(DynamicForm);
         expect(form2.props("readonly")).toStrictEqual(true);
         expect(form2.props("formMeta")).toStrictEqual(paramGroupMetadata[2].config);
     });

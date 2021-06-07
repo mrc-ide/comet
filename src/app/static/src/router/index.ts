@@ -2,7 +2,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Vue from "vue";
 import Home from "../views/Home.vue";
 
-const routes: Array<RouteConfig> = [
+const routes: RouteConfig[] = [
     {
         path: "/",
         name: "Home",

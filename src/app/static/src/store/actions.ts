@@ -5,7 +5,7 @@ import { ErrorInfo, ParameterGroupJsonataMetadata } from "@/types";
 import jsonata from "jsonata";
 
 export function commitErrors(e: AxiosError, commit: Commit): void {
-    let errors: Array<ErrorInfo>;
+    let errors: ErrorInfo[];
     if (e.response?.data?.errors) {
         errors = e.response.data.errors;
     } else if (e.response?.data?.error) {

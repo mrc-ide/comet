@@ -1,15 +1,22 @@
 <template>
   <div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
-      <div v-if="paramGroup.type == 'dynamicForm'">
+      <div>
         <collapsible class="collapsible mt-2" :initial-open="false" :heading="paramGroup.label">
           <div class="parameter-panel">
-            <dynamic-form v-if="paramGroup.type == 'dynamicForm'"
-                        v-model="paramGroup.config"
-                        :readonly="true"></dynamic-form>
-            <button class="btn btn-action float-right mb-3 mr-3"
-                    @click="editParameters(paramGroup.id)">Edit</button>
-            <span class="clearfix"></span>
+            <div v-if="paramGroup.type === 'dynamicForm'" class="standard-parameters">
+              <dynamic-form v-model="paramGroup.config"
+                          :readonly="true"></dynamic-form>
+              <button class="btn btn-action float-right mb-3 mr-3"
+                      @click="editParameters(paramGroup.id)">Edit</button>
+              <span class="clearfix"></span>
+            </div>
+            <phases
+              v-if="paramGroup.type === 'rt'"
+              :phases="paramGroup.config"
+              :forecastEnd="forecastEnd"
+              :forecastStart="forecastStart"
+            ></phases>
           </div>
         </collapsible>
       </div>
@@ -33,10 +40,13 @@ import {
 import { Data, ParameterGroupMetadata } from "@/types";
 import Collapsible from "@/components/Collapsible.vue";
 import EditParameters from "./EditParameters.vue";
+import Phases from "./Phases.vue";
 
 interface Props {
-    paramGroupMetadata: Array<ParameterGroupMetadata>
+    paramGroupMetadata: ParameterGroupMetadata[]
     paramValues: Data
+    forecastStart: Date
+    forecastEnd: Date
 }
 
 export default defineComponent({
@@ -44,11 +54,14 @@ export default defineComponent({
     components: {
         DynamicForm,
         EditParameters,
-        Collapsible
+        Collapsible,
+        Phases
     },
     props: {
         paramGroupMetadata: Array,
-        paramValues: Object
+        paramValues: Object,
+        forecastStart: Date,
+        forecastEnd: Date
     },
     setup(props: Props, context) {
         const modalOpen = ref(false);

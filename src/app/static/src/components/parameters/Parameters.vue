@@ -11,23 +11,32 @@
                       @click="editParameters(paramGroup.id)">Edit</button>
               <span class="clearfix"></span>
             </div>
-            <phases
-              v-if="paramGroup.type == 'rt'"
-              :phases="paramGroup.config"
-              :forecastEnd="forecastEnd"
-              :forecastStart="forecastStart"
-            ></phases>
+            <div v-if="paramGroup.type == 'rt'">
+              <phases
+                :phases="paramGroup.config"
+                :forecastEnd="forecastEnd"
+                :forecastStart="forecastStart"
+              ></phases>
+              <button class="btn btn-action float-right mb-3 mr-3"
+                      @click="editPhases(paramGroup.id)">Edit</button>
+              <span class="clearfix"></span>
+            </div>
           </div>
         </collapsible>
       </div>
     </div>
     <edit-parameters
       class="edit-parameters"
-      :open="modalOpen"
+      :open="paramsModalOpen"
       :paramGroup="editParamGroup"
       @cancel="closeModal"
       @update="updateParameters"
     ></edit-parameters>
+    <edit-phases
+      class="edit-parameters"
+      :open="phasesModalOpen"
+      @cancel="closePhases"
+      @update="updatePhases"></edit-phases>
   </div>
 </template>
 
@@ -41,6 +50,7 @@ import { Data, ParameterGroupMetadata } from "@/types";
 import Collapsible from "@/components/Collapsible.vue";
 import EditParameters from "./EditParameters.vue";
 import Phases from "./Phases.vue";
+import EditPhases from "./EditPhases.vue";
 
 interface Props {
     paramGroupMetadata: Array<ParameterGroupMetadata>
@@ -54,6 +64,7 @@ export default defineComponent({
     components: {
         DynamicForm,
         EditParameters,
+        EditPhases,
         Collapsible,
         Phases
     },
@@ -64,7 +75,8 @@ export default defineComponent({
         forecastEnd: Date
     },
     setup(props: Props, context) {
-        const modalOpen = ref(false);
+        const paramsModalOpen = ref(false);
+        const phasesModalOpen = ref(false);
         const editParamGroupId = ref("");
 
         const editParamGroup = computed(() => {
@@ -73,11 +85,21 @@ export default defineComponent({
 
         function editParameters(paramGroupId: string) {
             editParamGroupId.value = paramGroupId;
-            modalOpen.value = true;
+            paramsModalOpen.value = true;
+        }
+
+        function editPhases(paramGroupId: string) {
+            editParamGroupId.value = paramGroupId;
+            phasesModalOpen.value = true;
         }
 
         function closeModal() {
-            modalOpen.value = false;
+            paramsModalOpen.value = false;
+            editParamGroupId.value = "";
+        }
+
+        function closePhases() {
+            phasesModalOpen.value = false;
             editParamGroupId.value = "";
         }
 
@@ -102,13 +124,21 @@ export default defineComponent({
             context.emit("updateValues", newParamValues);
         }
 
+        function updatePhases() {
+            // TODO!! IS this just same as above? No, that's sorting out standard params
+        }
+
         return {
-            modalOpen,
+            paramsModalOpen,
+            phasesModalOpen,
             editParamGroupId,
             editParamGroup,
             editParameters,
+            editPhases,
             closeModal,
-            updateParameters
+            closePhases,
+            updateParameters,
+            updatePhases
         };
     }
 });

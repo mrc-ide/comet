@@ -20,15 +20,13 @@
       <div class="phase-dates mb-3">{{phase.start}} - {{phase.end}}</div>
       <div class="phase-rt">Rt: <span class="font-weight-bold">{{phase.value}}</span></div>
     </div>
-    <edit-phases></edit-phases>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
 import { Rt } from "@/types";
-import dayjs, { Dayjs } from "dayjs";
-import EditPhases from "./EditPhases.vue";
+import dayjs, { Dayjs } from "dayjs";;
 import duration from "dayjs/plugin/duration";
 
 dayjs.extend(duration);
@@ -61,9 +59,6 @@ export default defineComponent({
         phases: Array,
         forecastStart: Date,
         forecastEnd: Date
-    },
-    components: {
-        EditPhases
     },
     setup(props: Props) {
         const daysBetween = (start: Date | Dayjs, end: Date | Dayjs) => {

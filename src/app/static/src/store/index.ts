@@ -5,6 +5,7 @@ import { mutations } from "@/store/mutations";
 import { RootState } from "@/store/state";
 import { Data } from "@/types";
 import CompositionApi from "@vue/composition-api";
+import dayjs from "dayjs";
 
 Vue.use(Vuex);
 Vue.use(CompositionApi);
@@ -45,11 +46,11 @@ export default new Vuex.Store<RootState>({
             },
             rt: [
                 {
-                    start: "2021-04-30",
+                    start: dayjs().format("YYYY-MM-DD"),
                     value: 1.18
                 },
                 {
-                    start: "2021-10-31",
+                    start: dayjs().add(184, "day").format("YYYY-MM-DD"),
                     value: 2.40
                 }
             ],

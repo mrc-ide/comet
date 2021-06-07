@@ -17,7 +17,7 @@ export const mutations = {
     setResults(state: RootState, results: Data): void {
         state.results = results;
     },
-    setParameterMetadata(state: RootState, paramMetadata: Array<ParameterGroupMetadata>): void {
+    setParameterMetadata(state: RootState, paramMetadata: ParameterGroupMetadata[]): void {
         state.metadata!.parameterGroups = paramMetadata;
     },
     setParameterValues(state: RootState, paramValues: Data): void {
@@ -26,7 +26,7 @@ export const mutations = {
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;
     },
-    setErrors(state: RootState, errors: Array<ErrorInfo>): void {
+    setErrors(state: RootState, errors: ErrorInfo[]): void {
         state.errors = errors;
     }
 };

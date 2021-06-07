@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { RootState } from "@/store/state";
 import { Data } from "@/types";
 
+// We hard-code this parameter sent to cometr to give a forecast of 2 years
 export const forecastDays = 730;
 
 export const getters = {

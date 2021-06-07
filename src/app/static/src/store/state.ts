@@ -11,5 +11,5 @@ export interface RootState {
   results: Data | null
   paramValues: Data | null
   fetchingResults: boolean
-  errors: Array<ErrorInfo>
+  errors: ErrorInfo[]
 }

@@ -32,7 +32,7 @@ import duration from "dayjs/plugin/duration";
 dayjs.extend(duration);
 
 interface Props {
-    phases: Array<Rt>,
+    phases: Rt[],
     forecastStart: Date,
     forecastEnd: Date
 }
@@ -65,7 +65,7 @@ export default defineComponent({
             return dayjs(end).diff(dayjs(start), "day");
         };
 
-        const displayPhases: Array<DisplayPhase> = props.phases.map((rt, idx) => {
+        const displayPhases: DisplayPhase[] = props.phases.map((rt, idx) => {
             const startDate = dayjs(rt.start);
             let endDate;
             if (idx < props.phases.length - 1) {
@@ -96,7 +96,7 @@ export default defineComponent({
         const formatPercent = (value: number) => `${value.toFixed(2)}%`;
 
         let nextLeft = daysAsPercent(daysBetween(props.forecastStart, displayPhases[0].startDate));
-        const phaseBlocks: Array<PhaseBlock> = displayPhases.map((displayPhase) => {
+        const phaseBlocks: PhaseBlock[] = displayPhases.map((displayPhase) => {
             const width = daysAsPercent(displayPhase.days);
             const result = {
                 index: displayPhase.index,

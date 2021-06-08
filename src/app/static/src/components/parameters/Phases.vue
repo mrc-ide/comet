@@ -26,8 +26,9 @@
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
 import { Rt } from "@/types";
-import dayjs, { Dayjs } from "dayjs";;
+import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
+import {DisplayPhase, daysBetween, getDisplayPhase, phaseClassFromIndex, getTotalDays} from "./phasesUtils";
 
 dayjs.extend(duration);
 
@@ -35,15 +36,6 @@ interface Props {
     phases: Array<Rt>,
     forecastStart: Date,
     forecastEnd: Date
-}
-
-interface DisplayPhase {
-    index: number
-    days: number
-    startDate: Dayjs,
-    start: string
-    end: string
-    value: string
 }
 
 interface PhaseBlock {
@@ -61,33 +53,11 @@ export default defineComponent({
         forecastEnd: Date
     },
     setup(props: Props) {
-        const daysBetween = (start: Date | Dayjs, end: Date | Dayjs) => {
-            return dayjs(end).diff(dayjs(start), "day");
-        };
-
-        const displayPhases: Array<DisplayPhase> = props.phases.map((rt, idx) => {
-            const startDate = dayjs(rt.start);
-            let endDate;
-            if (idx < props.phases.length - 1) {
-                endDate = dayjs(props.phases[idx + 1].start).subtract(1, "day");
-            } else {
-                endDate = dayjs(props.forecastEnd);
-            }
-
-            const days = daysBetween(startDate, endDate) + 1; // include last day
-            const format = "DD/MM/YY";
-
-            return {
-                index: idx + 1,
-                days,
-                startDate,
-                start: startDate.format(format),
-                end: endDate.format(format),
-                value: rt.value
-            };
+        const displayPhases: DisplayPhase[] = props.phases.map((rt, idx) => {
+            return getDisplayPhase(rt, idx, props.phases, props.forecastEnd);
         });
 
-        const totalDays = daysBetween(props.forecastStart, props.forecastEnd) + 1;
+        const totalDays = getTotalDays(props.forecastStart, props.forecastEnd);
         const daysAsPercent = (days: number) => (days / totalDays) * 100;
 
         const maxRt = Math.max(...props.phases.map((p) => parseFloat(p.value)));
@@ -108,8 +78,6 @@ export default defineComponent({
 
             return result;
         });
-
-        const phaseClassFromIndex = (index: number) => (index % 2 ? "phase-odd" : "phase-even");
 
         return {
             displayPhases,

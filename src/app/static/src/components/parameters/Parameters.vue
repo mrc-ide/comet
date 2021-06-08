@@ -26,6 +26,7 @@
       </div>
     </div>
     <edit-parameters
+      v-if="editParamGroup && editParamGroup.type === 'dynamic-form'"
       class="edit-parameters"
       :open="paramsModalOpen"
       :paramGroup="editParamGroup"
@@ -33,8 +34,12 @@
       @update="updateParameters"
     ></edit-parameters>
     <edit-phases
+      v-if="editParamGroup && editParamGroup.type === 'rt'"
       class="edit-parameters"
       :open="phasesModalOpen"
+      :forecastStart="forecastStart"
+      :forecastEnd="forecastEnd"
+      :paramGroup="editParamGroup"
       @cancel="closePhases"
       @update="updatePhases"></edit-phases>
   </div>

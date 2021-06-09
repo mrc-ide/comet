@@ -33,7 +33,7 @@ import {DisplayPhase, daysBetween, getDisplayPhase, phaseClassFromIndex, getTota
 dayjs.extend(duration);
 
 interface Props {
-    phases: Array<Rt>,
+    phases: Rt[],
     forecastStart: Date,
     forecastEnd: Date
 }

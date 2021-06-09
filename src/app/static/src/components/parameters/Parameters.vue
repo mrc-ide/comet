@@ -4,7 +4,7 @@
       <div>
         <collapsible class="collapsible mt-2" :initial-open="false" :heading="paramGroup.label">
           <div class="parameter-panel">
-            <div v-if="paramGroup.type == 'dynamicForm'" class="standard-parameters">
+            <div v-if="paramGroup.type === 'dynamicForm'" class="standard-parameters">
               <dynamic-form v-model="paramGroup.config"
                           :readonly="true"></dynamic-form>
               <button class="btn btn-action float-right mb-3 mr-3"
@@ -58,7 +58,7 @@ import Phases from "./Phases.vue";
 import EditPhases from "./EditPhases.vue";
 
 interface Props {
-    paramGroupMetadata: Array<ParameterGroupMetadata>
+    paramGroupMetadata: ParameterGroupMetadata[]
     paramValues: Data
     forecastStart: Date
     forecastEnd: Date

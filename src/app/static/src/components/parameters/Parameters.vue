@@ -16,6 +16,7 @@
                 :phases="paramGroup.config"
                 :forecastEnd="forecastEnd"
                 :forecastStart="forecastStart"
+                class="mt-2"
               ></phases>
               <button class="btn btn-action float-right mb-3 mr-3"
                       @click="editPhases(paramGroup.id)">Edit</button>
@@ -51,7 +52,7 @@ import {
     DynamicForm,
     DynamicFormData
 } from "@reside-ic/vue-dynamic-form";
-import {Data, ParameterGroupMetadata, Rt} from "@/types";
+import { Data, ParameterGroupMetadata, Rt } from "@/types";
 import Collapsible from "@/components/Collapsible.vue";
 import EditParameters from "./EditParameters.vue";
 import Phases from "./Phases.vue";

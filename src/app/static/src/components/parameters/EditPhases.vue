@@ -45,9 +45,15 @@
 </template>
 
 <script lang="ts">
-import {computed, Ref, ref, defineComponent, watch} from "@vue/composition-api";
+import dayjs from "dayjs";
+import {
+    computed,
+    Ref,
+    ref,
+    defineComponent
+} from "@vue/composition-api";
 import Modal from "@/components/Modal.vue";
-import {ParameterGroupMetadata, Rt} from "@/types";
+import { ParameterGroupMetadata, Rt } from "@/types";
 import {
     DisplayPhase,
     daysBetween,
@@ -55,7 +61,6 @@ import {
     phaseClassFromIndex,
     getTotalDays
 } from "./phasesUtils";
-import dayjs from "dayjs";
 
 interface Props {
     open: boolean;
@@ -97,7 +102,7 @@ export default defineComponent({
         });
 
         // Phases computed from the slider values
-        const phases = computed(() => {
+        const phases: Ref<Rt[]> = computed(() => {
             return sliderValues.map((sv) => {
                 return {
                     start: dayjs(props.forecastStart).add(sv.value.daysFromStart, "day").format("YYYY-MM-DD"),
@@ -107,7 +112,7 @@ export default defineComponent({
         });
 
         // Display phases computed from the phases
-        const displayPhases = computed(() => phases.value.map((rt, idx) => {
+        const displayPhases: Ref<DisplayPhase[]> = computed(() => phases.value.map((rt, idx) => {
             return getDisplayPhase(rt, idx, phases.value, props.forecastEnd);
         }));
 
@@ -132,17 +137,18 @@ export default defineComponent({
             return Math.round(Math.min(sliderMax(index), result));
         };
 
-        const mouseDown = (index: number, event: any) => {
+        const mouseDown = (index: number, event: MouseEvent) => {
             movingSlider.value = index;
             moveStartOffset.value = event.offsetX;
 
             // bring slider to front
             sliderValues.forEach((sv: Ref<SliderValue>, arrIdx: number) => {
-                sv.value.zIndex = arrIdx === index ? 100 : 99;
+                const val = sv.value;
+                val.zIndex = (arrIdx === index) ? 100 : 99;
             });
         };
 
-        const mouseMove = (index: number, event: any) => {
+        const mouseMove = (index: number, event: MouseEvent) => {
             if (movingSlider.value === index && moveStartOffset.value !== null) {
                 const offsetDiff = event.offsetX - moveStartOffset.value;
                 const diffAsRangeFraction = offsetDiff / railWidth();

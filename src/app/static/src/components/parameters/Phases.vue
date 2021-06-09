@@ -26,9 +26,15 @@
 <script lang="ts">
 import { defineComponent, computed, Ref } from "@vue/composition-api";
 import { Rt } from "@/types";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import {DisplayPhase, daysBetween, getDisplayPhase, phaseClassFromIndex, getTotalDays} from "./phasesUtils";
+import {
+    DisplayPhase,
+    daysBetween,
+    getDisplayPhase,
+    phaseClassFromIndex,
+    getTotalDays
+} from "./phasesUtils";
 
 dayjs.extend(duration);
 
@@ -68,7 +74,8 @@ export default defineComponent({
         const formatPercent = (value: number) => `${value.toFixed(2)}%`;
 
         const phaseBlocks: Ref<PhaseBlock[]> = computed(() => {
-            let nextLeft = daysAsPercent(daysBetween(props.forecastStart, displayPhases.value[0].startDate));
+            const firstStartDate = displayPhases.value[0].startDate;
+            let nextLeft = daysAsPercent(daysBetween(props.forecastStart, firstStartDate));
             return displayPhases.value.map((displayPhase) => {
                 const width = daysAsPercent(displayPhase.days);
                 const result = {

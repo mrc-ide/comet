@@ -9,8 +9,8 @@
               <div v-for="(value, index) in sliderValues" :id="`slider-${index}`"
                    :key="index"
                    role="slider"
-                   tabindex="0"
-                   :style="`left:${sliderPosition(value)}px;z-index:${value.value.zIndex};`"
+                   :tabindex="index"
+                   :style="`left:${sliderPosition(value)}%;z-index:${value.value.zIndex};`"
                    class="slider"
                    :class="phaseClassFromIndex(index+1)"
                    :aria-valuemin="sliderMin(index)"
@@ -23,12 +23,16 @@
                    @mouseup="mouseUp">
                 <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
                 <div class="slider-text">
-                  <span class="font-weight-bold">Phase {{displayPhases[index].index}}</span>
-                  ({{displayPhases[index].days}} day{{displayPhases[index].days > 1 ? "s" : ""}})
+                  <span class="phase-label font-weight-bold">
+                    Phase {{displayPhases[index].index}}
+                  </span>
+                  <span class="phase-days">
+                    ({{displayPhases[index].days}} day{{displayPhases[index].days > 1 ? "s" : ""}})
+                  </span>
                   <br/>
-                  Start: {{displayPhases[index].start}} <br/>
-                  End: {{displayPhases[index].end}} <br/>
-                  Rt: {{displayPhases[index].value}} <br/>
+                  <div class="phase-start">Start: {{displayPhases[index].start}}</div>
+                  <div class="phase-end">End: {{displayPhases[index].end}}</div>
+                  <div class="phase-rt">Rt: {{displayPhases[index].value}}</div>
                 </div>
               </div>
             </div>
@@ -165,7 +169,7 @@ export default defineComponent({
         };
 
         const sliderPosition = (value: Ref<SliderValue>) => {
-            return (value.value.daysFromStart / totalDays) * railWidth();
+            return (value.value.daysFromStart / totalDays) * 100;
         };
 
         const cancel = () => {

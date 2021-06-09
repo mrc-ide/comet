@@ -22,9 +22,10 @@ describe("EditPhases", () => {
     }
 
     async function dragSlider(wrapper: Wrapper<Vue>, sliderIdx: number, dragAsPercent: number) {
-        //set rail element width before mousemoves so offset calculations will work
+        //set rail element mock width before mousemoves so offset calculations will work
         const railEl = wrapper.vm.$refs.rail as HTMLDivElement;
-        railEl.style.width = "1000px";
+        jest.spyOn(railEl, "clientWidth", "get")
+          .mockImplementation(() => 1000);
 
         const slider = wrapper.findAll(".slider").at(sliderIdx);
 
@@ -119,7 +120,7 @@ describe("EditPhases", () => {
         expect(slider2.find(".phase-end").text()).toBe("End: 10/01/21");
     });
 
-    it("pressing OK emits event with updated phases", async () => {
+    it("pressing OK button emits event with updated phases", async () => {
         const wrapper = getWrapper();
         await dragSlider(wrapper, 0, 10);
         await dragSlider(wrapper, 1, 20);
@@ -130,5 +131,66 @@ describe("EditPhases", () => {
             { start: "2021-01-03", value: 0.9 },
             { start: "2021-01-07", value: 1.5 }
         ]);
+    });
+
+    it("pressing Cancel button emits cancel event", () => {
+        const wrapper = getWrapper();
+        wrapper.find("button.btn-secondary").trigger("click");
+        expect(wrapper.emitted("cancel")?.length).toBe(1);
+    });
+
+    it("mousedown brings slider to front", async () => {
+        const wrapper = getWrapper();
+        const sliders = wrapper.findAll(".slider");
+
+        sliders.at(0).trigger("mousedown", {offsetX: 0});
+        await Vue.nextTick();
+        expect(sliders.at(0).element.style.zIndex).toBe("100");
+        expect(sliders.at(1).element.style.zIndex).toBe("99");
+
+        sliders.at(1).trigger("mousedown", {offsetX: 0});
+        await Vue.nextTick();
+        expect(sliders.at(0).element.style.zIndex).toBe("99");
+        expect(sliders.at(1).element.style.zIndex).toBe("100");
+    });
+
+    it("slider value is limited by forecast start", async () => {
+        const wrapper = getWrapper();
+        await dragSlider(wrapper, 0, -100);
+
+        const slider = wrapper.findAll(".slider").at(0);
+        expect(slider.element.style.left).toBe("0%");
+        expect(slider.attributes("aria-valuenow")).toBe("0");
+        expect(slider.find(".phase-start").text()).toBe("Start: 01/01/21");
+    });
+
+    it("slider value is limited by forecast end", async () => {
+        const wrapper = getWrapper();
+        await dragSlider(wrapper, 1, 100);
+
+        const slider = wrapper.findAll(".slider").at(1);
+        expect(slider.element.style.left).toBe("90%");
+        expect(slider.attributes("aria-valuenow")).toBe("9");
+        expect(slider.find(".phase-start").text()).toBe("Start: 10/01/21");
+    });
+
+    it("slider value is limited by start of next phases", async () => {
+        const wrapper = getWrapper();
+        await dragSlider(wrapper, 0, 100);
+
+        const slider = wrapper.findAll(".slider").at(0);
+        expect(slider.element.style.left).toBe("30%");
+        expect(slider.attributes("aria-valuenow")).toBe("3");
+        expect(slider.find(".phase-start").text()).toBe("Start: 04/01/21");
+    });
+
+    it("slider values is limited by end of previous phase", async () => {
+        const wrapper = getWrapper();
+        await dragSlider(wrapper, 1, -100);
+
+        const slider = wrapper.findAll(".slider").at(1);
+        expect(slider.element.style.left).toBe("20%");
+        expect(slider.attributes("aria-valuenow")).toBe("2");
+        expect(slider.find(".phase-start").text()).toBe("Start: 03/01/21");
     });
 });

@@ -3,28 +3,29 @@
     <modal class="phase-modal" :open="open">
       <h3>Edit {{paramGroup && paramGroup.label}}</h3>
       <p>Click on a Phase to drag it to a new start date.</p>
-        <div class="phase-editor" @mouseup="mouseUp" @mousemove="mouseMove">
+        <div class="phase-editor" @mouseup="mouseUp">
           <div class="phases-container">
             <div ref="rail" class="rail">
               <div v-for="(value, index) in sliderValues" :id="`slider-${index}`"
                    :key="index"
                    role="slider"
                    tabindex="0"
-                   :style="`left:${sliderPosition(value)}px;`"
+                   :style="`left:${sliderPosition(value)}px;z-index:${value.value.zIndex};`"
                    class="slider"
                    :class="phaseClassFromIndex(index+1)"
                    :aria-valuemin="sliderMin(index)"
-                   :aria-valuenow="value"
-                   aria-valuetext="$100"
+                   :aria-valuenow="value.value.daysFromStart"
+                   :aria-valuetext="displayPhases[index].start"
                    :aria-valuemax="sliderMax(index)"
-                   aria-label="Hotel Minimum Price"
-                   @mousemove="mouseMove(index, $event)"
-                   @mousedown="mouseDown(index, $event)"
+                   :aria-label="`Phase ${displayPhases[index].index}`"
+                   @mousemove.stop.prevent="mouseMove(index, $event)"
+                   @mousedown.stop.prevent="mouseDown(index, $event)"
                    @mouseup="mouseUp">
                 <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
                 <div class="slider-text">
                   <span class="font-weight-bold">Phase {{displayPhases[index].index}}</span>
-                  ({{displayPhases[index].days}} days) <br/>
+                  ({{displayPhases[index].days}} day{{displayPhases[index].days > 1 ? "s" : ""}})
+                  <br/>
                   Start: {{displayPhases[index].start}} <br/>
                   End: {{displayPhases[index].end}} <br/>
                   Rt: {{displayPhases[index].value}} <br/>
@@ -66,6 +67,7 @@ interface Props {
 interface SliderValue {
     daysFromStart: number;
     rt: number;
+    zIndex: number;
 }
 
 export default defineComponent({
@@ -80,17 +82,17 @@ export default defineComponent({
         paramGroup: Object
     },
     setup(props: Props, context) {
-        const rail = ref(null); // ref this element to find its width
+        const rail: Ref<HTMLElement | null> = ref(null); // ref this element to find its width
 
         const railWidth = () => {
-            return rail.value ? (rail.value as any).clientWidth : 0; //TODO: sort this out
+            return rail.value ? (rail.value as HTMLElement).clientWidth : 0;
         };
 
-        // The values for the sliders - the number of days since forecast start, and the rt
         const sliderValues: Ref<SliderValue>[] = (props.paramGroup.config as Rt[]).map((phase) => {
             return ref({
                 daysFromStart: daysBetween(props.forecastStart, dayjs(phase.start)),
-                rt: parseFloat(phase.value)
+                rt: phase.value,
+                zIndex: 99
             });
         });
 
@@ -99,7 +101,7 @@ export default defineComponent({
             return sliderValues.map((sv) => {
                 return {
                     start: dayjs(props.forecastStart).add(sv.value.daysFromStart, "day").format("YYYY-MM-DD"),
-                    value: sv.value.rt.toString()
+                    value: sv.value.rt
                 };
             });
         });
@@ -115,19 +117,14 @@ export default defineComponent({
         const moveStartOffset: Ref<number | null> = ref(null);
 
         const sliderMin = (index: number) => {
-            if (index === 0) {
-                return 0;
-            } else {
-                return sliderValues[index - 1].value.daysFromStart + 1;
-            }
+            return index === 0 ? 0 : sliderValues[index - 1].value.daysFromStart + 1;
         };
 
         const sliderMax = (index: number) => {
             if (index === (sliderValues.length - 1)) {
-                return totalDays;
-            } else {
-                return sliderValues[index + 1].value.daysFromStart - 1;
+                return totalDays - 1;
             }
+            return sliderValues[index + 1].value.daysFromStart - 1;
         };
 
         const limitSliderValue = (index: number, value: number) => {
@@ -138,21 +135,21 @@ export default defineComponent({
         const mouseDown = (index: number, event: any) => {
             movingSlider.value = index;
             moveStartOffset.value = event.offsetX;
-            event.preventDefault();
-            event.stopPropagation();
+
+            // bring slider to front
+            sliderValues.forEach((sv: Ref<SliderValue>, arrIdx: number) => {
+                sv.value.zIndex = arrIdx === index ? 100 : 99;
+            });
         };
 
         const mouseMove = (index: number, event: any) => {
-            if (movingSlider.value === index) {
-                const offsetDiff = event.offsetX - (moveStartOffset.value || 0); //TODO deal with more nicely
+            if (movingSlider.value === index && moveStartOffset.value !== null) {
+                const offsetDiff = event.offsetX - moveStartOffset.value;
                 const diffAsRangeFraction = offsetDiff / railWidth();
                 const valueDiff = totalDays * diffAsRangeFraction;
                 const oldValue = sliderValues[index].value.daysFromStart;
                 const newValue = limitSliderValue(index, oldValue + valueDiff);
                 sliderValues[index].value.daysFromStart = newValue;
-
-                event.preventDefault();
-                event.stopPropagation();
             }
         };
 
@@ -165,13 +162,13 @@ export default defineComponent({
             return (value.value.daysFromStart / totalDays) * railWidth();
         };
 
-        function cancel() {
+        const cancel = () => {
             context.emit("cancel");
-        }
+        };
 
-        function updatePhases() {
-            //TODO!!
-        }
+        const updatePhases = () => {
+            context.emit("update", phases.value);
+        };
 
         return {
             rail,

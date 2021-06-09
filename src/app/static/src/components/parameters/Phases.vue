@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent, computed, Ref } from "@vue/composition-api";
 import { Rt } from "@/types";
 import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -53,30 +53,34 @@ export default defineComponent({
         forecastEnd: Date
     },
     setup(props: Props) {
-        const displayPhases: DisplayPhase[] = props.phases.map((rt, idx) => {
-            return getDisplayPhase(rt, idx, props.phases, props.forecastEnd);
+        const displayPhases: Ref<DisplayPhase[]> = computed(() => {
+            return props.phases.map((rt, idx) => {
+                return getDisplayPhase(rt, idx, props.phases, props.forecastEnd);
+            });
         });
 
         const totalDays = getTotalDays(props.forecastStart, props.forecastEnd);
         const daysAsPercent = (days: number) => (days / totalDays) * 100;
 
-        const maxRt = Math.max(...props.phases.map((p) => parseFloat(p.value)));
-        const rtAsPercent = (rt: number) => (rt / maxRt) * 100;
+        const maxRt = computed(() => { return Math.max(...props.phases.map((p) => p.value)); });
+        const rtAsPercent = (rt: number) => (rt / maxRt.value) * 100;
 
         const formatPercent = (value: number) => `${value.toFixed(2)}%`;
 
-        let nextLeft = daysAsPercent(daysBetween(props.forecastStart, displayPhases[0].startDate));
-        const phaseBlocks: Array<PhaseBlock> = displayPhases.map((displayPhase) => {
-            const width = daysAsPercent(displayPhase.days);
-            const result = {
-                index: displayPhase.index,
-                left: formatPercent(nextLeft),
-                width: formatPercent(width),
-                height: formatPercent(rtAsPercent(parseFloat(displayPhase.value)))
-            };
-            nextLeft += width;
+        const phaseBlocks: Ref<PhaseBlock[]> = computed(() => {
+            let nextLeft = daysAsPercent(daysBetween(props.forecastStart, displayPhases.value[0].startDate));
+            return displayPhases.value.map((displayPhase) => {
+                const width = daysAsPercent(displayPhase.days);
+                const result = {
+                    index: displayPhase.index,
+                    left: formatPercent(nextLeft),
+                    width: formatPercent(width),
+                    height: formatPercent(rtAsPercent(parseFloat(displayPhase.value)))
+                };
+                nextLeft += width;
 
-            return result;
+                return result;
+            });
         });
 
         return {

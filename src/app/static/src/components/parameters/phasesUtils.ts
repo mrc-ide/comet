@@ -32,7 +32,7 @@ export const getDisplayPhase =(rt: Rt, idx: number, phases: Rt[], forecastEnd: D
       startDate,
       start: startDate.format(format),
       end: endDate.format(format),
-      value: rt.value
+      value: rt.value.toString()
     };
 };
 

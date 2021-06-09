@@ -51,7 +51,7 @@ import {
     DynamicForm,
     DynamicFormData
 } from "@reside-ic/vue-dynamic-form";
-import { Data, ParameterGroupMetadata } from "@/types";
+import {Data, ParameterGroupMetadata, Rt} from "@/types";
 import Collapsible from "@/components/Collapsible.vue";
 import EditParameters from "./EditParameters.vue";
 import Phases from "./Phases.vue";
@@ -129,8 +129,17 @@ export default defineComponent({
             context.emit("updateValues", newParamValues);
         }
 
-        function updatePhases() {
-            // TODO!! IS this just same as above? No, that's sorting out standard params
+        function updatePhases(newPhases: Rt[]) {
+            const groupId = editParamGroupId.value;
+            closePhases();
+            const idx = props.paramGroupMetadata.findIndex((g) => g.id === groupId);
+            const newMetadata = [...props.paramGroupMetadata];
+            newMetadata[idx] = { ...newMetadata[idx], config: newPhases };
+            context.emit("updateMetadata", newMetadata);
+
+            const newParamValues = { ...props.paramValues };
+            newParamValues[groupId] = newPhases;
+            context.emit("updateValues", newParamValues);
         }
 
         return {

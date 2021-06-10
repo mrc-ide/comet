@@ -104,9 +104,10 @@ describe("Parameters", () => {
     it("renders Edit buttons", () => {
         const wrapper = getWrapper();
         const buttons = wrapper.findAll("button");
-        expect(buttons.length).toBe(2);
-        expect(buttons.at(0).text()).toBe("Edit");
-        expect(buttons.at(1).text()).toBe("Edit");
+        expect(buttons.length).toBe(3);
+        buttons.wrappers.forEach((button) => {
+            expect(button.text()).toBe("Edit");
+        });
     });
 
     it("Edit components are not rendered before group is selected", () => {
@@ -226,7 +227,7 @@ describe("Parameters", () => {
         expect(editPhases.exists()).toBe(false);
 
         expect(wrapper.emitted("updateMetadata")?.length).toBe(1);
-        expect(wrapper.emitted("updateMetadata")!![0][0]).toStrictEqual([
+        expect(wrapper.emitted("updateMetadata")![0][0]).toStrictEqual([
             paramGroupMetadata[0],
             {
                 id: "pg2",
@@ -238,15 +239,15 @@ describe("Parameters", () => {
         ]);
 
         expect(wrapper.emitted("updateValues")?.length).toBe(1);
-        expect(wrapper.emitted("updateValues")!![0][0]).toStrictEqual({
-          pg1: {
-              value1: "old1",
-              value2: "unchanged"
-          },
-          pg2: newPhases,
-          pg3: {
-              value4: "val4"
-          }
+        expect(wrapper.emitted("updateValues")![0][0]).toStrictEqual({
+            pg1: {
+                value1: "old1",
+                value2: "unchanged"
+            },
+            pg2: newPhases,
+            pg3: {
+                value4: "val4"
+            }
         });
     });
 });

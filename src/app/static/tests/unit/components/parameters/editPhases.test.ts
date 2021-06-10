@@ -1,5 +1,5 @@
 import EditPhases from "@/components/parameters/EditPhases.vue";
-import {mount, Wrapper} from "@vue/test-utils";
+import { mount, Wrapper } from "@vue/test-utils";
 import Modal from "@/components/Modal.vue";
 import Vue from "vue";
 
@@ -17,15 +17,20 @@ describe("EditPhases", () => {
     };
 
     function getWrapper(open = true) {
-        const propsData = { open, forecastStart, forecastEnd, paramGroup };
+        const propsData = {
+            open,
+            forecastStart,
+            forecastEnd,
+            paramGroup
+        };
         return mount(EditPhases, { propsData });
     }
 
     async function dragSlider(wrapper: Wrapper<Vue>, sliderIdx: number, dragAsPercent: number) {
-        //set rail element mock width before mousemoves so offset calculations will work
+        // set rail element mock width before mousemoves so offset calculations will work
         const railEl = wrapper.vm.$refs.rail as HTMLDivElement;
         jest.spyOn(railEl, "clientWidth", "get")
-          .mockImplementation(() => 1000);
+            .mockImplementation(() => 1000);
 
         const slider = wrapper.findAll(".slider").at(sliderIdx);
 
@@ -93,7 +98,7 @@ describe("EditPhases", () => {
 
     it("dragging slider updates values", async () => {
         const wrapper = getWrapper();
-        //drag second slider back from 05/01/21 to 03/01/21
+        // drag second slider back from 05/01/21 to 03/01/21
         await dragSlider(wrapper, 1, -20);
 
         const sliders = wrapper.findAll(".slider");
@@ -127,7 +132,7 @@ describe("EditPhases", () => {
 
         wrapper.find("button.btn-action").trigger("click");
         expect(wrapper.emitted("update")?.length).toBe(1);
-        expect(wrapper.emitted("update")!![0][0]).toStrictEqual([
+        expect(wrapper.emitted("update")![0][0]).toStrictEqual([
             { start: "2021-01-03", value: 0.9 },
             { start: "2021-01-07", value: 1.5 }
         ]);
@@ -143,12 +148,12 @@ describe("EditPhases", () => {
         const wrapper = getWrapper();
         const sliders = wrapper.findAll(".slider");
 
-        sliders.at(0).trigger("mousedown", {offsetX: 0});
+        sliders.at(0).trigger("mousedown", { offsetX: 0 });
         await Vue.nextTick();
         expect(sliders.at(0).element.style.zIndex).toBe("100");
         expect(sliders.at(1).element.style.zIndex).toBe("99");
 
-        sliders.at(1).trigger("mousedown", {offsetX: 0});
+        sliders.at(1).trigger("mousedown", { offsetX: 0 });
         await Vue.nextTick();
         expect(sliders.at(0).element.style.zIndex).toBe("99");
         expect(sliders.at(1).element.style.zIndex).toBe("100");

@@ -1,11 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
 import Phases from "@/components/parameters/Phases.vue";
+import Vue from "vue";
 
 describe("Phases", () => {
     it("renders as expected when first phase starts on forecastStart", () => {
         const phases = [
-            { start: "2021-01-01", value: "2" },
-            { start: "2021-01-03", value: "8" }
+            { start: "2021-01-01", value: 2 },
+            { start: "2021-01-03", value: 8 }
         ];
         const wrapper = shallowMount(Phases, {
             propsData: {
@@ -40,8 +41,8 @@ describe("Phases", () => {
 
     it("renders as expected when first phase starts after forecastStart", () => {
         const phases = [
-            { start: "2021-01-01", value: "1.5" },
-            { start: "2021-01-03", value: "0.5" }
+            { start: "2021-01-01", value: 1.5 },
+            { start: "2021-01-03", value: 0.5 }
         ];
 
         const wrapper = shallowMount(Phases, {
@@ -71,5 +72,39 @@ describe("Phases", () => {
         expect(phaseDescs.at(1).find(".phase-header").text()).toBe("Phase 2 (2 days)");
         expect(phaseDescs.at(1).find(".phase-dates").text()).toBe("03/01/21 - 04/01/21");
         expect(phaseDescs.at(1).find(".phase-rt").text()).toBe("Rt: 0.5");
+    });
+
+    it("can update when props change", async () => {
+        const phases = [
+          { start: "2021-01-01", value: 1.5 },
+          { start: "2021-01-03", value: 0.5 }
+        ];
+        const forecastStart = new Date("2020-12-31");
+        const forecastEnd = new Date("2021-01-10");
+
+        const wrapper = shallowMount(Phases, {
+          propsData: {
+            phases,
+            forecastStart,
+            forecastEnd
+          }
+        });
+
+        wrapper.setProps({
+            phases: [
+              ...phases,
+              { start: "2021-01-07", value: 2.1 }
+            ]
+        });
+        await Vue.nextTick();
+
+        const phaseBlocks = wrapper.findAll(".phase-block-container .phase-block");
+        expect(phaseBlocks.length).toBe(3);
+
+        const phaseDescs = wrapper.findAll(".phase-description");
+        expect(phaseDescs.length).toBe(3);
+        expect(phaseDescs.at(2).find(".phase-header").text()).toBe("Phase 3 (4 days)");
+        expect(phaseDescs.at(2).find(".phase-dates").text()).toBe("07/01/21 - 10/01/21");
+        expect(phaseDescs.at(2).find(".phase-rt").text()).toBe("Rt: 2.1");
     });
 });

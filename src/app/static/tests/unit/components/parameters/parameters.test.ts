@@ -3,6 +3,7 @@ import Vue from "vue";
 import Parameters from "@/components/parameters/Parameters.vue";
 import { DynamicForm } from "@reside-ic/vue-dynamic-form";
 import EditParameters from "@/components/parameters/EditParameters.vue";
+import EditPhases from "@/components/parameters/EditPhases.vue";
 import Collapsible from "@/components/Collapsible.vue";
 import Phases from "@/components/parameters/Phases.vue";
 
@@ -108,14 +109,13 @@ describe("Parameters", () => {
         expect(buttons.at(1).text()).toBe("Edit");
     });
 
-    it("renders EditParameters component", () => {
+    it("Edit components are not rendered before group is selected", () => {
         const wrapper = getWrapper();
-        const editParams = wrapper.findComponent(EditParameters);
-        expect(editParams.props("open")).toBe(false);
-        expect(editParams.props("paramGroup")).toBe(undefined);
+        expect(wrapper.findComponent(EditParameters).exists()).toBe(false);
+        expect(wrapper.findComponent(EditPhases).exists()).toBe(false);
     });
 
-    it("clicking Edit button opens EditParameters", async () => {
+    it("clicking Edit button for dynamicForm group opens EditParameters", async () => {
         const wrapper = getWrapper();
         wrapper.findAll("button").at(0).trigger("click");
         await Vue.nextTick();
@@ -124,7 +124,18 @@ describe("Parameters", () => {
         expect(editParams.props("paramGroup")).toBe(paramGroupMetadata[0]);
     });
 
-    it("cancelling from EditParameters closes modal", async () => {
+    it("clicking Edit button for rt group opens EditPhases", async () => {
+        const wrapper = getWrapper();
+        wrapper.findAll("button").at(1).trigger("click");
+        await Vue.nextTick();
+        const editPhases = wrapper.findComponent(EditPhases);
+        expect(editPhases.props("open")).toBe(true);
+        expect(editPhases.props("paramGroup")).toBe(paramGroupMetadata[1]);
+        expect(editPhases.props("forecastStart")).toBe(forecastStart);
+        expect(editPhases.props("forecastEnd")).toBe(forecastEnd);
+    });
+
+    it("cancelling from EditParameters removes modal", async () => {
         const wrapper = getWrapper();
         wrapper.findAll("button").at(0).trigger("click");
         await Vue.nextTick();
@@ -132,11 +143,21 @@ describe("Parameters", () => {
         const editParams = wrapper.findComponent(EditParameters);
         editParams.vm.$emit("cancel");
         await Vue.nextTick();
-        expect(editParams.props("open")).toBe(false);
-        expect(editParams.props("paramGroup")).toBe(undefined);
+        expect(editParams.exists()).toBe(false);
     });
 
-    it("updating from EditParameters closes modal, emits updates", async () => {
+    it("cancelling from EditPhases removes modal", async () => {
+        const wrapper = getWrapper();
+        wrapper.findAll("button").at(1).trigger("click");
+        await Vue.nextTick();
+
+        const editPhases = wrapper.findComponent(EditPhases);
+        editPhases.vm.$emit("cancel");
+        await Vue.nextTick();
+        expect(editPhases.exists()).toBe(false);
+    });
+
+    it("updating from EditParameters removes modal, emits updates", async () => {
         const wrapper = getWrapper();
         wrapper.findAll("button").at(0).trigger("click");
         await Vue.nextTick();
@@ -164,8 +185,7 @@ describe("Parameters", () => {
         const editParams = wrapper.findComponent(EditParameters);
         editParams.vm.$emit("update", newParamGroup, newParamValues);
         await Vue.nextTick();
-        expect(editParams.props("open")).toBe(false);
-        expect(editParams.props("paramGroup")).toBe(undefined);
+        expect(editParams.exists()).toBe(false);
 
         const updateMetadata = wrapper.emitted("updateMetadata")!;
         expect(updateMetadata.length).toBe(1);
@@ -188,6 +208,45 @@ describe("Parameters", () => {
             pg3: {
                 value4: "val4"
             }
+        });
+    });
+
+    it("updating from EditPhases removes modal, emits updates", async () => {
+        const wrapper = getWrapper();
+        wrapper.findAll("button").at(1).trigger("click");
+        await Vue.nextTick();
+
+        const newPhases = [
+            { start: "2021-02-01", value: "2" },
+            { start: "2021-03-01", value: "3" }
+        ];
+        const editPhases = wrapper.findComponent(EditPhases);
+        editPhases.vm.$emit("update", newPhases);
+        await Vue.nextTick();
+        expect(editPhases.exists()).toBe(false);
+
+        expect(wrapper.emitted("updateMetadata")?.length).toBe(1);
+        expect(wrapper.emitted("updateMetadata")!![0][0]).toStrictEqual([
+            paramGroupMetadata[0],
+            {
+                id: "pg2",
+                label: "Group 2",
+                type: "rt",
+                config: newPhases
+            },
+            paramGroupMetadata[2]
+        ]);
+
+        expect(wrapper.emitted("updateValues")?.length).toBe(1);
+        expect(wrapper.emitted("updateValues")!![0][0]).toStrictEqual({
+          pg1: {
+              value1: "old1",
+              value2: "unchanged"
+          },
+          pg2: newPhases,
+          pg3: {
+              value4: "val4"
+          }
         });
     });
 });

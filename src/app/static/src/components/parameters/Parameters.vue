@@ -27,7 +27,7 @@
       </div>
     </div>
     <edit-parameters
-      v-if="editParamGroup && editParamGroup.type === 'dynamic-form'"
+      v-if="editParamGroup && editParamGroup.type === 'dynamicForm'"
       class="edit-parameters"
       :open="paramsModalOpen"
       :paramGroup="editParamGroup"

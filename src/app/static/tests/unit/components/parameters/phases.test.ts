@@ -76,24 +76,24 @@ describe("Phases", () => {
 
     it("can update when props change", async () => {
         const phases = [
-          { start: "2021-01-01", value: 1.5 },
-          { start: "2021-01-03", value: 0.5 }
+            { start: "2021-01-01", value: 1.5 },
+            { start: "2021-01-03", value: 0.5 }
         ];
         const forecastStart = new Date("2020-12-31");
         const forecastEnd = new Date("2021-01-10");
 
         const wrapper = shallowMount(Phases, {
-          propsData: {
-            phases,
-            forecastStart,
-            forecastEnd
-          }
+            propsData: {
+                phases,
+                forecastStart,
+                forecastEnd
+            }
         });
 
         wrapper.setProps({
             phases: [
-              ...phases,
-              { start: "2021-01-07", value: 2.1 }
+                ...phases,
+                { start: "2021-01-07", value: 2.1 }
             ]
         });
         await Vue.nextTick();

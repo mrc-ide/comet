@@ -11,7 +11,7 @@
                       @click="editParameters(paramGroup.id)">Edit</button>
               <span class="clearfix"></span>
             </div>
-            <div v-if="paramGroup.type == 'rt'">
+            <div v-if="paramGroup.type === 'rt'">
               <phases
                 :phases="paramGroup.config"
                 :forecastEnd="forecastEnd"

@@ -10,7 +10,7 @@
                    :key="index"
                    role="slider"
                    :tabindex="index"
-                   :style="`left:${sliderPosition(value)}%;z-index:${value.value.zIndex};`"
+                   :style="{ left:`${sliderPosition(value)}%`, zIndex: value.value.zIndex }"
                    class="slider"
                    :class="phaseClassFromIndex(index+1)"
                    :aria-valuemin="sliderMin(index)"
@@ -222,14 +222,14 @@ export default defineComponent({
       top: 3rem;
       cursor: pointer;
       height: 7rem;
-      width: 8rem;
-      margin-left: -4rem;
+      width: 9rem;
+      margin-left: -4.5rem;
 
       .slider-spike {
         position: absolute;
         width: 0.4rem;
         top: -3rem;
-        left: 3.8rem;
+        left: 4.3rem;
         height: 13rem;
       }
 

@@ -11,23 +11,38 @@
                       @click="editParameters(paramGroup.id)">Edit</button>
               <span class="clearfix"></span>
             </div>
-            <phases
-              v-if="paramGroup.type === 'rt'"
-              :phases="paramGroup.config"
-              :forecastEnd="forecastEnd"
-              :forecastStart="forecastStart"
-            ></phases>
+            <div v-if="paramGroup.type === 'rt'">
+              <phases
+                :phases="paramGroup.config"
+                :forecastEnd="forecastEnd"
+                :forecastStart="forecastStart"
+                class="mt-2"
+              ></phases>
+              <button class="btn btn-action float-right mb-3 mr-3"
+                      @click="editPhases(paramGroup.id)">Edit</button>
+              <span class="clearfix"></span>
+            </div>
           </div>
         </collapsible>
       </div>
     </div>
     <edit-parameters
+      v-if="editParamGroup && editParamGroup.type === 'dynamicForm'"
       class="edit-parameters"
-      :open="modalOpen"
+      :open="paramsModalOpen"
       :paramGroup="editParamGroup"
       @cancel="closeModal"
       @update="updateParameters"
     ></edit-parameters>
+    <edit-phases
+      v-if="editParamGroup && editParamGroup.type === 'rt'"
+      class="edit-parameters"
+      :open="phasesModalOpen"
+      :forecastStart="forecastStart"
+      :forecastEnd="forecastEnd"
+      :paramGroup="editParamGroup"
+      @cancel="closePhases"
+      @update="updatePhases"></edit-phases>
   </div>
 </template>
 
@@ -37,10 +52,11 @@ import {
     DynamicForm,
     DynamicFormData
 } from "@reside-ic/vue-dynamic-form";
-import { Data, ParameterGroupMetadata } from "@/types";
+import { Data, ParameterGroupMetadata, Rt } from "@/types";
 import Collapsible from "@/components/Collapsible.vue";
 import EditParameters from "./EditParameters.vue";
 import Phases from "./Phases.vue";
+import EditPhases from "./EditPhases.vue";
 
 interface Props {
     paramGroupMetadata: ParameterGroupMetadata[]
@@ -54,6 +70,7 @@ export default defineComponent({
     components: {
         DynamicForm,
         EditParameters,
+        EditPhases,
         Collapsible,
         Phases
     },
@@ -64,7 +81,8 @@ export default defineComponent({
         forecastEnd: Date
     },
     setup(props: Props, context) {
-        const modalOpen = ref(false);
+        const paramsModalOpen = ref(false);
+        const phasesModalOpen = ref(false);
         const editParamGroupId = ref("");
 
         const editParamGroup = computed(() => {
@@ -73,11 +91,21 @@ export default defineComponent({
 
         function editParameters(paramGroupId: string) {
             editParamGroupId.value = paramGroupId;
-            modalOpen.value = true;
+            paramsModalOpen.value = true;
+        }
+
+        function editPhases(paramGroupId: string) {
+            editParamGroupId.value = paramGroupId;
+            phasesModalOpen.value = true;
         }
 
         function closeModal() {
-            modalOpen.value = false;
+            paramsModalOpen.value = false;
+            editParamGroupId.value = "";
+        }
+
+        function closePhases() {
+            phasesModalOpen.value = false;
             editParamGroupId.value = "";
         }
 
@@ -102,13 +130,30 @@ export default defineComponent({
             context.emit("updateValues", newParamValues);
         }
 
+        function updatePhases(newPhases: Rt[]) {
+            const groupId = editParamGroupId.value;
+            closePhases();
+            const idx = props.paramGroupMetadata.findIndex((g) => g.id === groupId);
+            const newMetadata = [...props.paramGroupMetadata];
+            newMetadata[idx] = { ...newMetadata[idx], config: newPhases };
+            context.emit("updateMetadata", newMetadata);
+
+            const newParamValues = { ...props.paramValues };
+            newParamValues[groupId] = newPhases;
+            context.emit("updateValues", newParamValues);
+        }
+
         return {
-            modalOpen,
+            paramsModalOpen,
+            phasesModalOpen,
             editParamGroupId,
             editParamGroup,
             editParameters,
+            editPhases,
             closeModal,
-            updateParameters
+            closePhases,
+            updateParameters,
+            updatePhases
         };
     }
 });

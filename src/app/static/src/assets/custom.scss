@@ -33,7 +33,6 @@ $theme-blue: #003e74;
           .dynamic-form-readonly-value {
             padding-top: 7px;
           }
-
         }
       }
     }
@@ -49,14 +48,6 @@ $theme-blue: #003e74;
       bottom: 0px;
     }
 
-    .phase-odd {
-      background-color: #d4effc;
-    }
-
-    .phase-even {
-      background-color: #ffe4e4;
-    }
-
     .phase-block-base {
       width: 100%;
       height: 0.1rem;
@@ -69,6 +60,14 @@ $theme-blue: #003e74;
       margin-bottom: 1.5rem;
     }
   }
+}
+
+.phase-odd {
+  background-color: #d4effc;
+}
+
+.phase-even {
+  background-color: #ffe4e4;
 }
 
 .btn-action {

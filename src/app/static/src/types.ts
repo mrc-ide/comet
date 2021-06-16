@@ -27,7 +27,7 @@ export interface ChartMetadata {
 
 export interface Rt {
     start: string,
-    value: string
+    value: number
 }
 
 export interface ParameterGroupJsonataMetadata {

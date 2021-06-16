@@ -261,10 +261,10 @@ describe("EditPhases", () => {
     });
 
     it("Rt value is unchanged when user clears value", async () => {
-      const wrapper = getWrapper();
-      await inputRtValue(wrapper, 0, "");
+        const wrapper = getWrapper();
+        await inputRtValue(wrapper, 0, "");
 
-      expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("0.9");
-      expect(wrapper.vm.$data.sliderValues[0].value.rt).toBe(0.9);
+        expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("0.9");
+        expect(wrapper.vm.$data.sliderValues[0].value.rt).toBe(0.9);
     });
 });

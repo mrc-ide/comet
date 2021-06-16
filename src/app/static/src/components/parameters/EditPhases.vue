@@ -27,15 +27,17 @@
                  @mouseup="mouseUp">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
               <div class="slider-text">
-                <span class="phase-label font-weight-bold">
-                  Phase {{displayPhases[index].index}}
-                </span>
-                <span class="phase-days">
-                  ({{displayPhases[index].days}} day{{displayPhases[index].days > 1 ? "s" : ""}})
-                </span>
-                <br/>
-                <div class="phase-start">Start: {{displayPhases[index].start}}</div>
-                <div class="phase-end">End: {{displayPhases[index].end}}</div>
+                <div @mousedown.prevent="">
+                  <span class="phase-label font-weight-bold">
+                    Phase {{displayPhases[index].index}}
+                  </span>
+                  <span class="phase-days">
+                    ({{displayPhases[index].days}} day{{displayPhases[index].days > 1 ? "s" : ""}})
+                  </span>
+                  <br/>
+                  <div class="phase-start">Start: {{displayPhases[index].start}}</div>
+                  <div class="phase-end">End: {{displayPhases[index].end}}</div>
+                </div>
                 <div class="phase-rt">Rt:
                   <input
                     :id="`phase-rt-${index}`"

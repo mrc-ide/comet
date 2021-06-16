@@ -2,42 +2,56 @@
   <div>
     <modal class="phase-modal" :open="open">
       <h3>Edit {{paramGroup && paramGroup.label}}</h3>
-      <p>Click on a Phase to drag it to a new start date.</p>
-        <div class="phase-editor" @mouseup="mouseUp">
-          <div class="phases-container">
-            <div ref="rail" class="rail">
-              <div v-for="(value, index) in sliderValues" :id="`slider-${index}`"
-                   :key="index"
-                   role="slider"
-                   :tabindex="index"
-                   :style="{ left:`${sliderPosition(value)}%`, zIndex: value.value.zIndex }"
-                   class="slider"
-                   :class="phaseClassFromIndex(index+1)"
-                   :aria-valuemin="sliderMin(index)"
-                   :aria-valuenow="value.value.daysFromStart"
-                   :aria-valuetext="displayPhases[index].start"
-                   :aria-valuemax="sliderMax(index)"
-                   :aria-label="`Phase ${displayPhases[index].index}`"
-                   @mousemove.stop.prevent="mouseMove(index, $event)"
-                   @mousedown.stop.prevent="mouseDown(index, $event)"
-                   @mouseup="mouseUp">
-                <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
-                <div class="slider-text">
-                  <span class="phase-label font-weight-bold">
-                    Phase {{displayPhases[index].index}}
-                  </span>
-                  <span class="phase-days">
-                    ({{displayPhases[index].days}} day{{displayPhases[index].days > 1 ? "s" : ""}})
-                  </span>
-                  <br/>
-                  <div class="phase-start">Start: {{displayPhases[index].start}}</div>
-                  <div class="phase-end">End: {{displayPhases[index].end}}</div>
-                  <div class="phase-rt">Rt: {{displayPhases[index].value}}</div>
+      <p>
+        Click on a Phase to drag it to a new start date.
+        Rt values must be between {{rtMin}} and {{rtMax}}.
+      </p>
+      <div class="phase-editor" @mouseup="mouseUp">
+        <div class="phases-container">
+          <div ref="rail" class="rail">
+            <div v-for="(value, index) in sliderValues"
+                 :id="`slider-${index}-${sliderUpdateKeys[index].value}`"
+                 :key="index"
+                 role="slider"
+                 :tabindex="index"
+                 :style="{ left:`${sliderPosition(value)}%`, zIndex: value.value.zIndex }"
+                 class="slider"
+                 :class="phaseClassFromIndex(index+1)"
+                 :aria-valuemin="sliderMin(index)"
+                 :aria-valuenow="value.value.daysFromStart"
+                 :aria-valuetext="displayPhases[index].start"
+                 :aria-valuemax="sliderMax(index)"
+                 :aria-label="`Phase ${displayPhases[index].index}`"
+                 @mousemove="mouseMove(index, $event)"
+                 @mousedown="mouseDown(index, $event)"
+                 @mouseup="mouseUp">
+              <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
+              <div class="slider-text">
+                <span class="phase-label font-weight-bold">
+                  Phase {{displayPhases[index].index}}
+                </span>
+                <span class="phase-days">
+                  ({{displayPhases[index].days}} day{{displayPhases[index].days > 1 ? "s" : ""}})
+                </span>
+                <br/>
+                <div class="phase-start">Start: {{displayPhases[index].start}}</div>
+                <div class="phase-end">End: {{displayPhases[index].end}}</div>
+                <div class="phase-rt">Rt:
+                  <input
+                    :id="`phase-rt-${index}`"
+                    type="number"
+                    :min="rtMin"
+                    :max="rtMax"
+                    :value="sliderValues[index].value.rt"
+                    step=".01"
+                    @change="updateRt(index, $event)"
+                    @mousedown.stop="">
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
       <template v-slot:footer>
         <button class="btn btn-action"
                 @click="updatePhases">OK</button>
@@ -92,6 +106,13 @@ export default defineComponent({
     },
     setup(props: Props, context) {
         const rail: Ref<HTMLElement | null> = ref(null); // ref this element to find its width
+
+        const rtMin = 0;
+        const rtMax = 4;
+
+        // We need to force re-render of Rt input if user enters invalid value - get vue to do this
+        // by updating key of parent
+        const sliderUpdateKeys = (props.paramGroup.config as Rt[]).map(() => ref(0));
 
         const railWidth = () => {
             return rail.value ? (rail.value as HTMLElement).clientWidth : 0;
@@ -172,6 +193,21 @@ export default defineComponent({
             return (value.value.daysFromStart / totalDays) * 100;
         };
 
+        const updateRt = (index: number, event: Event) => {
+            const target = event.target as HTMLInputElement;
+            if (target.value !== "") {
+                let value = Math.round(parseFloat(target.value) * 100) / 100;
+                if (value < rtMin) {
+                    value = rtMin;
+                }
+                if (value > rtMax) {
+                    value = rtMax;
+                }
+                sliderValues[index].value.rt = value;
+            }
+            sliderUpdateKeys[index].value += 1;
+        };
+
         const cancel = () => {
             context.emit("cancel");
         };
@@ -182,7 +218,10 @@ export default defineComponent({
 
         return {
             rail,
+            rtMin,
+            rtMax,
             sliderValues,
+            sliderUpdateKeys,
             phases,
             displayPhases,
             sliderPosition,
@@ -191,6 +230,7 @@ export default defineComponent({
             mouseMove,
             mouseDown,
             mouseUp,
+            updateRt,
             cancel,
             updatePhases,
             phaseClassFromIndex

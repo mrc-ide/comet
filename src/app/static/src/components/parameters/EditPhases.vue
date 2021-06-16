@@ -43,7 +43,7 @@
                     :min="rtMin"
                     :max="rtMax"
                     :value="sliderValues[index].value.rt"
-                    step=".01"
+                    step="0.01"
                     @change="updateRt(index, $event)"
                     @mousedown.stop="">
                 </div>

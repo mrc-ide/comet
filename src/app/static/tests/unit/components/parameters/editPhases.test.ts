@@ -55,8 +55,8 @@ describe("EditPhases", () => {
         const wrapper = getWrapper();
         const modal = wrapper.findComponent(Modal);
         expect(modal.find("h3").text()).toBe("Edit Social restrictions");
-        expect(modal.find("p").text()).toContain("Click on a Phase to drag it to a new start date.");
-        expect(modal.find("p").text()).toContain("Rt values must be between 0 and 4.");
+        expect(modal.find(".mb-3").text()).toContain("Click on a Phase to drag it to a new start date.");
+        expect(modal.find("#rt-range-text").text()).toBe("Rt values must be between 0 and 4.");
 
         const rail = modal.find(".phase-editor .phases-container .rail");
 
@@ -188,13 +188,13 @@ describe("EditPhases", () => {
         expect(sliders.at(1).element.style.zIndex).toBe("100");
     });
 
-    it("mousedown on input brings slider to front", async () => {
+    it("click on input brings slider to front", async () => {
         const wrapper = getWrapper();
         const sliders = wrapper.findAll(".slider");
 
         await sliders.at(0).trigger("mousedown", { offsetX: 0 });
 
-        await sliders.at(1).find("input").trigger("mousedown", { offsetX: 0 });
+        await sliders.at(1).find("input").trigger("click", { offsetX: 0 });
         expect(sliders.at(0).element.style.zIndex).toBe("99");
         expect(sliders.at(1).element.style.zIndex).toBe("100");
     });
@@ -262,7 +262,7 @@ describe("EditPhases", () => {
         expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("0");
         expect(wrapper.vm.$data.sliderValues[0].value.rt).toBe(0);
 
-        //shows validation animation
+        // shows validation animation
         const rtRangeText = wrapper.find("#rt-range-text");
         expect(rtRangeText.classes()).toStrictEqual(["d-inline-block", "animate__animated", "animate__headShake"]);
         const input1 = wrapper.findAll(".slider input").at(0);
@@ -270,10 +270,10 @@ describe("EditPhases", () => {
         const input2 = wrapper.findAll(".slider input").at(1);
         expect(input2.classes()).toStrictEqual(["phase-rt-input"]);
         setTimeout(() => {
-          expect(rtRangeText.classes()).toStrictEqual(["d-inline-block"]);
-          expect(input1.classes()).toStrictEqual(["phase-rt-input"]);
-          expect(input2.classes()).toStrictEqual(["phase-rt-input"]);
-          done();
+            expect(rtRangeText.classes()).toStrictEqual(["d-inline-block"]);
+            expect(input1.classes()).toStrictEqual(["phase-rt-input"]);
+            expect(input2.classes()).toStrictEqual(["phase-rt-input"]);
+            done();
         }, 1100);
     });
 
@@ -284,7 +284,7 @@ describe("EditPhases", () => {
         expect((wrapper.find("#phase-rt-1").element as HTMLInputElement).value).toBe("4");
         expect(wrapper.vm.$data.sliderValues[1].value.rt).toBe(4);
 
-        //shows validation animation
+        // shows validation animation
         const rtRangeText = wrapper.find("#rt-range-text");
         expect(rtRangeText.classes()).toStrictEqual(["d-inline-block", "animate__animated", "animate__headShake"]);
         const input1 = wrapper.findAll(".slider input").at(0);
@@ -292,10 +292,10 @@ describe("EditPhases", () => {
         const input2 = wrapper.findAll(".slider input").at(1);
         expect(input2.classes()).toStrictEqual(["phase-rt-input", "animate__animated", "animate__headShake"]);
         setTimeout(() => {
-          expect(rtRangeText.classes()).toStrictEqual(["d-inline-block"]);
-          expect(input1.classes()).toStrictEqual(["phase-rt-input"]);
-          expect(input2.classes()).toStrictEqual(["phase-rt-input"]);
-          done();
+            expect(rtRangeText.classes()).toStrictEqual(["d-inline-block"]);
+            expect(input1.classes()).toStrictEqual(["phase-rt-input"]);
+            expect(input2.classes()).toStrictEqual(["phase-rt-input"]);
+            done();
         }, 1100);
     });
 

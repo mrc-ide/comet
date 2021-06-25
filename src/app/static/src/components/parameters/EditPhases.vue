@@ -2,7 +2,7 @@
   <div>
     <modal class="phase-modal" :open="open">
       <h3>Edit {{paramGroup && paramGroup.label}}</h3>
-      <div>
+      <div class="mb-3">
         Click on a Phase to drag it to a new start date.
         <div id="rt-range-text"
              class="d-inline-block"
@@ -53,7 +53,8 @@
                     :value="sliderValues[index].value.rt"
                     step="0.01"
                     @change="updateRt(index, $event)"
-                    @mousedown.stop="bringSliderToFront(index)">
+                    @mousedown.stop=""
+                    @click="bringSliderToFront(index)">
                 </div>
               </div>
             </div>

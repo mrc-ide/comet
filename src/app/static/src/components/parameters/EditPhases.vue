@@ -2,10 +2,14 @@
   <div>
     <modal class="phase-modal" :open="open">
       <h3>Edit {{paramGroup && paramGroup.label}}</h3>
-      <p>
+      <div>
         Click on a Phase to drag it to a new start date.
-        Rt values must be between {{rtMin}} and {{rtMax}}.
-      </p>
+        <div id="rt-range-text"
+             class="d-inline-block"
+             :class="rtTextValidationClass()">
+            Rt values must be between {{rtMin}} and {{rtMax}}.
+        </div>
+      </div>
       <div class="phase-editor" @mouseup="mouseUp">
         <div class="phases-container">
           <div ref="rail" class="rail">
@@ -41,13 +45,15 @@
                 <div class="phase-rt">Rt:
                   <input
                     :id="`phase-rt-${index}`"
+                    class="phase-rt-input"
+                    :class="rtInputValidationClass(index)"
                     type="number"
                     :min="rtMin"
                     :max="rtMax"
                     :value="sliderValues[index].value.rt"
                     step="0.01"
                     @change="updateRt(index, $event)"
-                    @mousedown.stop="">
+                    @mousedown.stop="bringSliderToFront(index)">
                 </div>
               </div>
             </div>
@@ -111,6 +117,7 @@ export default defineComponent({
 
         const rtMin = 0;
         const rtMax = 4;
+        const animateRtValidationIndex: Ref<number | null> = ref(null);
 
         // We need to force re-render of Rt input if user enters invalid value - get vue to do this
         // by updating key of parent
@@ -164,15 +171,18 @@ export default defineComponent({
             return Math.round(Math.min(sliderMax(index), result));
         };
 
-        const mouseDown = (index: number, event: MouseEvent) => {
-            movingSlider.value = index;
-            moveStartOffset.value = event.offsetX;
-
-            // bring slider to front
+        const bringSliderToFront = (index: number) => {
             sliderValues.forEach((sv: Ref<SliderValue>, arrIdx: number) => {
                 const val = sv.value;
                 val.zIndex = (arrIdx === index) ? 100 : 99;
             });
+        };
+
+        const mouseDown = (index: number, event: MouseEvent) => {
+            movingSlider.value = index;
+            moveStartOffset.value = event.offsetX;
+
+            bringSliderToFront(index);
         };
 
         const mouseMove = (index: number, event: MouseEvent) => {
@@ -195,15 +205,33 @@ export default defineComponent({
             return (value.value.daysFromStart / totalDays) * 100;
         };
 
+        const showRtValidationAnimation = (index: number) => {
+            animateRtValidationIndex.value = index;
+            setTimeout(() => {
+                animateRtValidationIndex.value = null;
+            }, 1000);
+        };
+
+        const animateClass = "animate__animated animate__headShake";
+        const rtTextValidationClass = () => {
+            return animateRtValidationIndex.value !== null ? animateClass : "";
+        };
+
+        const rtInputValidationClass = (index: number) => {
+            return animateRtValidationIndex.value === index ? animateClass : "";
+        };
+
         const updateRt = (index: number, event: Event) => {
             const target = event.target as HTMLInputElement;
             if (target.value !== "") {
                 let value = Math.round(parseFloat(target.value) * 100) / 100;
                 if (value < rtMin) {
                     value = rtMin;
+                    showRtValidationAnimation(index);
                 }
                 if (value > rtMax) {
                     value = rtMax;
+                    showRtValidationAnimation(index);
                 }
                 sliderValues[index].value.rt = value;
             }
@@ -222,6 +250,7 @@ export default defineComponent({
             rail,
             rtMin,
             rtMax,
+            animateRtValidationIndex,
             sliderValues,
             sliderUpdateKeys,
             phases,
@@ -229,6 +258,9 @@ export default defineComponent({
             sliderPosition,
             sliderMin,
             sliderMax,
+            bringSliderToFront,
+            rtTextValidationClass,
+            rtInputValidationClass,
             mouseMove,
             mouseDown,
             mouseUp,
@@ -241,6 +273,8 @@ export default defineComponent({
 });
 </script>
 <style lang="scss">
+@import '../../../node_modules/animate.css/animate.css';
+
 .phase-modal {
   @media (min-width: 1000px) {
     .modal-dialog-centered {
@@ -278,6 +312,10 @@ export default defineComponent({
       .slider-text {
         position: absolute;
         padding: 0.5rem;
+
+        .phase-rt-input {
+          width: 4rem;
+        }
       }
     }
 

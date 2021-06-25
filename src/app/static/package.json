@@ -13,6 +13,7 @@
     "@reside-ic/vue-dynamic-form": "^0.7.1",
     "@vue/composition-api": "^1.0.0-rc.8",
     "ajv": "^8.2.0",
+    "animate.css": "^4.1.1",
     "axios": "^0.21.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",

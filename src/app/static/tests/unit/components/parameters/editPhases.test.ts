@@ -188,6 +188,17 @@ describe("EditPhases", () => {
         expect(sliders.at(1).element.style.zIndex).toBe("100");
     });
 
+    it("mousedown on input brings slider to front", async () => {
+        const wrapper = getWrapper();
+        const sliders = wrapper.findAll(".slider");
+
+        await sliders.at(0).trigger("mousedown", { offsetX: 0 });
+
+        await sliders.at(1).find("input").trigger("mousedown", { offsetX: 0 });
+        expect(sliders.at(0).element.style.zIndex).toBe("99");
+        expect(sliders.at(1).element.style.zIndex).toBe("100");
+    });
+
     it("slider value is limited by forecast start", async () => {
         const wrapper = getWrapper();
         await dragSlider(wrapper, 0, -100);
@@ -244,20 +255,48 @@ describe("EditPhases", () => {
         expect(wrapper.vm.$data.sliderValues[1].value.rt).toBe(1.32);
     });
 
-    it("sets Rt value to min when user enters value less than min", async () => {
+    it("sets Rt value to min when user enters value less than min", async (done) => {
         const wrapper = getWrapper();
         await inputRtValue(wrapper, 0, "-0.1");
 
         expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("0");
         expect(wrapper.vm.$data.sliderValues[0].value.rt).toBe(0);
+
+        //shows validation animation
+        const rtRangeText = wrapper.find("#rt-range-text");
+        expect(rtRangeText.classes()).toStrictEqual(["d-inline-block", "animate__animated", "animate__headShake"]);
+        const input1 = wrapper.findAll(".slider input").at(0);
+        expect(input1.classes()).toStrictEqual(["phase-rt-input", "animate__animated", "animate__headShake"]);
+        const input2 = wrapper.findAll(".slider input").at(1);
+        expect(input2.classes()).toStrictEqual(["phase-rt-input"]);
+        setTimeout(() => {
+          expect(rtRangeText.classes()).toStrictEqual(["d-inline-block"]);
+          expect(input1.classes()).toStrictEqual(["phase-rt-input"]);
+          expect(input2.classes()).toStrictEqual(["phase-rt-input"]);
+          done();
+        }, 1100);
     });
 
-    it("sets Rt value to max when user enters value greater than max", async () => {
+    it("sets Rt value to max when user enters value greater than max", async (done) => {
         const wrapper = getWrapper();
         await inputRtValue(wrapper, 1, "5.5555");
 
         expect((wrapper.find("#phase-rt-1").element as HTMLInputElement).value).toBe("4");
         expect(wrapper.vm.$data.sliderValues[1].value.rt).toBe(4);
+
+        //shows validation animation
+        const rtRangeText = wrapper.find("#rt-range-text");
+        expect(rtRangeText.classes()).toStrictEqual(["d-inline-block", "animate__animated", "animate__headShake"]);
+        const input1 = wrapper.findAll(".slider input").at(0);
+        expect(input1.classes()).toStrictEqual(["phase-rt-input"]);
+        const input2 = wrapper.findAll(".slider input").at(1);
+        expect(input2.classes()).toStrictEqual(["phase-rt-input", "animate__animated", "animate__headShake"]);
+        setTimeout(() => {
+          expect(rtRangeText.classes()).toStrictEqual(["d-inline-block"]);
+          expect(input1.classes()).toStrictEqual(["phase-rt-input"]);
+          expect(input2.classes()).toStrictEqual(["phase-rt-input"]);
+          done();
+        }, 1100);
     });
 
     it("Rt value is unchanged when user clears value", async () => {

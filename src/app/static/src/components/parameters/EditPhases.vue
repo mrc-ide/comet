@@ -12,7 +12,8 @@
       </div>
       <div class="phase-editor" @mouseup="mouseUp">
         <div class="phases-container">
-          <div ref="rail" class="rail">
+          <div ref="rail" class="rail"
+               @click="addPhase">
             <div v-for="(value, index) in sliderValues"
                  :id="`slider-${index}-${sliderUpdateKeys[index].value}`"
                  :key="index"
@@ -28,7 +29,8 @@
                  :aria-label="`Phase ${displayPhases[index].index}`"
                  @mousemove="mouseMove(index, $event)"
                  @mousedown="mouseDown(index, $event)"
-                 @mouseup="mouseUp">
+                 @mouseup="mouseUp"
+                 @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
               <div class="slider-text">
                 <div @mousedown.prevent="">
@@ -186,11 +188,15 @@ export default defineComponent({
             bringSliderToFront(index);
         };
 
+        const sliderValueAsDays = (sliderValue: number) => {
+            const valueAsRangeFraction = sliderValue / railWidth();
+            return totalDays * valueAsRangeFraction;
+        };
+
         const mouseMove = (index: number, event: MouseEvent) => {
             if (movingSlider.value === index && moveStartOffset.value !== null) {
                 const offsetDiff = event.offsetX - moveStartOffset.value;
-                const diffAsRangeFraction = offsetDiff / railWidth();
-                const valueDiff = totalDays * diffAsRangeFraction;
+                const valueDiff = sliderValueAsDays(offsetDiff);
                 const oldValue = sliderValues[index].value.daysFromStart;
                 const newValue = limitSliderValue(index, oldValue + valueDiff);
                 sliderValues[index].value.daysFromStart = newValue;
@@ -239,6 +245,11 @@ export default defineComponent({
             sliderUpdateKeys[index].value += 1;
         };
 
+        const addPhase = (event: MouseEvent) => {
+            const days = sliderValueAsDays(event.offsetX);
+            alert(`adding phase with offset ${JSON.stringify(event.offsetX)}, days from start: ${days}`);
+        };
+
         const cancel = () => {
             context.emit("cancel");
         };
@@ -266,6 +277,7 @@ export default defineComponent({
             mouseDown,
             mouseUp,
             updateRt,
+            addPhase,
             cancel,
             updatePhases,
             phaseClassFromIndex

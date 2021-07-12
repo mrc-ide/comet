@@ -2,27 +2,36 @@
   <div>
     <modal class="phase-modal" :open="open">
       <h3>Edit {{paramGroup && paramGroup.label}}</h3>
-      <p>Click on a Phase to drag it to a new start date.</p>
-        <div class="phase-editor" @mouseup="mouseUp">
-          <div class="phases-container">
-            <div ref="rail" class="rail">
-              <div v-for="(value, index) in sliderValues" :id="`slider-${index}`"
-                   :key="index"
-                   role="slider"
-                   :tabindex="index"
-                   :style="{ left:`${sliderPosition(value)}%`, zIndex: value.value.zIndex }"
-                   class="slider"
-                   :class="phaseClassFromIndex(index+1)"
-                   :aria-valuemin="sliderMin(index)"
-                   :aria-valuenow="value.value.daysFromStart"
-                   :aria-valuetext="displayPhases[index].start"
-                   :aria-valuemax="sliderMax(index)"
-                   :aria-label="`Phase ${displayPhases[index].index}`"
-                   @mousemove.stop.prevent="mouseMove(index, $event)"
-                   @mousedown.stop.prevent="mouseDown(index, $event)"
-                   @mouseup="mouseUp">
-                <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
-                <div class="slider-text">
+      <div class="mb-3">
+        Click on a Phase to drag it to a new start date.
+        <div id="rt-range-text"
+             class="d-inline-block"
+             :class="rtTextValidationClass()">
+            Rt values must be between {{rtMin}} and {{rtMax}}.
+        </div>
+      </div>
+      <div class="phase-editor" @mouseup="mouseUp">
+        <div class="phases-container">
+          <div ref="rail" class="rail">
+            <div v-for="(value, index) in sliderValues"
+                 :id="`slider-${index}-${sliderUpdateKeys[index].value}`"
+                 :key="index"
+                 role="slider"
+                 :tabindex="index"
+                 :style="{ left:`${sliderPosition(value)}%`, zIndex: value.value.zIndex }"
+                 class="slider"
+                 :class="phaseClassFromIndex(index+1)"
+                 :aria-valuemin="sliderMin(index)"
+                 :aria-valuenow="value.value.daysFromStart"
+                 :aria-valuetext="displayPhases[index].start"
+                 :aria-valuemax="sliderMax(index)"
+                 :aria-label="`Phase ${displayPhases[index].index}`"
+                 @mousemove="mouseMove(index, $event)"
+                 @mousedown="mouseDown(index, $event)"
+                 @mouseup="mouseUp">
+              <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
+              <div class="slider-text">
+                <div @mousedown.prevent="">
                   <span class="phase-label font-weight-bold">
                     Phase {{displayPhases[index].index}}
                   </span>
@@ -32,12 +41,26 @@
                   <br/>
                   <div class="phase-start">Start: {{displayPhases[index].start}}</div>
                   <div class="phase-end">End: {{displayPhases[index].end}}</div>
-                  <div class="phase-rt">Rt: {{displayPhases[index].value}}</div>
+                </div>
+                <div class="phase-rt">Rt:
+                  <input
+                    :id="`phase-rt-${index}`"
+                    class="phase-rt-input"
+                    :class="rtInputValidationClass(index)"
+                    type="number"
+                    :min="rtMin"
+                    :max="rtMax"
+                    :value="sliderValues[index].value.rt"
+                    step="0.01"
+                    @change="updateRt(index, $event)"
+                    @mousedown.stop=""
+                    @click="bringSliderToFront(index)">
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
       <template v-slot:footer>
         <button class="btn btn-action"
                 @click="updatePhases">OK</button>
@@ -93,6 +116,14 @@ export default defineComponent({
     setup(props: Props, context) {
         const rail: Ref<HTMLElement | null> = ref(null); // ref this element to find its width
 
+        const rtMin = 0;
+        const rtMax = 4;
+        const animateRtValidationIndex: Ref<number | null> = ref(null);
+
+        // We need to force re-render of Rt input if user enters invalid value - get vue to do this
+        // by updating key of parent
+        const sliderUpdateKeys = (props.paramGroup.config as Rt[]).map(() => ref(0));
+
         const railWidth = () => {
             return rail.value ? (rail.value as HTMLElement).clientWidth : 0;
         };
@@ -141,15 +172,18 @@ export default defineComponent({
             return Math.round(Math.min(sliderMax(index), result));
         };
 
-        const mouseDown = (index: number, event: MouseEvent) => {
-            movingSlider.value = index;
-            moveStartOffset.value = event.offsetX;
-
-            // bring slider to front
+        const bringSliderToFront = (index: number) => {
             sliderValues.forEach((sv: Ref<SliderValue>, arrIdx: number) => {
                 const val = sv.value;
                 val.zIndex = (arrIdx === index) ? 100 : 99;
             });
+        };
+
+        const mouseDown = (index: number, event: MouseEvent) => {
+            movingSlider.value = index;
+            moveStartOffset.value = event.offsetX;
+
+            bringSliderToFront(index);
         };
 
         const mouseMove = (index: number, event: MouseEvent) => {
@@ -172,6 +206,39 @@ export default defineComponent({
             return (value.value.daysFromStart / totalDays) * 100;
         };
 
+        const showRtValidationAnimation = (index: number) => {
+            animateRtValidationIndex.value = index;
+            setTimeout(() => {
+                animateRtValidationIndex.value = null;
+            }, 1000);
+        };
+
+        const animateClass = "animate__animated animate__headShake";
+        const rtTextValidationClass = () => {
+            return animateRtValidationIndex.value !== null ? animateClass : "";
+        };
+
+        const rtInputValidationClass = (index: number) => {
+            return animateRtValidationIndex.value === index ? animateClass : "";
+        };
+
+        const updateRt = (index: number, event: Event) => {
+            const target = event.target as HTMLInputElement;
+            if (target.value !== "") {
+                let value = Math.round(parseFloat(target.value) * 100) / 100;
+                if (value < rtMin) {
+                    value = rtMin;
+                    showRtValidationAnimation(index);
+                }
+                if (value > rtMax) {
+                    value = rtMax;
+                    showRtValidationAnimation(index);
+                }
+                sliderValues[index].value.rt = value;
+            }
+            sliderUpdateKeys[index].value += 1;
+        };
+
         const cancel = () => {
             context.emit("cancel");
         };
@@ -182,15 +249,23 @@ export default defineComponent({
 
         return {
             rail,
+            rtMin,
+            rtMax,
+            animateRtValidationIndex,
             sliderValues,
+            sliderUpdateKeys,
             phases,
             displayPhases,
             sliderPosition,
             sliderMin,
             sliderMax,
+            bringSliderToFront,
+            rtTextValidationClass,
+            rtInputValidationClass,
             mouseMove,
             mouseDown,
             mouseUp,
+            updateRt,
             cancel,
             updatePhases,
             phaseClassFromIndex
@@ -199,6 +274,8 @@ export default defineComponent({
 });
 </script>
 <style lang="scss">
+@import '../../../node_modules/animate.css/animate.css';
+
 .phase-modal {
   @media (min-width: 1000px) {
     .modal-dialog-centered {
@@ -236,6 +313,10 @@ export default defineComponent({
       .slider-text {
         position: absolute;
         padding: 0.5rem;
+
+        .phase-rt-input {
+          width: 4rem;
+        }
       }
     }
 

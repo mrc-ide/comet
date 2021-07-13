@@ -55,6 +55,7 @@
                     :value="value.rt"
                     step="0.01"
                     @change="updateRt(index, $event)"
+                    @blur="updateRt(index, $event)"
                     @mousedown.stop=""
                     @click="bringSliderToFront(index)">
                 </div>
@@ -118,13 +119,12 @@ export default defineComponent({
     setup(props: Props, context) {
         const rail: Ref<HTMLElement | null> = ref(null); // ref this element to find its width
 
-        const rtMin = 0;
+        const rtMin = 0.01;
         const rtMax = 4;
         const animateRtValidationIndex: Ref<number | null> = ref(null);
 
         // We need to force re-render of Rt input if user enters invalid value - get vue to do this
         // by updating key of parent
-        //const sliderUpdateKeys = (props.paramGroup.config as Rt[]).map(() => ref(0));
         const sliderUpdateKeys = ref((props.paramGroup.config as Rt[]).map(() => 0));
 
         const railWidth = () => {
@@ -303,7 +303,7 @@ export default defineComponent({
 .phase-modal {
   @media (min-width: 1000px) {
     .modal-dialog-centered {
-      max-width: 900px;
+      max-width: 908px;
     }
   }
 

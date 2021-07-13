@@ -33,7 +33,7 @@
                  @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
               <div class="slider-text">
-                <div @mousedown.prevent="">
+                <div class="disable-select">
                   <span class="phase-label font-weight-bold">
                     Phase {{displayPhases[index].index}}
                   </span>
@@ -52,10 +52,9 @@
                     type="number"
                     :min="rtMin"
                     :max="rtMax"
-                    :value="value.rt"
+                    v-model="value.rt"
                     step="0.01"
                     @change="updateRt(index, $event)"
-                    @blur="updateRt(index, $event)"
                     @mousedown.stop=""
                     @click="bringSliderToFront(index)">
                 </div>
@@ -337,6 +336,14 @@ export default defineComponent({
       .slider-text {
         position: absolute;
         padding: 0.5rem;
+
+        .disable-select {
+          user-select: none; /* supported by Chrome and Opera */
+          -webkit-user-select: none; /* Safari */
+          -khtml-user-select: none; /* Konqueror HTML */
+          -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+        }
 
         .phase-rt-input {
           width: 4rem;

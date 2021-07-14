@@ -33,7 +33,7 @@
                  @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
               <div class="slider-text">
-                <div class="disable-select">
+                <div class="phase-dates disable-select">
                   <span class="phase-label font-weight-bold">
                     Phase {{displayPhases[index].index}}
                   </span>
@@ -79,7 +79,7 @@ import {
     computed,
     Ref,
     ref,
-    defineComponent
+    defineComponent, watch
 } from "@vue/composition-api";
 import Modal from "@/components/Modal.vue";
 import { ParameterGroupMetadata, Rt } from "@/types";
@@ -229,8 +229,11 @@ export default defineComponent({
 
         const updateRt = (index: number, event: Event) => {
             const target = event.target as HTMLInputElement;
-            if (target.value !== "") {
-                let value = Math.round(parseFloat(target.value) * 100) / 100;
+            let value = parseFloat(target.value);
+            if (Number.isNaN(value)) {
+                value = 1.0;
+            } else {
+                value = Math.round(value * 100) / 100;
                 if (value < rtMin) {
                     value = rtMin;
                     showRtValidationAnimation(index);
@@ -239,8 +242,8 @@ export default defineComponent({
                     value = rtMax;
                     showRtValidationAnimation(index);
                 }
-                sliderValues.value[index].rt = value;
             }
+            sliderValues.value[index].rt = value;
             sliderUpdateKeys.value[index] += 1;
         };
 

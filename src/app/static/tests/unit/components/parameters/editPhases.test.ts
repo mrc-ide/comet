@@ -59,8 +59,9 @@ describe("EditPhases", () => {
         const wrapper = getWrapper();
         const modal = wrapper.findComponent(Modal);
         expect(modal.find("h3").text()).toBe("Edit Social restrictions");
-        expect(modal.find(".mb-3").text()).toContain("Click on a Phase to drag it to a new start date.");
-        expect(modal.find("#rt-range-text").text()).toBe("Rt values must be between 0 and 4.");
+        expect(modal.find(".mb-3").text()).toContain(
+          "Click on a Phase to drag it to a new start date. Click on timeline to add a new Phase.");
+        expect(modal.find("#rt-range-text").text()).toBe("Rt values must be between 0.01 and 4.");
 
         const rail = modal.find(".phase-editor .phases-container .rail");
 
@@ -80,6 +81,7 @@ describe("EditPhases", () => {
         expect(slider1.attributes("aria-label")).toBe("Phase 1");
 
         expect(slider1.find(".slider-spike").attributes("class")).toBe("slider-spike phase-odd");
+        expect(slider1.find(".phase-dates").classes()).toContain("disable-select");
         expect(slider1.find(".phase-label").text()).toBe("Phase 1");
         expect(slider1.find(".phase-days").text()).toBe("(3 days)");
         expect(slider1.find(".phase-start").text()).toBe("Start: 02/01/21");
@@ -88,7 +90,7 @@ describe("EditPhases", () => {
         const rtInput1 = slider1.find("input");
         expect(rtInput1.attributes("id")).toBe("phase-rt-0");
         expect(rtInput1.attributes("type")).toBe("number");
-        expect(rtInput1.attributes("min")).toBe("0");
+        expect(rtInput1.attributes("min")).toBe("0.01");
         expect(rtInput1.attributes("max")).toBe("4");
         expect(rtInput1.attributes("step")).toBe("0.01");
         expect((rtInput1.element as HTMLInputElement).value).toBe("0.9");
@@ -106,6 +108,7 @@ describe("EditPhases", () => {
         expect(slider2.attributes("aria-label")).toBe("Phase 2");
 
         expect(slider2.find(".slider-spike").attributes("class")).toBe("slider-spike phase-even");
+        expect(slider2.find(".phase-dates").classes()).toContain("disable-select");
         expect(slider2.find(".phase-label").text()).toBe("Phase 2");
         expect(slider2.find(".phase-days").text()).toBe("(6 days)");
         expect(slider2.find(".phase-start").text()).toBe("Start: 05/01/21");
@@ -114,7 +117,7 @@ describe("EditPhases", () => {
         const rtInput2 = slider2.find("input");
         expect(rtInput2.attributes("id")).toBe("phase-rt-1");
         expect(rtInput2.attributes("type")).toBe("number");
-        expect(rtInput2.attributes("min")).toBe("0");
+        expect(rtInput2.attributes("min")).toBe("0.01");
         expect(rtInput2.attributes("max")).toBe("4");
         expect(rtInput2.attributes("step")).toBe("0.01");
         expect((rtInput2.element as HTMLInputElement).value).toBe("1.5");
@@ -248,7 +251,7 @@ describe("EditPhases", () => {
         await inputRtValue(wrapper, 0, "2.53");
 
         expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("2.53");
-        expect(wrapper.vm.$data.sliderValues[0].value.rt).toBe(2.53);
+        expect(wrapper.vm.$data.sliderValues[0].rt).toBe(2.53);
     });
 
     it("trims excess decimal places when user enters Rt value", async () => {
@@ -256,15 +259,15 @@ describe("EditPhases", () => {
         await inputRtValue(wrapper, 1, "1.3199");
 
         expect((wrapper.find("#phase-rt-1").element as HTMLInputElement).value).toBe("1.32");
-        expect(wrapper.vm.$data.sliderValues[1].value.rt).toBe(1.32);
+        expect(wrapper.vm.$data.sliderValues[1].rt).toBe(1.32);
     });
 
     it("sets Rt value to min when user enters value less than min", async (done) => {
         const wrapper = getWrapper();
         await inputRtValue(wrapper, 0, "-0.1");
 
-        expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("0");
-        expect(wrapper.vm.$data.sliderValues[0].value.rt).toBe(0);
+        expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("0.01");
+        expect(wrapper.vm.$data.sliderValues[0].rt).toBe(0.01);
 
         // shows validation animation
         const rtRangeText = wrapper.find("#rt-range-text");
@@ -286,7 +289,7 @@ describe("EditPhases", () => {
         await inputRtValue(wrapper, 1, "5.5555");
 
         expect((wrapper.find("#phase-rt-1").element as HTMLInputElement).value).toBe("4");
-        expect(wrapper.vm.$data.sliderValues[1].value.rt).toBe(4);
+        expect(wrapper.vm.$data.sliderValues[1].rt).toBe(4);
 
         // shows validation animation
         const rtRangeText = wrapper.find("#rt-range-text");
@@ -301,14 +304,6 @@ describe("EditPhases", () => {
             expect(input2.classes()).toStrictEqual(["phase-rt-input"]);
             done();
         }, 1100);
-    });
-
-    it("Rt value is unchanged when user clears value", async () => {
-        const wrapper = getWrapper();
-        await inputRtValue(wrapper, 0, "");
-
-        expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("0.9");
-        expect(wrapper.vm.$data.sliderValues[0].value.rt).toBe(0.9);
     });
 
     it("clicking on timeline adds a new first phase", async () => {
@@ -327,14 +322,26 @@ describe("EditPhases", () => {
         const slider1 = sliders.at(0);
         expect(slider1.element.style.left).toBe("0%");
         expect(slider1.element.style.zIndex).toBe("99");
+        expect(slider1.find(".phase-label").text()).toBe("Phase 1");
+        expect(slider1.find(".phase-days").text()).toBe("(1 day)");
+        expect(slider1.find(".phase-start").text()).toBe("Start: 01/01/21");
+        expect(slider1.find(".phase-end").text()).toBe("End: 01/01/21");
         expect((slider1.find("input").element as HTMLInputElement).value).toBe("1");
         const slider2 = sliders.at(1);
         expect(slider2.element.style.left).toBe("10%");
         expect(slider2.element.style.zIndex).toBe("99");
+        expect(slider2.find(".phase-label").text()).toBe("Phase 2");
+        expect(slider2.find(".phase-days").text()).toBe("(3 days)");
+        expect(slider2.find(".phase-start").text()).toBe("Start: 02/01/21");
+        expect(slider2.find(".phase-end").text()).toBe("End: 04/01/21");
         expect((slider2.find("input").element as HTMLInputElement).value).toBe("0.9");
         const slider3 = sliders.at(2);
         expect(slider3.element.style.left).toBe("40%");
         expect(slider3.element.style.zIndex).toBe("99");
+        expect(slider3.find(".phase-label").text()).toBe("Phase 3");
+        expect(slider3.find(".phase-days").text()).toBe("(6 days)");
+        expect(slider3.find(".phase-start").text()).toBe("Start: 05/01/21");
+        expect(slider3.find(".phase-end").text()).toBe("End: 10/01/21");
         expect((slider3.find("input").element as HTMLInputElement).value).toBe("1.5");
     });
 
@@ -354,14 +361,26 @@ describe("EditPhases", () => {
         const slider1 = sliders.at(0);
         expect(slider1.element.style.left).toBe("10%");
         expect(slider1.element.style.zIndex).toBe("99");
+        expect(slider1.find(".phase-label").text()).toBe("Phase 1");
+        expect(slider1.find(".phase-days").text()).toBe("(3 days)");
+        expect(slider1.find(".phase-start").text()).toBe("Start: 02/01/21");
+        expect(slider1.find(".phase-end").text()).toBe("End: 04/01/21");
         expect((slider1.find("input").element as HTMLInputElement).value).toBe("0.9");
         const slider2 = sliders.at(1);
         expect(slider2.element.style.left).toBe("40%");
         expect(slider2.element.style.zIndex).toBe("99");
+        expect(slider2.find(".phase-label").text()).toBe("Phase 2");
+        expect(slider2.find(".phase-days").text()).toBe("(2 days)");
+        expect(slider2.find(".phase-start").text()).toBe("Start: 05/01/21");
+        expect(slider2.find(".phase-end").text()).toBe("End: 06/01/21");
         expect((slider2.find("input").element as HTMLInputElement).value).toBe("1.5");
         const slider3 = sliders.at(2);
         expect(slider3.element.style.left).toBe("60%");
         expect(slider3.element.style.zIndex).toBe("99");
+        expect(slider3.find(".phase-label").text()).toBe("Phase 3");
+        expect(slider3.find(".phase-days").text()).toBe("(4 days)");
+        expect(slider3.find(".phase-start").text()).toBe("Start: 07/01/21");
+        expect(slider3.find(".phase-end").text()).toBe("End: 10/01/21");
         expect((slider3.find("input").element as HTMLInputElement).value).toBe("1");
     });
 
@@ -381,15 +400,26 @@ describe("EditPhases", () => {
         const slider1 = sliders.at(0);
         expect(slider1.element.style.left).toBe("10%");
         expect(slider1.element.style.zIndex).toBe("99");
+        expect(slider1.find(".phase-label").text()).toBe("Phase 1");
+        expect(slider1.find(".phase-days").text()).toBe("(1 day)");
+        expect(slider1.find(".phase-start").text()).toBe("Start: 02/01/21");
+        expect(slider1.find(".phase-end").text()).toBe("End: 02/01/21");
         expect((slider1.find("input").element as HTMLInputElement).value).toBe("0.9");
         const slider2 = sliders.at(1);
         expect(slider2.element.style.left).toBe("20%");
         expect(slider2.element.style.zIndex).toBe("99");
+        expect(slider2.find(".phase-label").text()).toBe("Phase 2");
+        expect(slider2.find(".phase-days").text()).toBe("(2 days)");
+        expect(slider2.find(".phase-start").text()).toBe("Start: 03/01/21");
+        expect(slider2.find(".phase-end").text()).toBe("End: 04/01/21");
         expect((slider2.find("input").element as HTMLInputElement).value).toBe("1");
         const slider3 = sliders.at(2);
         expect(slider3.element.style.left).toBe("40%");
         expect(slider3.element.style.zIndex).toBe("99");
+        expect(slider3.find(".phase-label").text()).toBe("Phase 3");
+        expect(slider3.find(".phase-days").text()).toBe("(6 days)");
+        expect(slider3.find(".phase-start").text()).toBe("Start: 05/01/21");
+        expect(slider3.find(".phase-end").text()).toBe("End: 10/01/21");
         expect((slider3.find("input").element as HTMLInputElement).value).toBe("1.5");
-        //TODO: check date labels for all phases
     });
 });

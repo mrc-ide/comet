@@ -79,7 +79,7 @@ import {
     computed,
     Ref,
     ref,
-    defineComponent, watch
+    defineComponent
 } from "@vue/composition-api";
 import Modal from "@/components/Modal.vue";
 import { ParameterGroupMetadata, Rt } from "@/types";
@@ -130,13 +130,14 @@ export default defineComponent({
             return rail.value ? (rail.value as HTMLElement).clientWidth : 0;
         };
 
-        const sliderValues: Ref<SliderValue[]> = ref((props.paramGroup.config as Rt[]).map((phase) => {
-            return {
-                daysFromStart: daysBetween(props.forecastStart, dayjs(phase.start)),
-                rt: phase.value,
-                zIndex: 99
-            };
-        }));
+        const sliderValues: Ref<SliderValue[]> = ref((props.paramGroup.config as Rt[])
+            .map((phase) => {
+                return {
+                    daysFromStart: daysBetween(props.forecastStart, dayjs(phase.start)),
+                    rt: phase.value,
+                    zIndex: 99
+                };
+            }));
 
         // Phases computed from the slider values
         const phases: Ref<Rt[]> = computed(() => {
@@ -176,6 +177,7 @@ export default defineComponent({
 
         const bringSliderToFront = (index: number) => {
             sliderValues.value.forEach((sv: SliderValue, arrIdx: number) => {
+                // eslint-disable-next-line no-param-reassign
                 sv.zIndex = (arrIdx === index) ? 100 : 99;
             });
         };

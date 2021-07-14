@@ -29,7 +29,7 @@ describe("EditPhases", () => {
     function setRailWidth(wrapper: Wrapper<Vue>) {
         const railEl = wrapper.vm.$refs.rail as HTMLDivElement;
         jest.spyOn(railEl, "clientWidth", "get")
-          .mockImplementation(() => 1000);
+            .mockImplementation(() => 1000);
     }
 
     async function dragSlider(wrapper: Wrapper<Vue>, sliderIdx: number, dragAsPercent: number) {
@@ -60,7 +60,8 @@ describe("EditPhases", () => {
         const modal = wrapper.findComponent(Modal);
         expect(modal.find("h3").text()).toBe("Edit Social restrictions");
         expect(modal.find(".mb-3").text()).toContain(
-          "Click on a Phase to drag it to a new start date. Click on timeline to add a new Phase.");
+            "Click on a Phase to drag it to a new start date. Click on timeline to add a new Phase."
+        );
         expect(modal.find("#rt-range-text").text()).toBe("Rt values must be between 0.01 and 4.");
 
         const rail = modal.find(".phase-editor .phases-container .rail");
@@ -309,9 +310,9 @@ describe("EditPhases", () => {
     it("clicking on timeline adds a new first phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);
-        await wrapper.find(".rail").trigger("click", {offsetX: 0});
+        await wrapper.find(".rail").trigger("click", { offsetX: 0 });
 
-        const sliderValues = wrapper.vm.$data.sliderValues;
+        const { sliderValues } = wrapper.vm.$data;
         expect(sliderValues.length).toBe(3);
         expect(sliderValues[0].daysFromStart).toBe(0);
         expect(sliderValues[0].rt).toBe(1);
@@ -348,9 +349,9 @@ describe("EditPhases", () => {
     it("clicking on timeline adds a new last phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);
-        await wrapper.find(".rail").trigger("click", {offsetX: 600});
+        await wrapper.find(".rail").trigger("click", { offsetX: 600 });
 
-        const sliderValues = wrapper.vm.$data.sliderValues;
+        const { sliderValues } = wrapper.vm.$data;
         expect(sliderValues.length).toBe(3);
         expect(sliderValues[2].daysFromStart).toBe(6);
         expect(sliderValues[2].rt).toBe(1);
@@ -387,9 +388,9 @@ describe("EditPhases", () => {
     it("clicking on timeline adds a new intermediate phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);
-        await wrapper.find(".rail").trigger("click", {offsetX: 200});
+        await wrapper.find(".rail").trigger("click", { offsetX: 200 });
 
-        const sliderValues = wrapper.vm.$data.sliderValues;
+        const { sliderValues } = wrapper.vm.$data;
         expect(sliderValues.length).toBe(3);
         expect(sliderValues[1].daysFromStart).toBe(2);
         expect(sliderValues[1].rt).toBe(1);

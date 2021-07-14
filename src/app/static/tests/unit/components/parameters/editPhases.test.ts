@@ -307,6 +307,14 @@ describe("EditPhases", () => {
         }, 1100);
     });
 
+    it("Rt value defaults to 1 when user clears value", async () => {
+        const wrapper = getWrapper();
+        await inputRtValue(wrapper, 0, "");
+
+        expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("1");
+        expect(wrapper.vm.$data.sliderValues[0].rt).toBe(1);
+    });
+
     it("clicking on timeline adds a new first phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);

@@ -26,11 +26,15 @@ describe("EditPhases", () => {
         return mount(EditPhases, { propsData });
     }
 
-    async function dragSlider(wrapper: Wrapper<Vue>, sliderIdx: number, dragAsPercent: number) {
-        // set rail element mock width before mousemoves so offset calculations will work
+    function setRailWidth(wrapper: Wrapper<Vue>) {
         const railEl = wrapper.vm.$refs.rail as HTMLDivElement;
         jest.spyOn(railEl, "clientWidth", "get")
-            .mockImplementation(() => 1000);
+          .mockImplementation(() => 1000);
+    }
+
+    async function dragSlider(wrapper: Wrapper<Vue>, sliderIdx: number, dragAsPercent: number) {
+        // set rail element mock width before mousemoves so offset calculations will work
+        setRailWidth(wrapper);
 
         const slider = wrapper.findAll(".slider").at(sliderIdx);
 
@@ -107,13 +111,13 @@ describe("EditPhases", () => {
         expect(slider2.find(".phase-start").text()).toBe("Start: 05/01/21");
         expect(slider2.find(".phase-end").text()).toBe("End: 10/01/21");
         expect(slider2.find(".phase-rt").text()).toBe("Rt:");
-        const rtInput2 = slider1.find("input");
-        expect(rtInput2.attributes("id")).toBe("phase-rt-0");
+        const rtInput2 = slider2.find("input");
+        expect(rtInput2.attributes("id")).toBe("phase-rt-1");
         expect(rtInput2.attributes("type")).toBe("number");
         expect(rtInput2.attributes("min")).toBe("0");
         expect(rtInput2.attributes("max")).toBe("4");
         expect(rtInput2.attributes("step")).toBe("0.01");
-        expect((rtInput2.element as HTMLInputElement).value).toBe("0.9");
+        expect((rtInput2.element as HTMLInputElement).value).toBe("1.5");
 
         expect(modal.find("button.btn-action").text()).toBe("OK");
         expect(modal.find("button.btn-secondary").text()).toBe("Cancel");
@@ -305,5 +309,87 @@ describe("EditPhases", () => {
 
         expect((wrapper.find("#phase-rt-0").element as HTMLInputElement).value).toBe("0.9");
         expect(wrapper.vm.$data.sliderValues[0].value.rt).toBe(0.9);
+    });
+
+    it("clicking on timeline adds a new first phase", async () => {
+        const wrapper = getWrapper();
+        setRailWidth(wrapper);
+        await wrapper.find(".rail").trigger("click", {offsetX: 0});
+
+        const sliderValues = wrapper.vm.$data.sliderValues;
+        expect(sliderValues.length).toBe(3);
+        expect(sliderValues[0].daysFromStart).toBe(0);
+        expect(sliderValues[0].rt).toBe(1);
+        expect(sliderValues[0].zIndex).toBe(99);
+
+        const sliders = wrapper.findAll(".slider");
+        expect(sliders.length).toBe(3);
+        const slider1 = sliders.at(0);
+        expect(slider1.element.style.left).toBe("0%");
+        expect(slider1.element.style.zIndex).toBe("99");
+        expect((slider1.find("input").element as HTMLInputElement).value).toBe("1");
+        const slider2 = sliders.at(1);
+        expect(slider2.element.style.left).toBe("10%");
+        expect(slider2.element.style.zIndex).toBe("99");
+        expect((slider2.find("input").element as HTMLInputElement).value).toBe("0.9");
+        const slider3 = sliders.at(2);
+        expect(slider3.element.style.left).toBe("40%");
+        expect(slider3.element.style.zIndex).toBe("99");
+        expect((slider3.find("input").element as HTMLInputElement).value).toBe("1.5");
+    });
+
+    it("clicking on timeline adds a new last phase", async () => {
+        const wrapper = getWrapper();
+        setRailWidth(wrapper);
+        await wrapper.find(".rail").trigger("click", {offsetX: 600});
+
+        const sliderValues = wrapper.vm.$data.sliderValues;
+        expect(sliderValues.length).toBe(3);
+        expect(sliderValues[2].daysFromStart).toBe(6);
+        expect(sliderValues[2].rt).toBe(1);
+        expect(sliderValues[2].zIndex).toBe(99);
+
+        const sliders = wrapper.findAll(".slider");
+        expect(sliders.length).toBe(3);
+        const slider1 = sliders.at(0);
+        expect(slider1.element.style.left).toBe("10%");
+        expect(slider1.element.style.zIndex).toBe("99");
+        expect((slider1.find("input").element as HTMLInputElement).value).toBe("0.9");
+        const slider2 = sliders.at(1);
+        expect(slider2.element.style.left).toBe("40%");
+        expect(slider2.element.style.zIndex).toBe("99");
+        expect((slider2.find("input").element as HTMLInputElement).value).toBe("1.5");
+        const slider3 = sliders.at(2);
+        expect(slider3.element.style.left).toBe("60%");
+        expect(slider3.element.style.zIndex).toBe("99");
+        expect((slider3.find("input").element as HTMLInputElement).value).toBe("1");
+    });
+
+    it("clicking on timeline adds a new intermediate phase", async () => {
+        const wrapper = getWrapper();
+        setRailWidth(wrapper);
+        await wrapper.find(".rail").trigger("click", {offsetX: 200});
+
+        const sliderValues = wrapper.vm.$data.sliderValues;
+        expect(sliderValues.length).toBe(3);
+        expect(sliderValues[1].daysFromStart).toBe(2);
+        expect(sliderValues[1].rt).toBe(1);
+        expect(sliderValues[1].zIndex).toBe(99);
+
+        const sliders = wrapper.findAll(".slider");
+        expect(sliders.length).toBe(3);
+        const slider1 = sliders.at(0);
+        expect(slider1.element.style.left).toBe("10%");
+        expect(slider1.element.style.zIndex).toBe("99");
+        expect((slider1.find("input").element as HTMLInputElement).value).toBe("0.9");
+        const slider2 = sliders.at(1);
+        expect(slider2.element.style.left).toBe("20%");
+        expect(slider2.element.style.zIndex).toBe("99");
+        expect((slider2.find("input").element as HTMLInputElement).value).toBe("1");
+        const slider3 = sliders.at(2);
+        expect(slider3.element.style.left).toBe("40%");
+        expect(slider3.element.style.zIndex).toBe("99");
+        expect((slider3.find("input").element as HTMLInputElement).value).toBe("1.5");
+        //TODO: check date labels for all phases
     });
 });

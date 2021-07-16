@@ -60,7 +60,7 @@ describe("EditPhases", () => {
         const modal = wrapper.findComponent(Modal);
         expect(modal.find("h3").text()).toBe("Edit Social restrictions");
         expect(modal.find(".mb-3").text()).toContain(
-            "Click on a Phase to drag it to a new start date. Click on timeline to add a new Phase."
+            "Click on a Phase to drag it to a new start date. Click above the timeline to add a new Phase."
         );
         expect(modal.find("#rt-range-text").text()).toBe("Rt values must be between 0.01 and 4.");
 

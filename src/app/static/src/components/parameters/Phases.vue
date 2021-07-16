@@ -2,6 +2,11 @@
   <div class="p-2">
     <div class="phase-block-container">
       <div
+        v-if="phases.length === 0"
+        class="text-center text-secondary mt-2">
+        - No phases -
+      </div>
+      <div
         v-for="block in phaseBlocks"
         :key="block.index"
         class="phase-block"
@@ -74,7 +79,7 @@ export default defineComponent({
         const formatPercent = (value: number) => `${value.toFixed(2)}%`;
 
         const phaseBlocks: Ref<PhaseBlock[]> = computed(() => {
-            const firstStartDate = displayPhases.value[0].startDate;
+            const firstStartDate = displayPhases.value[0]?.startDate;
             let nextLeft = daysAsPercent(daysBetween(props.forecastStart, firstStartDate));
             return displayPhases.value.map((displayPhase) => {
                 const width = daysAsPercent(displayPhase.days);

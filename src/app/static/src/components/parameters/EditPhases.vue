@@ -32,7 +32,9 @@
                  @mouseup="mouseUp"
                  @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
-              <button type="button" class="close float-right" aria-label="Delete">
+              <button type="button"
+                      class="close float-right mr-1" aria-label="Delete"
+                      @click="deletePhase(index)">
                 <span aria-hidden="true">&times;</span>
               </button>
               <div class="slider-text">
@@ -269,6 +271,11 @@ export default defineComponent({
             });
         };
 
+        const deletePhase = (index: number) => {
+            sliderValues.value.splice(index, 1);
+            sliderUpdateKeys.value.splice(index, 1);
+        };
+
         const cancel = () => {
             context.emit("cancel");
         };
@@ -297,6 +304,7 @@ export default defineComponent({
             mouseUp,
             updateRt,
             addPhase,
+            deletePhase,
             cancel,
             updatePhases,
             phaseClassFromIndex

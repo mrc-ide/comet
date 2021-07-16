@@ -32,6 +32,9 @@
                  @mouseup="mouseUp"
                  @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
+              <button type="button" class="close float-right" aria-label="Delete">
+                <span aria-hidden="true">&times;</span>
+              </button>
               <div class="slider-text">
                 <div class="phase-dates disable-select">
                   <span class="phase-label font-weight-bold">

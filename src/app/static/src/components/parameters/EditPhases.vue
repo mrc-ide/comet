@@ -3,7 +3,8 @@
     <modal class="phase-modal" :open="open">
       <h3>Edit {{paramGroup && paramGroup.label}}</h3>
       <div class="mb-3">
-        Click on a Phase to drag it to a new start date. Click above the timeline to add a new Phase.
+        Click on a Phase to drag it to a new start date.
+        Click above the timeline to add a new Phase.
         <div id="rt-range-text"
              class="d-inline-block"
              :class="rtTextValidationClass()">

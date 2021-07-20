@@ -4,6 +4,7 @@
       <h3>Edit {{paramGroup && paramGroup.label}}</h3>
       <div class="mb-3">
         Click on a Phase to drag it to a new start date.
+        Click above the timeline to add a new Phase.
         <div id="rt-range-text"
              class="d-inline-block"
              :class="rtTextValidationClass()">
@@ -12,26 +13,28 @@
       </div>
       <div class="phase-editor" @mouseup="mouseUp">
         <div class="phases-container">
-          <div ref="rail" class="rail">
+          <div ref="rail" class="rail"
+               @click="addPhase">
             <div v-for="(value, index) in sliderValues"
-                 :id="`slider-${index}-${sliderUpdateKeys[index].value}`"
+                 :id="`slider-${index}-${sliderUpdateKeys[index]}`"
                  :key="index"
                  role="slider"
                  :tabindex="index"
-                 :style="{ left:`${sliderPosition(value)}%`, zIndex: value.value.zIndex }"
+                 :style="{ left:`${sliderPosition(value)}%`, zIndex: value.zIndex }"
                  class="slider"
                  :class="phaseClassFromIndex(index+1)"
                  :aria-valuemin="sliderMin(index)"
-                 :aria-valuenow="value.value.daysFromStart"
+                 :aria-valuenow="value.daysFromStart"
                  :aria-valuetext="displayPhases[index].start"
                  :aria-valuemax="sliderMax(index)"
                  :aria-label="`Phase ${displayPhases[index].index}`"
                  @mousemove="mouseMove(index, $event)"
                  @mousedown="mouseDown(index, $event)"
-                 @mouseup="mouseUp">
+                 @mouseup="mouseUp"
+                 @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
               <div class="slider-text">
-                <div @mousedown.prevent="">
+                <div class="phase-dates disable-select">
                   <span class="phase-label font-weight-bold">
                     Phase {{displayPhases[index].index}}
                   </span>
@@ -50,7 +53,7 @@
                     type="number"
                     :min="rtMin"
                     :max="rtMax"
-                    :value="sliderValues[index].value.rt"
+                    v-model="value.rt"
                     step="0.01"
                     @change="updateRt(index, $event)"
                     @mousedown.stop=""
@@ -116,32 +119,33 @@ export default defineComponent({
     setup(props: Props, context) {
         const rail: Ref<HTMLElement | null> = ref(null); // ref this element to find its width
 
-        const rtMin = 0;
+        const rtMin = 0.01;
         const rtMax = 4;
         const animateRtValidationIndex: Ref<number | null> = ref(null);
 
         // We need to force re-render of Rt input if user enters invalid value - get vue to do this
         // by updating key of parent
-        const sliderUpdateKeys = (props.paramGroup.config as Rt[]).map(() => ref(0));
+        const sliderUpdateKeys = ref((props.paramGroup.config as Rt[]).map(() => 0));
 
         const railWidth = () => {
             return rail.value ? (rail.value as HTMLElement).clientWidth : 0;
         };
 
-        const sliderValues: Ref<SliderValue>[] = (props.paramGroup.config as Rt[]).map((phase) => {
-            return ref({
-                daysFromStart: daysBetween(props.forecastStart, dayjs(phase.start)),
-                rt: phase.value,
-                zIndex: 99
-            });
-        });
+        const sliderValues: Ref<SliderValue[]> = ref((props.paramGroup.config as Rt[])
+            .map((phase) => {
+                return {
+                    daysFromStart: daysBetween(props.forecastStart, dayjs(phase.start)),
+                    rt: phase.value,
+                    zIndex: 99
+                };
+            }));
 
         // Phases computed from the slider values
         const phases: Ref<Rt[]> = computed(() => {
-            return sliderValues.map((sv) => {
+            return sliderValues.value.map((sv) => {
                 return {
-                    start: dayjs(props.forecastStart).add(sv.value.daysFromStart, "day").format("YYYY-MM-DD"),
-                    value: sv.value.rt
+                    start: dayjs(props.forecastStart).add(sv.daysFromStart, "day").format("YYYY-MM-DD"),
+                    value: sv.rt
                 };
             });
         });
@@ -157,14 +161,14 @@ export default defineComponent({
         const moveStartOffset: Ref<number | null> = ref(null);
 
         const sliderMin = (index: number) => {
-            return index === 0 ? 0 : sliderValues[index - 1].value.daysFromStart + 1;
+            return index === 0 ? 0 : sliderValues.value[index - 1].daysFromStart + 1;
         };
 
         const sliderMax = (index: number) => {
-            if (index === (sliderValues.length - 1)) {
+            if (index === (sliderValues.value.length - 1)) {
                 return totalDays - 1;
             }
-            return sliderValues[index + 1].value.daysFromStart - 1;
+            return sliderValues.value[index + 1].daysFromStart - 1;
         };
 
         const limitSliderValue = (index: number, value: number) => {
@@ -173,9 +177,9 @@ export default defineComponent({
         };
 
         const bringSliderToFront = (index: number) => {
-            sliderValues.forEach((sv: Ref<SliderValue>, arrIdx: number) => {
-                const val = sv.value;
-                val.zIndex = (arrIdx === index) ? 100 : 99;
+            sliderValues.value.forEach((sv: SliderValue, arrIdx: number) => {
+                // eslint-disable-next-line no-param-reassign
+                sv.zIndex = (arrIdx === index) ? 100 : 99;
             });
         };
 
@@ -186,14 +190,18 @@ export default defineComponent({
             bringSliderToFront(index);
         };
 
+        const sliderValueAsDays = (sliderValue: number) => {
+            const valueAsRangeFraction = sliderValue / railWidth();
+            return totalDays * valueAsRangeFraction;
+        };
+
         const mouseMove = (index: number, event: MouseEvent) => {
             if (movingSlider.value === index && moveStartOffset.value !== null) {
                 const offsetDiff = event.offsetX - moveStartOffset.value;
-                const diffAsRangeFraction = offsetDiff / railWidth();
-                const valueDiff = totalDays * diffAsRangeFraction;
-                const oldValue = sliderValues[index].value.daysFromStart;
+                const valueDiff = sliderValueAsDays(offsetDiff);
+                const oldValue = sliderValues.value[index].daysFromStart;
                 const newValue = limitSliderValue(index, oldValue + valueDiff);
-                sliderValues[index].value.daysFromStart = newValue;
+                sliderValues.value[index].daysFromStart = newValue;
             }
         };
 
@@ -202,8 +210,8 @@ export default defineComponent({
             moveStartOffset.value = null;
         };
 
-        const sliderPosition = (value: Ref<SliderValue>) => {
-            return (value.value.daysFromStart / totalDays) * 100;
+        const sliderPosition = (value: SliderValue) => {
+            return (value.daysFromStart / totalDays) * 100;
         };
 
         const showRtValidationAnimation = (index: number) => {
@@ -224,8 +232,11 @@ export default defineComponent({
 
         const updateRt = (index: number, event: Event) => {
             const target = event.target as HTMLInputElement;
-            if (target.value !== "") {
-                let value = Math.round(parseFloat(target.value) * 100) / 100;
+            let value = parseFloat(target.value);
+            if (Number.isNaN(value)) {
+                value = 1.0;
+            } else {
+                value = Math.round(value * 100) / 100;
                 if (value < rtMin) {
                     value = rtMin;
                     showRtValidationAnimation(index);
@@ -234,9 +245,26 @@ export default defineComponent({
                     value = rtMax;
                     showRtValidationAnimation(index);
                 }
-                sliderValues[index].value.rt = value;
             }
-            sliderUpdateKeys[index].value += 1;
+            sliderValues.value[index].rt = value;
+            sliderUpdateKeys.value[index] += 1;
+        };
+
+        const addPhase = (event: MouseEvent) => {
+            const newPhaseStart = Math.round(sliderValueAsDays(event.offsetX));
+            const newStarts = [
+                ...sliderValues.value.map((slider) => slider.daysFromStart),
+                newPhaseStart
+            ].sort((a, b) => a - b);
+            const newPhaseIdx = newStarts.indexOf(newPhaseStart);
+
+            sliderUpdateKeys.value.splice(newPhaseIdx, 0, 0);
+
+            sliderValues.value.splice(newPhaseIdx, 0, {
+                daysFromStart: newPhaseStart,
+                rt: 1.0,
+                zIndex: 99
+            });
         };
 
         const cancel = () => {
@@ -266,6 +294,7 @@ export default defineComponent({
             mouseDown,
             mouseUp,
             updateRt,
+            addPhase,
             cancel,
             updatePhases,
             phaseClassFromIndex
@@ -279,7 +308,7 @@ export default defineComponent({
 .phase-modal {
   @media (min-width: 1000px) {
     .modal-dialog-centered {
-      max-width: 900px;
+      max-width: 908px;
     }
   }
 
@@ -313,6 +342,14 @@ export default defineComponent({
       .slider-text {
         position: absolute;
         padding: 0.5rem;
+
+        .disable-select {
+          user-select: none; /* supported by Chrome and Opera */
+          -webkit-user-select: none; /* Safari */
+          -khtml-user-select: none; /* Konqueror HTML */
+          -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+        }
 
         .phase-rt-input {
           width: 4rem;

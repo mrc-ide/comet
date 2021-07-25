@@ -3,6 +3,7 @@
     <div class="phase-block-container">
       <div
         v-if="phases.length === 0"
+        id="no-phases"
         class="text-center text-secondary mt-2">
         - No phases -
       </div>

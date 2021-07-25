@@ -60,7 +60,10 @@ describe("EditPhases", () => {
         const modal = wrapper.findComponent(Modal);
         expect(modal.find("h3").text()).toBe("Edit Social restrictions");
         expect(modal.find(".mb-3").text()).toContain(
-            "Click on a Phase to drag it to a new start date. Click above the timeline to add a new Phase."
+            "Click on a Phase to drag it to a new start date."
+        );
+        expect(modal.find(".mb-3").text()).toContain(
+            "Click above the timeline to add a new Phase."
         );
         expect(modal.find("#rt-range-text").text()).toBe("Rt values must be between 0.01 and 4.");
 
@@ -80,6 +83,8 @@ describe("EditPhases", () => {
         expect(slider1.attributes("aria-valuemin")).toBe("0");
         expect(slider1.attributes("aria-valuemax")).toBe("3");
         expect(slider1.attributes("aria-label")).toBe("Phase 1");
+        expect(slider1.find("button.close").text()).toBe("×");
+        expect(slider1.find("button.close").attributes("aria-label")).toBe("Delete");
 
         expect(slider1.find(".slider-spike").attributes("class")).toBe("slider-spike phase-odd");
         expect(slider1.find(".phase-dates").classes()).toContain("disable-select");
@@ -107,6 +112,8 @@ describe("EditPhases", () => {
         expect(slider2.attributes("aria-valuemin")).toBe("2");
         expect(slider2.attributes("aria-valuemax")).toBe("9");
         expect(slider2.attributes("aria-label")).toBe("Phase 2");
+        expect(slider2.find("button.close").text()).toBe("×");
+        expect(slider2.find("button.close").attributes("aria-label")).toBe("Delete");
 
         expect(slider2.find(".slider-spike").attributes("class")).toBe("slider-spike phase-even");
         expect(slider2.find(".phase-dates").classes()).toContain("disable-select");
@@ -430,5 +437,61 @@ describe("EditPhases", () => {
         expect(slider3.find(".phase-start").text()).toBe("Start: 05/01/21");
         expect(slider3.find(".phase-end").text()).toBe("End: 10/01/21");
         expect((slider3.find("input").element as HTMLInputElement).value).toBe("1.5");
+    });
+
+    it("can delete initial phase using slider button", async () => {
+        const wrapper = getWrapper();
+        let sliders = wrapper.findAll(".slider");
+        await sliders.at(0).find("button").trigger("click");
+
+        const { sliderValues } = wrapper.vm.$data;
+        expect(sliderValues.length).toBe(1);
+        expect(sliderValues[0].daysFromStart).toBe(4);
+        expect(sliderValues[0].rt).toBe(1.5);
+        expect(sliderValues[0].zIndex).toBe(99);
+
+        sliders = wrapper.findAll(".slider");
+        expect(sliders.length).toBe(1);
+        const slider1 = sliders.at(0);
+        expect(slider1.element.style.left).toBe("40%");
+        expect(slider1.element.style.zIndex).toBe("99");
+        expect(slider1.find(".phase-label").text()).toBe("Phase 1");
+        expect(slider1.find(".phase-days").text()).toBe("(6 days)");
+        expect(slider1.find(".phase-start").text()).toBe("Start: 05/01/21");
+        expect(slider1.find(".phase-end").text()).toBe("End: 10/01/21");
+        expect((slider1.find("input").element as HTMLInputElement).value).toBe("1.5");
+    });
+
+    it("can delete final phase using slider button", async () => {
+        const wrapper = getWrapper();
+        let sliders = wrapper.findAll(".slider");
+        await sliders.at(1).find("button").trigger("click");
+
+        const { sliderValues } = wrapper.vm.$data;
+        expect(sliderValues.length).toBe(1);
+        expect(sliderValues[0].daysFromStart).toBe(1);
+        expect(sliderValues[0].rt).toBe(0.9);
+        expect(sliderValues[0].zIndex).toBe(99);
+
+        sliders = wrapper.findAll(".slider");
+        expect(sliders.length).toBe(1);
+        const slider1 = sliders.at(0);
+        expect(slider1.element.style.left).toBe("10%");
+        expect(slider1.element.style.zIndex).toBe("99");
+        expect(slider1.find(".phase-label").text()).toBe("Phase 1");
+        expect(slider1.find(".phase-days").text()).toBe("(9 days)");
+        expect(slider1.find(".phase-start").text()).toBe("Start: 02/01/21");
+        expect(slider1.find(".phase-end").text()).toBe("End: 10/01/21");
+        expect((slider1.find("input").element as HTMLInputElement).value).toBe("0.9");
+    });
+
+    it("can delete all phases using slider buttons", async () => {
+        const wrapper = getWrapper();
+
+        await wrapper.findAll(".slider button").at(1).trigger("click");
+        await wrapper.findAll(".slider button").at(0).trigger("click");
+
+        expect(wrapper.vm.$data.sliderValues.length).toBe(0);
+        expect(wrapper.findAll(".slider").length).toBe(0);
     });
 });

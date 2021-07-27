@@ -80,7 +80,10 @@ export default defineComponent({
         const formatPercent = (value: number) => `${value.toFixed(2)}%`;
 
         const phaseBlocks: Ref<PhaseBlock[]> = computed(() => {
-            const firstStartDate = displayPhases.value[0]?.startDate;
+            if (displayPhases.value.length === 0) {
+                return [];
+            }
+            const firstStartDate = displayPhases.value[0].startDate;
             let nextLeft = daysAsPercent(daysBetween(props.forecastStart, firstStartDate));
             return displayPhases.value.map((displayPhase) => {
                 const width = daysAsPercent(displayPhase.days);

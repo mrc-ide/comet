@@ -37,6 +37,8 @@ describe("Phases", () => {
         expect(phaseDescs.at(1).find(".phase-header").text()).toBe("Phase 2 (8 days)");
         expect(phaseDescs.at(1).find(".phase-dates").text()).toBe("03/01/21 - 10/01/21");
         expect(phaseDescs.at(1).find(".phase-rt").text()).toBe("Rt: 8");
+
+        expect(wrapper.find("#no-phases").exists()).toBe(false);
     });
 
     it("renders as expected when first phase starts after forecastStart", () => {
@@ -72,6 +74,17 @@ describe("Phases", () => {
         expect(phaseDescs.at(1).find(".phase-header").text()).toBe("Phase 2 (2 days)");
         expect(phaseDescs.at(1).find(".phase-dates").text()).toBe("03/01/21 - 04/01/21");
         expect(phaseDescs.at(1).find(".phase-rt").text()).toBe("Rt: 0.5");
+
+        expect(wrapper.find("#no-phases").exists()).toBe(false);
+    });
+
+    it("renders as expected when no phases", () => {
+        const wrapper = shallowMount(Phases, {
+            propsData: { phases: [] }
+        });
+
+        expect(wrapper.find("#no-phases").text()).toBe("- No phases -");
+        expect(wrapper.findAll(".phase-block-container .phase-block").length).toBe(0);
     });
 
     it("can update when props change", async () => {

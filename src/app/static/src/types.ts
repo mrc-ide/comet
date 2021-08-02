@@ -48,6 +48,12 @@ export interface Metadata {
     parameterGroups: ParameterGroupMetadata[]
 }
 
+export interface Countries {
+    code: string,
+    name: string,
+    public: boolean
+}[]
+
 export interface Data {
   [k: string]: unknown;
 }

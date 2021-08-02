@@ -29,6 +29,7 @@ export function mockRootState(state: Partial<RootState> = {}): RootState {
     return {
         apiInfo: null,
         metadata: null,
+        countries: null,
         results: null,
         paramValues: null,
         fetchingResults: false,

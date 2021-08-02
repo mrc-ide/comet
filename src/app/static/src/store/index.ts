@@ -14,6 +14,7 @@ export default new Vuex.Store<RootState>({
     state: {
         apiInfo: null,
         metadata: null,
+        countries: null,
         results: null,
         errors: [],
         // This auxiliary data required by charts will eventually come out of dynamic parameters

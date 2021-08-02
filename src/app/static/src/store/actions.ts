@@ -42,6 +42,16 @@ export const actions: ActionTree<RootState, RootState> = {
                 commitErrors(e, commit);
             });
     },
+    async getCountries({ commit }) {
+        await axios.get("/countries")
+            .then((response) => {
+                const { data } = response;
+                commit("setCountries", data.data);
+            }).catch((e: AxiosError) => {
+                commitErrors(e, commit);
+            });
+
+    },
     async getResults({ commit, state }) {
         commit("setFetchingResults", true);
         commit("setErrors", []);

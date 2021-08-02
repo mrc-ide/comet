@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component
 
 interface APIClient {
     fun info(): ResponseEntity<String>
+    fun countries(): ResponseEntity<String>
     fun results(request: String): ResponseEntity<String>
 }
 
@@ -19,6 +20,14 @@ interface APIClient {
 class FuelAPIClient(private val appProperties: AppProperties) : APIClient {
     override fun info(): ResponseEntity<String> {
         return "${appProperties.apiUrl}/"
+                .httpGet()
+                .response()
+                .second
+                .toResponseEntity()
+    }
+
+    override fun countries(): ResponseEntity<String> {
+        return "${appProperties.apiUrl}/countries"
                 .httpGet()
                 .response()
                 .second

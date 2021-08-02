@@ -63,6 +63,7 @@ export default defineComponent({
     methods: {
         ...mapActions([
             "getMetadata",
+            "getCountries",
             "getResults",
             "updateParameterValues"
         ]),
@@ -74,6 +75,9 @@ export default defineComponent({
     mounted() {
         if (!this.metadata) {
             this.getMetadata();
+        }
+        if (!this.countries) {
+            this.getCountries();
         }
         if (!this.results) {
             this.getResults();

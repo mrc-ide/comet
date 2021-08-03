@@ -49,6 +49,7 @@ export default defineComponent({
     computed: {
         ...mapState([
             "metadata",
+            "countries",
             "paramValues",
             "results",
             "fetchingResults",

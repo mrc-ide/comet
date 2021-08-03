@@ -35,6 +35,18 @@ describe("actions", () => {
         });
     });
 
+    it("fetches countries", async () => {
+        const mockCountries = [{ code: "NARN", name: "Narnia", public: true }];
+        mockAxios.onGet("/countries")
+            .reply(200, mockSuccess(mockCountries));
+        const commit = jest.fn();
+
+        await (actions.getCountries as any)({ commit });
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe("setCountries");
+        expect(commit.mock.calls[0][1]).toStrictEqual(mockCountries);
+    });
+
     it("fetches results", async () => {
         const mockResults = { time_series: [] };
         mockAxios.onPost("/results")
@@ -84,6 +96,19 @@ describe("actions", () => {
         expect(commit.mock.calls[0][0]).toBe("setErrors");
         expect(commit.mock.calls[0][1]).toStrictEqual(
             [{ error: "OTHER_ERROR", detail: "Metadata failed" }]
+        );
+    });
+
+    it("get countries commits errors", async () => {
+        mockAxios.onGet("/countries")
+            .reply(400, mockFailure("Countries failed"));
+
+        const commit = jest.fn();
+        await (actions.getCountries as any)({ commit });
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe("setErrors");
+        expect(commit.mock.calls[0][1]).toStrictEqual(
+            [{ error: "OTHER_ERROR", detail: "Countries failed" }]
         );
     });
 

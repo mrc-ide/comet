@@ -9,6 +9,13 @@ describe("mutations", () => {
         expect(state.metadata).toBe(mockMetadata);
     });
 
+    it("sets countries", () => {
+        const state = mockRootState();
+        const mockCountries = [{ code: "NARN", name: "Narnia", public: true }];
+        mutations.setCountries(state, mockCountries);
+        expect(state.countries).toBe(mockCountries);
+    });
+
     it("sets results", () => {
         const state = mockRootState();
         const mockResults = { time_series: [] };

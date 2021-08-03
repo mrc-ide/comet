@@ -1,14 +1,15 @@
 import {
-  ApiInfo, Countries,
-  Data,
-  ErrorInfo,
-  Metadata
+    ApiInfo,
+    Country,
+    Data,
+    ErrorInfo,
+    Metadata
 } from "@/types";
 
 export interface RootState {
   apiInfo: ApiInfo | null
   metadata: Metadata | null
-  countries: Countries | null
+  countries: Country[] | null
   results: Data | null
   paramValues: Data | null
   fetchingResults: boolean

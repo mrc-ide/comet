@@ -50,7 +50,6 @@ export const actions: ActionTree<RootState, RootState> = {
             }).catch((e: AxiosError) => {
                 commitErrors(e, commit);
             });
-
     },
     async getResults({ commit, state }) {
         commit("setFetchingResults", true);

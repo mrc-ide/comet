@@ -15,13 +15,15 @@ import { getters } from "@/store/getters";
 import { mockRootState } from "../../mocks";
 
 describe("Home", () => {
-    it("gets metadata and results on mount", () => {
+    it("gets metadata, countries and results on mount", () => {
         const mockGetMetadata = jest.fn();
+        const mockGetCountries = jest.fn();
         const mockGetResults = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState(),
             actions: {
                 getMetadata: mockGetMetadata,
+                getCountries: mockGetCountries,
                 getResults: mockGetResults
             }
         });
@@ -29,11 +31,13 @@ describe("Home", () => {
         shallowMount(Home, { store });
 
         expect(mockGetMetadata.mock.calls.length).toBe(1);
+        expect(mockGetCountries.mock.calls.length).toBe(1);
         expect(mockGetResults.mock.calls.length).toBe(1);
     });
 
     it("does not get metadata if already set", () => {
         const mockGetMetadata = jest.fn();
+        const mockGetCountries = jest.fn();
         const mockGetResults = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
@@ -43,6 +47,7 @@ describe("Home", () => {
             }),
             actions: {
                 getMetadata: mockGetMetadata,
+                getCountries: mockGetCountries,
                 getResults: mockGetResults
             }
         });
@@ -50,6 +55,29 @@ describe("Home", () => {
         shallowMount(Home, { store });
 
         expect(mockGetMetadata.mock.calls.length).toBe(0);
+        expect(mockGetCountries.mock.calls.length).toBe(1);
+        expect(mockGetResults.mock.calls.length).toBe(1);
+    });
+
+    it("does not get countries if already set", () => {
+        const mockGetMetadata = jest.fn();
+        const mockGetCountries = jest.fn();
+        const mockGetResults = jest.fn();
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                countries: [{ code: "NARN", name: "Narnia", public: true }]
+            }),
+            actions: {
+                getMetadata: mockGetMetadata,
+                getCountries: mockGetCountries,
+                getResults: mockGetResults
+            }
+        });
+
+        shallowMount(Home, { store });
+
+        expect(mockGetMetadata.mock.calls.length).toBe(1);
+        expect(mockGetCountries.mock.calls.length).toBe(0);
         expect(mockGetResults.mock.calls.length).toBe(1);
     });
 

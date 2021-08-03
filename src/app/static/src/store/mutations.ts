@@ -1,10 +1,11 @@
 import { RootState } from "@/store/state";
 import {
-  ApiInfo,
-  Metadata,
-  Data,
-  ParameterGroupMetadata,
-  ErrorInfo, Countries
+    ApiInfo,
+    Metadata,
+    Data,
+    ParameterGroupMetadata,
+    ErrorInfo,
+    Country
 } from "@/types";
 
 export const mutations = {
@@ -14,8 +15,8 @@ export const mutations = {
     setMetadata(state: RootState, metadata: Metadata): void {
         state.metadata = metadata;
     },
-    setCountries(state: RootState, countries: Countries): void {
-      state.countries = countries;
+    setCountries(state: RootState, countries: Country[]): void {
+        state.countries = countries;
     },
     setResults(state: RootState, results: Data): void {
         state.results = results;

@@ -1,7 +1,6 @@
 package org.imperial.mrc.comet.controllers
 
 import org.imperial.mrc.comet.clients.APIClient
-import org.imperial.mrc.comet.models.Response
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity

@@ -15,31 +15,11 @@ import java.io.File
 import java.net.URL
 
 class DataControllerTests {
-    private val TMP_DIR = "tmp"
-
-    @BeforeEach
-    fun makeTmpDir() {
-        File(TMP_DIR).mkdir()
-    }
-
-    @AfterEach
-    fun cleanup() {
-        File(TMP_DIR).deleteRecursively()
-    }
-
-    private fun createTestResource(fileName: String, contents: String): URL {
-        val fullPath = "$TMP_DIR/$fileName"
-
-        val file = File(fullPath)
-        file.createNewFile()
-        file.writeText(contents)
-        return file.toURI().toURL()
-    }
+    private val mockResponseEntity = mock<ResponseEntity<String>>()
 
     @Test
     fun `gets results`() {
         val mockLogger = mock<Logger>()
-        val mockResponseEntity = mock<ResponseEntity<String>>()
         val mockAPIClient = mock<APIClient> {
             on { results("request") } doReturn mockResponseEntity
         }
@@ -49,5 +29,19 @@ class DataControllerTests {
 
         assertThat(response).isSameAs(mockResponseEntity)
         verify(mockLogger).info("results request")
+    }
+
+    @Test
+    fun `gets countries`() {
+        val mockLogger = mock<Logger>()
+        val mockAPIClient = mock<APIClient> {
+            on { countries() } doReturn mockResponseEntity
+        }
+
+        val sut = DataController(mockLogger, mockAPIClient)
+        val response = sut.countries()
+
+        assertThat(response).isSameAs(mockResponseEntity)
+        verify(mockLogger).info("countries")
     }
 }

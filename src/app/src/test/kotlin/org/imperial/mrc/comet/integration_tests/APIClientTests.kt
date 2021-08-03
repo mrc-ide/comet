@@ -57,6 +57,14 @@ class APIClientTests() {
     }
 
     @Test
+    fun `can get countries`() {
+        val sut = FuelAPIClient(appProperties)
+        val result = sut.countries()
+        assertThat(result.statusCodeValue).isEqualTo(200)
+        JSONValidator().validateSuccess(result.body!!, "Countries")
+    }
+
+    @Test
     fun `can get results`() {
         val sut = FuelAPIClient(appProperties)
         val result = sut.results(testResultsRequest)

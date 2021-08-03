@@ -4,7 +4,8 @@ import {
     Metadata,
     Data,
     ParameterGroupMetadata,
-    ErrorInfo
+    ErrorInfo,
+    Country
 } from "@/types";
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
     },
     setMetadata(state: RootState, metadata: Metadata): void {
         state.metadata = metadata;
+    },
+    setCountries(state: RootState, countries: Country[]): void {
+        state.countries = countries;
     },
     setResults(state: RootState, results: Data): void {
         state.results = results;

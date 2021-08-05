@@ -103,7 +103,7 @@ describe("Parameters", () => {
         expect(options.at(2).text()).toBe("Ireland");
     });
 
-    it("renders population", () => {
+    it("renders population in million", () => {
         const wrapper = getWrapper();
         const countryDiv = wrapper.find("#countries");
         expect(countryDiv.find("h3").text()).toBe("Country");
@@ -114,6 +114,46 @@ describe("Parameters", () => {
         const spans = populationDiv.findAll("span");
         expect(spans.at(0).text()).toBe("Population:");
         expect(spans.at(1).text()).toBe("2.00m");
+    });
+
+    it("renders population in thousand", async () => {
+        const wrapper = getWrapper();
+        const populationProp = numericFormatter(21000);
+        await wrapper.setProps({ population: populationProp });
+
+        const countryDiv = wrapper.find("#countries");
+        expect(countryDiv.find("h3").text()).toBe("Country");
+        const countrySelect = countryDiv.find("select");
+
+        const options = countrySelect.findAll("option");
+        options.at(2).setSelected();
+        expect(options.at(2).attributes("value")).toBe("IRE");
+        expect((countrySelect.element as HTMLSelectElement).value).toBe("IRE");
+
+        const populationDiv = wrapper.find("#population");
+        const spans = populationDiv.findAll("span");
+        expect(spans.at(0).text()).toBe("Population:");
+        expect(spans.at(1).text()).toBe("21.00k");
+    });
+
+    it("renders population in billion", async () => {
+        const wrapper = getWrapper();
+        const populationProp = numericFormatter(5000000000);
+        await wrapper.setProps({ population: populationProp });
+
+        const countryDiv = wrapper.find("#countries");
+        expect(countryDiv.find("h3").text()).toBe("Country");
+        const countrySelect = countryDiv.find("select");
+
+        const options = countrySelect.findAll("option");
+        options.at(0).setSelected();
+        expect(options.at(0).attributes("value")).toBe("GBR");
+        expect((countrySelect.element as HTMLSelectElement).value).toBe("GBR");
+
+        const populationDiv = wrapper.find("#population");
+        const spans = populationDiv.findAll("span");
+        expect(spans.at(0).text()).toBe("Population:");
+        expect(spans.at(1).text()).toBe("5.00b");
     });
 
     it("renders collapsible dynamicForm and phases parameter groups", () => {

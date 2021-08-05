@@ -1,10 +1,14 @@
 <template>
   <div>
-    <div id="countries" class="mb-3">
+    <div id="countries" class="mb-1">
       <h3>Country</h3>
       <select id="select-country" v-model="selectedCountry" class="form-control">
         <option v-for="country in countries" :value="country.code">{{country.name}}</option>
       </select>
+    </div>
+    <div id="population" class="mb-3" v-if="selectedCountry">
+      <span>Population: </span>
+      <span>{{ population }} </span>
     </div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
       <div>
@@ -70,6 +74,7 @@ interface Props {
     forecastStart: Date
     forecastEnd: Date
     countries: Country[]
+    population: string
 }
 
 export default defineComponent({
@@ -86,7 +91,8 @@ export default defineComponent({
         paramValues: Object,
         forecastStart: Date,
         forecastEnd: Date,
-        countries: Array
+        countries: Array,
+        population: String
     },
     setup(props: Props, context) {
         const paramsModalOpen = ref(false);

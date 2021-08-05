@@ -51,7 +51,8 @@ export interface Metadata {
 export interface Country {
     code: string,
     name: string,
-    public: boolean
+    public: boolean,
+    population: number
 }
 
 export interface Data {

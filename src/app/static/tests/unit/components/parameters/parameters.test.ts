@@ -6,6 +6,7 @@ import EditParameters from "@/components/parameters/EditParameters.vue";
 import EditPhases from "@/components/parameters/EditPhases.vue";
 import Collapsible from "@/components/Collapsible.vue";
 import Phases from "@/components/parameters/Phases.vue";
+import {numericFormatter} from "@/components/parameters/phasesUtils";
 
 describe("Parameters", () => {
     const paramGroupMetadata = [
@@ -65,10 +66,12 @@ describe("Parameters", () => {
 
     const forecastStart = new Date("2021-01-01");
     const forecastEnd = new Date("2021-06-01");
+    const populationValue = 2000000
+    const population = numericFormatter(populationValue)
 
     const countries = [
       {code: "GBR", name: "United Kingdom"},
-      {code: "FRA", name: "France"},
+      {code: "FRA", name: "France", population: populationValue},
       {code: "IRE", name: "Ireland"}
     ];
 
@@ -79,7 +82,8 @@ describe("Parameters", () => {
                 paramValues,
                 forecastStart,
                 forecastEnd,
-                countries
+                countries,
+                population
             }
         });
     }
@@ -97,6 +101,19 @@ describe("Parameters", () => {
         expect(options.at(1).text()).toBe("France");
         expect(options.at(2).attributes("value")).toBe("IRE");
         expect(options.at(2).text()).toBe("Ireland");
+    });
+
+    it("renders population", () => {
+        const wrapper = getWrapper();
+        const countryDiv = wrapper.find("#countries");
+        expect(countryDiv.find("h3").text()).toBe("Country");
+        const countrySelect = countryDiv.find("select");
+        expect((countrySelect.element as HTMLSelectElement).value).toBe("FRA");
+
+        const population = wrapper.find("#population");
+        const spans = population.findAll("span")
+        expect(spans.at(0).text()).toBe("Population:")
+        expect(spans.at(1).text()).toBe("2.00m")
     });
 
     it("renders collapsible dynamicForm and phases parameter groups", () => {

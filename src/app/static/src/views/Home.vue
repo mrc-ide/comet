@@ -7,6 +7,7 @@
                   :forecastStart="forecastStart"
                   :forecastEnd="forecastEnd"
                   :countries="countries"
+                  :population="population"
                   @updateCountry="updateCountry"
                   @updateMetadata="setParameterMetadata"
                   @updateValues="updateParameterValues"></Parameters>
@@ -60,7 +61,8 @@ export default defineComponent({
         ...mapGetters([
             "chartLayoutData",
             "forecastStart",
-            "forecastEnd"
+            "forecastEnd",
+            "population"
         ])
     },
     methods: {

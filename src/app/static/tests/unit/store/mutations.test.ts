@@ -11,7 +11,7 @@ describe("mutations", () => {
 
     it("sets countries", () => {
         const state = mockRootState();
-        const mockCountries = [{ code: "NARN", name: "Narnia", public: true }];
+        const mockCountries = [{ code: "NARN", name: "Narnia", public: true, population: 1.0 }];
         mutations.setCountries(state, mockCountries);
         expect(state.countries).toBe(mockCountries);
     });

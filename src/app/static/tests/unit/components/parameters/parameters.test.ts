@@ -67,9 +67,9 @@ describe("Parameters", () => {
     const forecastEnd = new Date("2021-06-01");
 
     const countries = [
-        { code: "GBR", name: "United Kingdom" },
-        { code: "FRA", name: "France" },
-        { code: "IRE", name: "Ireland" }
+        { code: "GBR", name: "United Kingdom", public: true },
+        { code: "FRA", name: "France", public: true },
+        { code: "IRE", name: "Ireland", public: true }
     ];
 
     function getWrapper() {
@@ -91,12 +91,33 @@ describe("Parameters", () => {
         const countrySelect = countryDiv.find("select");
         expect((countrySelect.element as HTMLSelectElement).value).toBe("FRA");
         const options = countrySelect.findAll("option");
-        expect(options.at(0).attributes("value")).toBe("GBR");
-        expect(options.at(0).text()).toBe("United Kingdom");
-        expect(options.at(1).attributes("value")).toBe("FRA");
-        expect(options.at(1).text()).toBe("France");
-        expect(options.at(2).attributes("value")).toBe("IRE");
-        expect(options.at(2).text()).toBe("Ireland");
+        // countries should be sorted by name
+        expect(options.at(0).attributes("value")).toBe("FRA");
+        expect(options.at(0).text()).toBe("France");
+        expect(options.at(1).attributes("value")).toBe("IRE");
+        expect(options.at(1).text()).toBe("Ireland");
+        expect(options.at(2).attributes("value")).toBe("GBR");
+        expect(options.at(2).text()).toBe("United Kingdom");
+    });
+
+    it("countries which are not public are not rendered", () => {
+        const wrapper = shallowMount(Parameters, {
+            propsData: {
+                paramGroupMetadata,
+                paramValues,
+                forecastStart,
+                forecastEnd,
+                countries: [
+                    ...countries,
+                    { code: "TEST", name: "TEST COUNTRY", public: false }
+                ]
+            }
+        });
+        const options = wrapper.findAll("#select-country option");
+        expect(options.length).toBe(3);
+        expect(options.at(0).attributes("value")).toBe("FRA");
+        expect(options.at(1).attributes("value")).toBe("IRE");
+        expect(options.at(2).attributes("value")).toBe("GBR");
     });
 
     it("renders collapsible dynamicForm and phases parameter groups", () => {
@@ -137,7 +158,7 @@ describe("Parameters", () => {
         const wrapper = getWrapper();
         await wrapper.findAll("#select-country option").at(2).setSelected();
         expect(wrapper.emitted("updateCountry")?.length).toBe(1);
-        expect(wrapper.emitted("updateCountry")![0][0]).toBe("IRE");
+        expect(wrapper.emitted("updateCountry")![0][0]).toBe("GBR");
     });
 
     it("Edit components are not rendered before group is selected", () => {

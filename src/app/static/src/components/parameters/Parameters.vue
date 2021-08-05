@@ -3,7 +3,7 @@
     <div id="countries" class="mb-3">
       <h3>Country</h3>
       <select id="select-country" v-model="selectedCountry" class="form-control">
-        <option v-for="country in countries"
+        <option v-for="country in sortedCountries"
                 :key="country.code"
                 :value="country.code">{{country.name}}</option>
       </select>
@@ -113,6 +113,12 @@ export default defineComponent({
             }
         });
 
+        const sortedCountries = computed(() => {
+            return [...props.countries]
+                .filter((country: Country) => country.public)
+                .sort((a: Country, b: Country) => (a.name > b.name ? 1 : -1));
+        });
+
         function editParameters(paramGroupId: string) {
             editParamGroupId.value = paramGroupId;
             paramsModalOpen.value = true;
@@ -169,6 +175,7 @@ export default defineComponent({
 
         return {
             selectedCountry,
+            sortedCountries,
             paramsModalOpen,
             phasesModalOpen,
             editParamGroupId,

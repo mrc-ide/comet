@@ -67,9 +67,9 @@ describe("Parameters", () => {
     const forecastEnd = new Date("2021-06-01");
 
     const countries = [
-      {code: "GBR", name: "United Kingdom"},
-      {code: "FRA", name: "France"},
-      {code: "IRE", name: "Ireland"}
+        { code: "GBR", name: "United Kingdom" },
+        { code: "FRA", name: "France" },
+        { code: "IRE", name: "Ireland" }
     ];
 
     function getWrapper() {
@@ -136,8 +136,8 @@ describe("Parameters", () => {
     it("selecting country emits updateCountry event", async () => {
         const wrapper = getWrapper();
         await wrapper.findAll("#select-country option").at(2).setSelected();
-        expect(wrapper.emitted("updateCountry")!!.length).toBe(1);
-        expect(wrapper.emitted("updateCountry")!![0][0]).toBe("IRE");
+        expect(wrapper.emitted("updateCountry")?.length).toBe(1);
+        expect(wrapper.emitted("updateCountry")![0][0]).toBe("IRE");
     });
 
     it("Edit components are not rendered before group is selected", () => {

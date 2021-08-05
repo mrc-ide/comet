@@ -40,7 +40,7 @@ describe("mutations", () => {
         const paramValues = { region: "GBR" };
         const state = mockRootState({ paramValues });
         mutations.setCountry(state, "FRA");
-        expect(state.paramValues!!.region).toBe("FRA");
+        expect(state.paramValues!.region).toBe("FRA");
     });
 
     it("sets parameter values", () => {

@@ -3,7 +3,9 @@
     <div id="countries" class="mb-3">
       <h3>Country</h3>
       <select id="select-country" v-model="selectedCountry" class="form-control">
-        <option v-for="country in countries" :value="country.code">{{country.name}}</option>
+        <option v-for="country in countries"
+                :key="country.code"
+                :value="country.code">{{country.name}}</option>
       </select>
     </div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
@@ -58,7 +60,12 @@ import {
     DynamicForm,
     DynamicFormData
 } from "@reside-ic/vue-dynamic-form";
-import {Country, Data, ParameterGroupMetadata, Rt} from "@/types";
+import {
+    Country,
+    Data,
+    ParameterGroupMetadata,
+    Rt
+} from "@/types";
 import Collapsible from "@/components/Collapsible.vue";
 import EditParameters from "./EditParameters.vue";
 import Phases from "./Phases.vue";

@@ -25,8 +25,8 @@ export const getters = {
     },
     population: (state: RootState): string => {
         const population = state.countries && state.countries.find(country =>
-          country.code === state.paramValues!!.region)!.population || 0
+          country.code === state.paramValues!!.region)!.population || 0;
 
-        return numericFormatter(population)
+        return numericFormatter(population);
     }
 };

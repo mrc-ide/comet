@@ -50,6 +50,7 @@ describe("Parameters", () => {
     ] as any;
 
     const paramValues = {
+        region: "FRA",
         pg1: {
             value1: "old1",
             value2: "unchanged"
@@ -65,16 +66,38 @@ describe("Parameters", () => {
     const forecastStart = new Date("2021-01-01");
     const forecastEnd = new Date("2021-06-01");
 
+    const countries = [
+      {code: "GBR", name: "United Kingdom"},
+      {code: "FRA", name: "France"},
+      {code: "IRE", name: "Ireland"}
+    ];
+
     function getWrapper() {
         return shallowMount(Parameters, {
             propsData: {
                 paramGroupMetadata,
                 paramValues,
                 forecastStart,
-                forecastEnd
+                forecastEnd,
+                countries
             }
         });
     }
+
+    it("renders countries", () => {
+        const wrapper = getWrapper();
+        const countryDiv = wrapper.find("#countries");
+        expect(countryDiv.find("h3").text()).toBe("Country");
+        const countrySelect = countryDiv.find("select");
+        expect((countrySelect.element as HTMLSelectElement).value).toBe("FRA");
+        const options = countrySelect.findAll("option");
+        expect(options.at(0).attributes("value")).toBe("GBR");
+        expect(options.at(0).text()).toBe("United Kingdom");
+        expect(options.at(1).attributes("value")).toBe("FRA");
+        expect(options.at(1).text()).toBe("France");
+        expect(options.at(2).attributes("value")).toBe("IRE");
+        expect(options.at(2).text()).toBe("Ireland");
+    });
 
     it("renders collapsible dynamicForm and phases parameter groups", () => {
         const wrapper = getWrapper();
@@ -108,6 +131,13 @@ describe("Parameters", () => {
         buttons.wrappers.forEach((button) => {
             expect(button.text()).toBe("Edit");
         });
+    });
+
+    it("selecting country emits updateCountry event", async () => {
+        const wrapper = getWrapper();
+        await wrapper.findAll("#select-country option").at(2).setSelected();
+        expect(wrapper.emitted("updateCountry")!!.length).toBe(1);
+        expect(wrapper.emitted("updateCountry")!![0][0]).toBe("IRE");
     });
 
     it("Edit components are not rendered before group is selected", () => {
@@ -199,6 +229,7 @@ describe("Parameters", () => {
         const updateValues = wrapper.emitted("updateValues")!;
         expect(updateValues.length).toBe(1);
         expect(updateValues[0][0]).toStrictEqual({
+            region: "FRA",
             pg1: {
                 value1: "new1",
                 value2: "unchanged"
@@ -240,6 +271,7 @@ describe("Parameters", () => {
 
         expect(wrapper.emitted("updateValues")?.length).toBe(1);
         expect(wrapper.emitted("updateValues")![0][0]).toStrictEqual({
+            region: "FRA",
             pg1: {
                 value1: "old1",
                 value2: "unchanged"

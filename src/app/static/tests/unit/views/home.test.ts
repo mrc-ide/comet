@@ -102,7 +102,7 @@ describe("Home", () => {
         expect(mockGetResults.mock.calls.length).toBe(0);
     });
 
-    it("renders Charts and Parameters component with expected props", () => {
+    it("renders components with expected props", () => {
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
                 metadata: {
@@ -114,7 +114,8 @@ describe("Home", () => {
                     ]
                 } as any,
                 results: { value: "results" },
-                paramValues: { value: "paramValue" }
+                paramValues: { value: "paramValue" },
+                countries: [{ code: "GBR", name: "United Kingdom", public: true }]
             }),
             getters: {
                 ...getters,
@@ -139,6 +140,7 @@ describe("Home", () => {
         expect(parameters.props("paramValues")).toStrictEqual({ value: "paramValue" });
         expect(parameters.props("forecastStart")).toStrictEqual(new Date("2021-01-01"));
         expect(parameters.props("forecastEnd")).toStrictEqual(new Date("2021-06-01"));
+        expect(parameters.props("countries")).toStrictEqual([{ code: "GBR", name: "United Kingdom", public: true }]);
     });
 
     it("does not render Charts or Parameters component if no metadata", () => {
@@ -183,6 +185,23 @@ describe("Home", () => {
         const fetchingResults = wrapper.find("#fetching-results");
         expect(fetchingResults.text()).toBe("Updating analysis...");
         expect(fetchingResults.find("loading-spinner-stub").exists()).toBe(true);
+    });
+
+    it("dispatches updateCountry on update emitted from Parameters", () => {
+        const mockUpdateCountry = jest.fn();
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                metadata: {} as any
+            }),
+            actions: {
+                updateCountry: mockUpdateCountry
+            }
+        });
+
+        const wrapper = shallowMount(Home, { store });
+        wrapper.findComponent(Parameters).vm.$emit("updateCountry", "FRA");
+        expect(mockUpdateCountry.mock.calls.length).toBe(1);
+        expect(mockUpdateCountry.mock.calls[0][1]).toBe("FRA");
     });
 
     it("commits parameter metadata on update emitted from Parameters", async () => {

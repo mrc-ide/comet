@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div id="countries" class="mb-3">
+      <h3>Countries</h3>
+      <select id="select-country" v-model="selectedCountry" class="form-control">
+        <option v-for="country in countries" :value="country.code">{{country.name}}</option>
+      </select>
+    </div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
       <div>
         <collapsible class="collapsible mt-2" :initial-open="false" :heading="paramGroup.label">
@@ -52,7 +58,7 @@ import {
     DynamicForm,
     DynamicFormData
 } from "@reside-ic/vue-dynamic-form";
-import { Data, ParameterGroupMetadata, Rt } from "@/types";
+import {Country, Data, ParameterGroupMetadata, Rt} from "@/types";
 import Collapsible from "@/components/Collapsible.vue";
 import EditParameters from "./EditParameters.vue";
 import Phases from "./Phases.vue";
@@ -63,6 +69,7 @@ interface Props {
     paramValues: Data
     forecastStart: Date
     forecastEnd: Date
+    countries: Country[]
 }
 
 export default defineComponent({
@@ -78,7 +85,8 @@ export default defineComponent({
         paramGroupMetadata: Array,
         paramValues: Object,
         forecastStart: Date,
-        forecastEnd: Date
+        forecastEnd: Date,
+        countries: Array
     },
     setup(props: Props, context) {
         const paramsModalOpen = ref(false);
@@ -87,6 +95,15 @@ export default defineComponent({
 
         const editParamGroup = computed(() => {
             return props.paramGroupMetadata.find((g) => g.id === editParamGroupId.value);
+        });
+
+        const selectedCountry = computed({
+            get: () => {
+                return props.paramValues.region as string;
+            },
+            set: (value: string) => {
+                context.emit("updateCountry", value);
+            }
         });
 
         function editParameters(paramGroupId: string) {
@@ -144,6 +161,7 @@ export default defineComponent({
         }
 
         return {
+            selectedCountry,
             paramsModalOpen,
             phasesModalOpen,
             editParamGroupId,

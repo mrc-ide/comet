@@ -27,6 +27,10 @@ export const mutations = {
     setParameterValues(state: RootState, paramValues: Data): void {
         state.paramValues = paramValues;
     },
+    setCountry(state: RootState, countryCode: string): void {
+        state.paramValues!!.region = countryCode;
+        //TODO: Update population parameter value based on country population
+    },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;
     },

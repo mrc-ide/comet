@@ -6,6 +6,8 @@
                   :paramValues="paramValues"
                   :forecastStart="forecastStart"
                   :forecastEnd="forecastEnd"
+                  :countries="countries"
+                  @updateCountry="updateCountry"
                   @updateMetadata="setParameterMetadata"
                   @updateValues="updateParameterValues"></Parameters>
     </div>
@@ -66,6 +68,7 @@ export default defineComponent({
             "getMetadata",
             "getCountries",
             "getResults",
+            "updateCountry",
             "updateParameterValues"
         ]),
         ...mapMutations([

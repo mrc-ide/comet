@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { RootState } from "@/store/state";
 import { Data } from "@/types";
-import {numericFormatter} from "@/components/parameters/phasesUtils";
+import { numericFormatter } from "@/components/parameters/phasesUtils";
 
 // We hard-code this parameter sent to cometr to give a forecast of 2 years
 export const forecastDays = 730;
@@ -24,9 +24,9 @@ export const getters = {
         return dayjs().startOf("day").add(forecastDays, "days").toDate();
     },
     population: (state: RootState): string => {
-        const population = state.countries && state.countries.find(country =>
-          country.code === state.paramValues!!.region)!.population || 0;
+        const population = state.countries && state.countries
+            .find((country) => country.code === state.paramValues!.region)!.population;
 
-        return numericFormatter(population);
+        return numericFormatter(population || 0);
     }
 };

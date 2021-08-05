@@ -6,7 +6,7 @@ import EditParameters from "@/components/parameters/EditParameters.vue";
 import EditPhases from "@/components/parameters/EditPhases.vue";
 import Collapsible from "@/components/Collapsible.vue";
 import Phases from "@/components/parameters/Phases.vue";
-import {numericFormatter} from "@/components/parameters/phasesUtils";
+import { numericFormatter } from "@/components/parameters/phasesUtils";
 
 describe("Parameters", () => {
     const paramGroupMetadata = [
@@ -66,13 +66,13 @@ describe("Parameters", () => {
 
     const forecastStart = new Date("2021-01-01");
     const forecastEnd = new Date("2021-06-01");
-    const populationValue = 2000000
-    const population = numericFormatter(populationValue)
+    const populationValue = 2000000;
+    const population = numericFormatter(populationValue);
 
     const countries = [
-      {code: "GBR", name: "United Kingdom"},
-      {code: "FRA", name: "France", population: populationValue},
-      {code: "IRE", name: "Ireland"}
+        { code: "GBR", name: "United Kingdom" },
+        { code: "FRA", name: "France", population: populationValue },
+        { code: "IRE", name: "Ireland" }
     ];
 
     function getWrapper() {
@@ -110,10 +110,10 @@ describe("Parameters", () => {
         const countrySelect = countryDiv.find("select");
         expect((countrySelect.element as HTMLSelectElement).value).toBe("FRA");
 
-        const population = wrapper.find("#population");
-        const spans = population.findAll("span")
-        expect(spans.at(0).text()).toBe("Population:")
-        expect(spans.at(1).text()).toBe("2.00m")
+        const populationDiv = wrapper.find("#population");
+        const spans = populationDiv.findAll("span");
+        expect(spans.at(0).text()).toBe("Population:");
+        expect(spans.at(1).text()).toBe("2.00m");
     });
 
     it("renders collapsible dynamicForm and phases parameter groups", () => {
@@ -153,8 +153,8 @@ describe("Parameters", () => {
     it("selecting country emits updateCountry event", async () => {
         const wrapper = getWrapper();
         await wrapper.findAll("#select-country option").at(2).setSelected();
-        expect(wrapper.emitted("updateCountry")!!.length).toBe(1);
-        expect(wrapper.emitted("updateCountry")!![0][0]).toBe("IRE");
+        expect(wrapper.emitted("updateCountry")?.length).toBe(1);
+        expect(wrapper.emitted("updateCountry")![0][0]).toBe("IRE");
     });
 
     it("Edit components are not rendered before group is selected", () => {

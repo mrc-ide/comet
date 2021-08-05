@@ -46,13 +46,15 @@ export const getTotalDays = (start: Date, end: Date): number => daysBetween(star
 export const phaseClassFromIndex = (idx: number): string => (idx % 2 ? "phase-odd" : "phase-even");
 
 export const numericFormatter = (num: number): any => {
-    if(num > 999 && num < 1000000){
-        return (num/1000).toFixed(2) + 'k'; // convert to K for number from > 1000 < 1 million
-    }else if(num >= 1000000){
-        return (num/1000000).toFixed(2) + 'm'; // convert to M for number from > 1 million
-    }else if(num >= 1000000000){
-      return (num/1000000000).toFixed(2) + 'b'; // convert to B for number from > 1 billion
-    }else if(num < 900){
+    if (num > 999 && num < 1000000) {
+        return `${(num / 1000).toFixed(2)}k`; // convert to K for number from > 1000 < 1 million
+    } if (num >= 1000000) {
+        return `${(num / 1000000).toFixed(2)}m`; // convert to M for number from > 1 million
+    } if (num >= 1000000000) {
+        return `${(num / 1000000000).toFixed(2)}b`; // convert to B for number from > 1 billion
+    } if (num < 900) {
         return num.toString(); // if value < 1000, nothing to do
     }
+
+    return 0;
 };

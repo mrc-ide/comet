@@ -1,5 +1,5 @@
 // Mock the import of plotly to avoid import failures in non-browser context
-import {numericFormatter} from "@/components/parameters/phasesUtils";
+import { numericFormatter } from "@/components/parameters/phasesUtils";
 
 jest.mock("plotly.js", () => ({
     react: jest.fn()
@@ -67,7 +67,9 @@ describe("Home", () => {
         const mockGetResults = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                countries: [{ code: "NARN", name: "Narnia", public: true, population: 1.0 }]
+                countries: [{
+                    code: "NARN", name: "Narnia", public: true, population: 1.0
+                }]
             }),
             actions: {
                 getMetadata: mockGetMetadata,
@@ -117,7 +119,9 @@ describe("Home", () => {
                 } as any,
                 results: { value: "results" },
                 paramValues: { value: "paramValue" },
-                countries: [{ code: "GBR", name: "United Kingdom", public: true, population: 1000000.09 }]
+                countries: [{
+                    code: "GBR", name: "United Kingdom", public: true, population: 1000000.09
+                }]
             }),
             getters: {
                 ...getters,
@@ -144,7 +148,13 @@ describe("Home", () => {
         expect(parameters.props("population")).toStrictEqual("1.00m");
         expect(parameters.props("forecastStart")).toStrictEqual(new Date("2021-01-01"));
         expect(parameters.props("forecastEnd")).toStrictEqual(new Date("2021-06-01"));
-        expect(parameters.props("countries")).toStrictEqual([{ code: "GBR", name: "United Kingdom", public: true, population: 1000000.09 }]);
+        expect(parameters.props("countries")).toStrictEqual([
+            {
+                code: "GBR",
+                name: "United Kingdom",
+                public: true,
+                population: 1000000.09
+            }]);
     });
 
     it("does not render Charts or Parameters component if no metadata", () => {

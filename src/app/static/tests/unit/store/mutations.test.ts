@@ -11,7 +11,9 @@ describe("mutations", () => {
 
     it("sets countries", () => {
         const state = mockRootState();
-        const mockCountries = [{ code: "NARN", name: "Narnia", public: true, population: 1.0 }];
+        const mockCountries = [{
+            code: "NARN", name: "Narnia", public: true, population: 1.0
+        }];
         mutations.setCountries(state, mockCountries);
         expect(state.countries).toBe(mockCountries);
     });
@@ -40,7 +42,7 @@ describe("mutations", () => {
         const paramValues = { region: "GBR" };
         const state = mockRootState({ paramValues });
         mutations.setCountry(state, "FRA");
-        expect(state.paramValues!!.region).toBe("FRA");
+        expect(state.paramValues!.region).toBe("FRA");
     });
 
     it("sets parameter values", () => {

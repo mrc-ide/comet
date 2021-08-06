@@ -87,7 +87,7 @@ describe("Parameters", () => {
     it("renders countries", () => {
         const wrapper = getWrapper();
         const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("h3").text()).toBe("Country");
+        expect(countryDiv.find("label.h3").text()).toBe("Country");
         const countrySelect = countryDiv.find("select");
         expect((countrySelect.element as HTMLSelectElement).value).toBe("FRA");
         const options = countrySelect.findAll("option");

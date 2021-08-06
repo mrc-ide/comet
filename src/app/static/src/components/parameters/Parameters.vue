@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="countries" class="mb-3">
-      <h3>Country</h3>
+      <label for="select-country" class="h3">Country</label>
       <select id="select-country" v-model="selectedCountry" class="form-control">
         <option v-for="country in sortedCountries"
                 :key="country.code"

@@ -2,11 +2,12 @@
   <div>
     <div id="countries" class="mb-3">
       <label for="select-country" class="h3">Country</label>
-      <select id="select-country" v-model="selectedCountry" class="form-control">
-        <option v-for="country in sortedCountries"
-                :key="country.code"
-                :value="country.code">{{country.name}}</option>
-      </select>
+      <v-select input-id="select-country"
+                v-model="selectedCountry"
+                :options="sortedCountries"
+                label="name"
+                :clearable="false">
+      </v-select>
     </div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
       <div>
@@ -55,6 +56,7 @@
 </template>
 
 <script lang="ts">
+import vSelect from "vue-select";
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import {
     DynamicForm,
@@ -86,7 +88,8 @@ export default defineComponent({
         EditParameters,
         EditPhases,
         Collapsible,
-        Phases
+        Phases,
+        vSelect
     },
     props: {
         paramGroupMetadata: Array,
@@ -106,10 +109,11 @@ export default defineComponent({
 
         const selectedCountry = computed({
             get: () => {
-                return props.paramValues.region as string;
+                return props.countries
+                    .find((c:Country) => c.code === props.paramValues.region as string)!;
             },
-            set: (value: string) => {
-                context.emit("updateCountry", value);
+            set: (value: Country) => {
+                context.emit("updateCountry", value.code);
             }
         });
 

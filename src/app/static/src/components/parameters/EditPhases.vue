@@ -34,7 +34,7 @@
                  @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
               <button type="button"
-                      class="close float-right mr-1" aria-label="Delete"
+                      class="close float-right mr-1 disable-select" aria-label="Delete"
                       @click="deletePhase(index)">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -50,7 +50,8 @@
                   <div class="phase-start">Start: {{displayPhases[index].start}}</div>
                   <div class="phase-end">End: {{displayPhases[index].end}}</div>
                 </div>
-                <div class="phase-rt">Rt:
+                <div class="phase-rt">
+                  <span class="disable-select">Rt:</span>
                   <input
                     :id="`phase-rt-${index}`"
                     class="phase-rt-input"

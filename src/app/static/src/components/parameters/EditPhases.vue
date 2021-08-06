@@ -14,7 +14,8 @@
       <div class="phase-editor" @mouseup="mouseUp">
         <div class="phases-container">
           <div ref="rail" class="rail"
-               @mousedown="addPhase">
+               @mousedown="addPhase"
+               @mousemove="mouseMove($event)">
             <div v-for="(value, index) in sliderValues"
                  :id="`slider-${index}-${sliderUpdateKeys[index]}`"
                  :key="index"
@@ -28,7 +29,6 @@
                  :aria-valuetext="displayPhases[index].start"
                  :aria-valuemax="sliderMax(index)"
                  :aria-label="`Phase ${displayPhases[index].index}`"
-                 @mousemove="mouseMove(index, $event)"
                  @mousedown.stop="mouseDown(index, $event)"
                  @mouseup="mouseUp"
                  @click.stop="">
@@ -164,6 +164,7 @@ export default defineComponent({
 
         const movingSlider: Ref<number | null> = ref(null);
         const moveStartOffset: Ref<number | null> = ref(null);
+        const moveStartDays: Ref<number | null> = ref(null);
 
         const sliderMin = (index: number) => {
             return index === 0 ? 0 : sliderValues.value[index - 1].daysFromStart + 1;
@@ -190,7 +191,8 @@ export default defineComponent({
 
         const mouseDown = (index: number, event: MouseEvent) => {
             movingSlider.value = index;
-            moveStartOffset.value = event.offsetX;
+            moveStartOffset.value = event.clientX;
+            moveStartDays.value = sliderValues.value[index].daysFromStart;
 
             bringSliderToFront(index);
         };
@@ -200,12 +202,13 @@ export default defineComponent({
             return totalDays * valueAsRangeFraction;
         };
 
-        const mouseMove = (index: number, event: MouseEvent) => {
-            if (movingSlider.value === index && moveStartOffset.value !== null) {
-                const offsetDiff = event.offsetX - moveStartOffset.value;
+        const mouseMove = (event: MouseEvent) => {
+            if (movingSlider.value !== null && moveStartOffset.value !== null && moveStartDays.value !== null) {
+                const index = movingSlider.value;
+                const offsetDiff = event.clientX - moveStartOffset.value;
                 const valueDiff = sliderValueAsDays(offsetDiff);
-                const oldValue = sliderValues.value[index].daysFromStart;
-                const newValue = limitSliderValue(index, oldValue + valueDiff);
+
+                const newValue = limitSliderValue(index, moveStartDays.value + valueDiff);
                 sliderValues.value[index].daysFromStart = newValue;
             }
         };
@@ -213,6 +216,7 @@ export default defineComponent({
         const mouseUp = () => {
             movingSlider.value = null;
             moveStartOffset.value = null;
+            moveStartDays.value = null;
         };
 
         const sliderPosition = (value: SliderValue) => {

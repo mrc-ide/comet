@@ -136,7 +136,7 @@ describe("Parameters", () => {
         expect(spans.at(1).text()).toBe("21.00k");
     });
   
-      it("renders population in hundred and zero", async () => {
+      it("renders population in hundred", async () => {
         const wrapper = getWrapper();
         const populationProp = numericFormatter(100);
         await wrapper.setProps({ population: populationProp });
@@ -154,9 +154,23 @@ describe("Parameters", () => {
         const spans = populationDiv.findAll("span");
         expect(spans.at(0).text()).toBe("Population:");
         expect(spans.at(1).text()).toBe("100");
-        
-        const populationProp2 = numericFormatter(-1);
-        await wrapper.setProps({ population: populationProp2 });
+    });
+  
+     it("renders population in zero", async () => {
+        const wrapper = getWrapper();
+        const populationProp = numericFormatter(-1);
+        await wrapper.setProps({ population: populationProp });
+
+        const countryDiv = wrapper.find("#countries");
+        expect(countryDiv.find("h3").text()).toBe("Country");
+        const countrySelect = countryDiv.find("select");
+
+        const options = countrySelect.findAll("option");
+        options.at(2).setSelected();
+        expect(options.at(2).attributes("value")).toBe("IRE");
+        expect((countrySelect.element as HTMLSelectElement).value).toBe("IRE");
+
+        const populationDiv = wrapper.find("#population");
         const spans = populationDiv.findAll("span");
         expect(spans.at(0).text()).toBe("Population:");
         expect(spans.at(1).text()).toBe("0");

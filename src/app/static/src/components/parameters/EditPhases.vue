@@ -14,7 +14,7 @@
       <div class="phase-editor" @mouseup="mouseUp">
         <div class="phases-container">
           <div ref="rail" class="rail"
-               @click="addPhase">
+               @mousedown="addPhase">
             <div v-for="(value, index) in sliderValues"
                  :id="`slider-${index}-${sliderUpdateKeys[index]}`"
                  :key="index"
@@ -29,7 +29,7 @@
                  :aria-valuemax="sliderMax(index)"
                  :aria-label="`Phase ${displayPhases[index].index}`"
                  @mousemove="mouseMove(index, $event)"
-                 @mousedown="mouseDown(index, $event)"
+                 @mousedown.stop="mouseDown(index, $event)"
                  @mouseup="mouseUp"
                  @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>

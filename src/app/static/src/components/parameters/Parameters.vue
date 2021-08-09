@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div id="countries" class="mb-1">
-      <h3>Country</h3>
-      <select id="select-country" v-model="selectedCountry" class="form-control">
-        <option v-for="country in countries"
-                :key="country.code"
-                :value="country.code">{{country.name}}</option>
-      </select>
+    <div id="countries" class="mb-3">
+      <label for="select-country" class="h3">Country</label>
+      <v-select id="select-country"
+                v-model="selectedCountry"
+                :options="sortedCountries"
+                label="name"
+                :clearable="false">
+      </v-select>
     </div>
     <div id="population" class="mb-3" v-if="selectedCountry">
       <span>Population: </span>
@@ -59,6 +60,7 @@
 </template>
 
 <script lang="ts">
+import vSelect from "vue-select";
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import {
     DynamicForm,
@@ -91,7 +93,8 @@ export default defineComponent({
         EditParameters,
         EditPhases,
         Collapsible,
-        Phases
+        Phases,
+        vSelect
     },
     props: {
         paramGroupMetadata: Array,
@@ -112,11 +115,18 @@ export default defineComponent({
 
         const selectedCountry = computed({
             get: () => {
-                return props.paramValues.region as string;
+                return props.countries
+                    .find((c:Country) => c.code === props.paramValues.region as string)!;
             },
-            set: (value: string) => {
-                context.emit("updateCountry", value);
+            set: (value: Country) => {
+                context.emit("updateCountry", value.code);
             }
+        });
+
+        const sortedCountries = computed(() => {
+            return [...props.countries]
+                .filter((country: Country) => country.public)
+                .sort((a: Country, b: Country) => (a.name > b.name ? 1 : -1));
         });
 
         function editParameters(paramGroupId: string) {
@@ -175,6 +185,7 @@ export default defineComponent({
 
         return {
             selectedCountry,
+            sortedCountries,
             paramsModalOpen,
             phasesModalOpen,
             editParamGroupId,

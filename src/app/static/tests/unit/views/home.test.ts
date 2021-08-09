@@ -162,7 +162,8 @@ describe("Home", () => {
             state: mockRootState({
                 metadata: null,
                 results: { value: "results" },
-                paramValues: { value: "chartLayoutData" }
+                paramValues: { value: "chartLayoutData" },
+                countries: [{ code: "TEST", name: "test", public: false }]
             })
         });
 
@@ -170,6 +171,27 @@ describe("Home", () => {
         const charts = wrapper.findComponent(Charts);
         expect(charts.exists()).toBe(false);
 
+        const parameters = wrapper.findComponent(Parameters);
+        expect(parameters.exists()).toBe(false);
+    });
+
+    it("does not render Parameters component if no countries", () => {
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                metadata: {
+                    charts: [
+                        { value: "metadata" }
+                    ],
+                    parameterGroups: [
+                        { value: "paramMetadata" }
+                    ]
+                } as any,
+                results: { value: "results" },
+                paramValues: { value: "chartLayoutData" },
+                countries: null
+            })
+        });
+        const wrapper = shallowMount(Home, { store });
         const parameters = wrapper.findComponent(Parameters);
         expect(parameters.exists()).toBe(false);
     });
@@ -205,7 +227,8 @@ describe("Home", () => {
         const mockUpdateCountry = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                metadata: {} as any
+                metadata: {} as any,
+                countries: [] as any
             }),
             actions: {
                 updateCountry: mockUpdateCountry
@@ -222,7 +245,8 @@ describe("Home", () => {
         const mockSetParameterMetadata = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                metadata: {} as any
+                metadata: {} as any,
+                countries: [] as any
             }),
             mutations: {
                 setParameterMetadata: mockSetParameterMetadata
@@ -242,7 +266,8 @@ describe("Home", () => {
         const mockUpdateParameterValues = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                metadata: {} as any
+                metadata: {} as any,
+                countries: [] as any
             }),
             actions: {
                 updateParameterValues: mockUpdateParameterValues

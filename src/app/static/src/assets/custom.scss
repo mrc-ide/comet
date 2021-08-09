@@ -1,6 +1,6 @@
 $theme-blue: #003e74;
 
-h3 {
+h3, .h3 {
   font-size: 1.3rem;
 }
 
@@ -97,6 +97,11 @@ h3 {
   width: 14rem;
   background: white;
   padding: 1rem;
+}
+
+// v-select override
+.vs__dropdown-toggle {
+  background-color: white;
 }
 
 

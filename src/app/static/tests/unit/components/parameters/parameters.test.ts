@@ -50,6 +50,20 @@ describe("Parameters", () => {
         }
     ] as any;
 
+    const paramValuesIreland = {
+        region: "IRE",
+        pg1: {
+            value1: "old1",
+            value2: "unchanged"
+        },
+        pg2: {
+            value3: "val3"
+        },
+        pg3: {
+            value4: "val4"
+        }
+    };
+
     const paramValues = {
         region: "FRA",
         pg1: {
@@ -70,16 +84,16 @@ describe("Parameters", () => {
     const population = numericFormatter(populationValue);
 
     const countries = [
-        { code: "GBR", name: "United Kingdom" },
-        { code: "FRA", name: "France", population: populationValue },
-        { code: "IRE", name: "Ireland" }
+        { code: "GBR", name: "United Kingdom", public: true },
+        { code: "FRA", name: "France", public: true },
+        { code: "IRE", name: "Ireland", public: true }
     ];
 
-    function getWrapper() {
+    function getWrapper(paramValuesData = paramValues) {
         return shallowMount(Parameters, {
             propsData: {
                 paramGroupMetadata,
-                paramValues,
+                paramValues: paramValuesData,
                 forecastStart,
                 forecastEnd,
                 countries,
@@ -91,24 +105,49 @@ describe("Parameters", () => {
     it("renders countries", () => {
         const wrapper = getWrapper();
         const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("h3").text()).toBe("Country");
-        const countrySelect = countryDiv.find("select");
-        expect((countrySelect.element as HTMLSelectElement).value).toBe("FRA");
-        const options = countrySelect.findAll("option");
-        expect(options.at(0).attributes("value")).toBe("GBR");
-        expect(options.at(0).text()).toBe("United Kingdom");
-        expect(options.at(1).attributes("value")).toBe("FRA");
-        expect(options.at(1).text()).toBe("France");
-        expect(options.at(2).attributes("value")).toBe("IRE");
-        expect(options.at(2).text()).toBe("Ireland");
+        expect(countryDiv.find("label.h3").text()).toBe("Country");
+        const countrySelect = countryDiv.find("v-select-stub");
+        expect(countrySelect.props("value").code).toBe("FRA");
+        const options = countrySelect.props("options");
+        // countries should be sorted by name
+        expect(options[0].code).toBe("FRA");
+        expect(options[0].name).toBe("France");
+        expect(options[1].code).toBe("IRE");
+        expect(options[1].name).toBe("Ireland");
+        expect(options[2].code).toBe("GBR");
+        expect(options[2].name).toBe("United Kingdom");
+    });
+
+    it("countries which are not public are not rendered", () => {
+        const wrapper = shallowMount(Parameters, {
+            propsData: {
+                paramGroupMetadata,
+                paramValues,
+                forecastStart,
+                forecastEnd,
+                countries: [
+                    ...countries,
+                    { code: "TEST", name: "TEST COUNTRY", public: false }
+                ]
+            }
+        });
+        const options = wrapper.find("#countries v-select-stub").props("options");
+        expect(options.length).toBe(3);
+        expect(options[0].code).toBe("FRA");
+        expect(options[1].code).toBe("IRE");
+        expect(options[2].code).toBe("GBR");
     });
 
     it("renders population in million", () => {
         const wrapper = getWrapper();
         const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("h3").text()).toBe("Country");
-        const countrySelect = countryDiv.find("select");
-        expect((countrySelect.element as HTMLSelectElement).value).toBe("FRA");
+        expect(countryDiv.find("label").text()).toBe("Country");
+
+        const countrySelect = countryDiv.find("v-select-stub");
+        expect(countrySelect.props("value").code).toBe("FRA");
+        const options = countrySelect.props("options");
+        expect(options[0].code).toBe("FRA");
+        expect(options[0].name).toBe("France");
 
         const populationDiv = wrapper.find("#population");
         const spans = populationDiv.findAll("span");
@@ -117,18 +156,16 @@ describe("Parameters", () => {
     });
 
     it("renders population in thousand", async () => {
-        const wrapper = getWrapper();
+        const wrapper = getWrapper(paramValuesIreland);
+
         const populationProp = numericFormatter(21000);
         await wrapper.setProps({ population: populationProp });
 
         const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("h3").text()).toBe("Country");
-        const countrySelect = countryDiv.find("select");
+        expect(countryDiv.find("label").text()).toBe("Country");
 
-        const options = countrySelect.findAll("option");
-        options.at(2).setSelected();
-        expect(options.at(2).attributes("value")).toBe("IRE");
-        expect((countrySelect.element as HTMLSelectElement).value).toBe("IRE");
+        const countrySelect = countryDiv.find("v-select-stub");
+        expect(countrySelect.props("value").code).toBe("IRE");
 
         const populationDiv = wrapper.find("#population");
         const spans = populationDiv.findAll("span");
@@ -137,18 +174,15 @@ describe("Parameters", () => {
     });
 
     it("renders population in hundred", async () => {
-        const wrapper = getWrapper();
+        const wrapper = getWrapper(paramValuesIreland);
         const populationProp = numericFormatter(100);
         await wrapper.setProps({ population: populationProp });
 
         const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("h3").text()).toBe("Country");
-        const countrySelect = countryDiv.find("select");
+        expect(countryDiv.find("label").text()).toBe("Country");
 
-        const options = countrySelect.findAll("option");
-        options.at(2).setSelected();
-        expect(options.at(2).attributes("value")).toBe("IRE");
-        expect((countrySelect.element as HTMLSelectElement).value).toBe("IRE");
+        const countrySelect = countryDiv.find("v-select-stub");
+        expect(countrySelect.props("value").code).toBe("IRE");
 
         const populationDiv = wrapper.find("#population");
         const spans = populationDiv.findAll("span");
@@ -157,18 +191,15 @@ describe("Parameters", () => {
     });
 
     it("renders population in zero", async () => {
-        const wrapper = getWrapper();
+        const wrapper = getWrapper(paramValuesIreland);
         const populationProp = numericFormatter(-1);
         await wrapper.setProps({ population: populationProp });
 
         const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("h3").text()).toBe("Country");
-        const countrySelect = countryDiv.find("select");
+        expect(countryDiv.find("label").text()).toBe("Country");
 
-        const options = countrySelect.findAll("option");
-        options.at(2).setSelected();
-        expect(options.at(2).attributes("value")).toBe("IRE");
-        expect((countrySelect.element as HTMLSelectElement).value).toBe("IRE");
+        const countrySelect = countryDiv.find("v-select-stub");
+        expect(countrySelect.props("value").code).toBe("IRE");
 
         const populationDiv = wrapper.find("#population");
         const spans = populationDiv.findAll("span");
@@ -177,18 +208,15 @@ describe("Parameters", () => {
     });
 
     it("renders population in billion", async () => {
-        const wrapper = getWrapper();
+        const wrapper = getWrapper(paramValuesIreland);
         const populationProp = numericFormatter(5000000000);
         await wrapper.setProps({ population: populationProp });
 
         const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("h3").text()).toBe("Country");
-        const countrySelect = countryDiv.find("select");
+        expect(countryDiv.find("label").text()).toBe("Country");
 
-        const options = countrySelect.findAll("option");
-        options.at(0).setSelected();
-        expect(options.at(0).attributes("value")).toBe("GBR");
-        expect((countrySelect.element as HTMLSelectElement).value).toBe("GBR");
+        const countrySelect = countryDiv.find("v-select-stub");
+        expect(countrySelect.props("value").code).toBe("IRE");
 
         const populationDiv = wrapper.find("#population");
         const spans = populationDiv.findAll("span");
@@ -232,9 +260,10 @@ describe("Parameters", () => {
 
     it("selecting country emits updateCountry event", async () => {
         const wrapper = getWrapper();
-        await wrapper.findAll("#select-country option").at(2).setSelected();
+        const newCountry = { code: "GBR", name: "United Kingdom", public: true };
+        await wrapper.find("#countries v-select-stub").vm.$emit("input", newCountry);
         expect(wrapper.emitted("updateCountry")?.length).toBe(1);
-        expect(wrapper.emitted("updateCountry")![0][0]).toBe("IRE");
+        expect(wrapper.emitted("updateCountry")![0][0]).toBe("GBR");
     });
 
     it("Edit components are not rendered before group is selected", () => {

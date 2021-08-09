@@ -1,7 +1,7 @@
 <template>
   <div class="home row">
     <div class="col-md-4">
-      <Parameters class="parameters" v-if="metadata"
+      <Parameters class="parameters" v-if="metadata && countries"
                   :paramGroupMetadata="metadata.parameterGroups"
                   :paramValues="paramValues"
                   :forecastStart="forecastStart"

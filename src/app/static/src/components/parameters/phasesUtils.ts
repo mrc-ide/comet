@@ -55,7 +55,7 @@ export const numericFormatter = (num: number): any => {
     if (num >= 1000000) {
         return `${(num / 1000000).toFixed(2)}m`;
     }
-    if (num < 900) {
+    if (num >= 0 && num < 900) {
         return num.toString();
     }
 

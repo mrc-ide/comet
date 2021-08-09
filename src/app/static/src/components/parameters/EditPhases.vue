@@ -29,14 +29,14 @@
                  :aria-valuetext="displayPhases[index].start"
                  :aria-valuemax="sliderMax(index)"
                  :aria-label="`Phase ${displayPhases[index].index}`"
-                 @mousedown.stop="mouseDown(index, $event)"
+                 @mousedown.stop.prevent="mouseDown(index, $event)"
                  @mouseup="mouseUp"
                  @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
               <button type="button"
-                      class="close float-right mr-1 disable-select" aria-label="Delete"
+                      class="close float-right mr-1" aria-label="Delete"
                       @click="deletePhase(index)">
-                <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true" class="disable-select">&times;</span>
               </button>
               <div class="slider-text">
                 <div class="phase-dates disable-select">
@@ -204,7 +204,8 @@ export default defineComponent({
         };
 
         const mouseMove = (event: MouseEvent) => {
-            if (movingSlider.value !== null && moveStartOffset.value !== null && moveStartDays.value !== null) {
+            if (movingSlider.value !== null && moveStartOffset.value !== null
+                   && moveStartDays.value !== null) {
                 const index = movingSlider.value;
                 const offsetDiff = event.clientX - moveStartOffset.value;
                 const valueDiff = sliderValueAsDays(offsetDiff);

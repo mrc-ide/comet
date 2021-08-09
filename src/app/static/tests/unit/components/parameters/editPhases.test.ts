@@ -37,11 +37,12 @@ describe("EditPhases", () => {
         setRailWidth(wrapper);
 
         const slider = wrapper.findAll(".slider").at(sliderIdx);
+        const rail = wrapper.find(".rail");
 
-        slider.trigger("mousedown", { offsetX: 0 });
+        slider.trigger("mousedown", { clientX: 0 });
         await Vue.nextTick();
 
-        slider.trigger("mousemove", { offsetX: dragAsPercent * 10 });
+        rail.trigger("mousemove", { clientX: dragAsPercent * 10 });
         await Vue.nextTick();
 
         slider.trigger("mouseup");
@@ -325,7 +326,7 @@ describe("EditPhases", () => {
     it("clicking on timeline adds a new first phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);
-        await wrapper.find(".rail").trigger("click", { offsetX: 0 });
+        await wrapper.find(".rail").trigger("mousedown", { offsetX: 0 });
 
         const { sliderValues } = wrapper.vm.$data;
         expect(sliderValues.length).toBe(3);
@@ -364,7 +365,7 @@ describe("EditPhases", () => {
     it("clicking on timeline adds a new last phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);
-        await wrapper.find(".rail").trigger("click", { offsetX: 600 });
+        await wrapper.find(".rail").trigger("mousedown", { offsetX: 600 });
 
         const { sliderValues } = wrapper.vm.$data;
         expect(sliderValues.length).toBe(3);
@@ -403,7 +404,7 @@ describe("EditPhases", () => {
     it("clicking on timeline adds a new intermediate phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);
-        await wrapper.find(".rail").trigger("click", { offsetX: 200 });
+        await wrapper.find(".rail").trigger("mousedown", { offsetX: 200 });
 
         const { sliderValues } = wrapper.vm.$data;
         expect(sliderValues.length).toBe(3);

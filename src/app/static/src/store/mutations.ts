@@ -27,6 +27,9 @@ export const mutations = {
     setParameterValues(state: RootState, paramValues: Data): void {
         state.paramValues = paramValues;
     },
+    setCountry(state: RootState, countryCode: string): void {
+        state.paramValues!.region = countryCode;
+    },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;
     },

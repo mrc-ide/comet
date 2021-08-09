@@ -1,11 +1,13 @@
 <template>
   <div class="home row">
     <div class="col-md-4">
-      <Parameters class="parameters" v-if="metadata"
+      <Parameters class="parameters" v-if="metadata && countries"
                   :paramGroupMetadata="metadata.parameterGroups"
                   :paramValues="paramValues"
                   :forecastStart="forecastStart"
                   :forecastEnd="forecastEnd"
+                  :countries="countries"
+                  @updateCountry="updateCountry"
                   @updateMetadata="setParameterMetadata"
                   @updateValues="updateParameterValues"></Parameters>
     </div>
@@ -66,6 +68,7 @@ export default defineComponent({
             "getMetadata",
             "getCountries",
             "getResults",
+            "updateCountry",
             "updateParameterValues"
         ]),
         ...mapMutations([

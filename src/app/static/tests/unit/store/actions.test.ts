@@ -69,6 +69,16 @@ describe("actions", () => {
         expect(commit.mock.calls[3][1]).toBe(false);
     });
 
+    it("updates country", async () => {
+        const commit = jest.fn();
+        const dispatch = jest.fn();
+        await (actions.updateCountry as any)({ commit, dispatch }, "GBR");
+        expect(commit.mock.calls.length).toBe(1);
+        expect(commit.mock.calls[0][0]).toBe("setCountry");
+        expect(commit.mock.calls[0][1]).toBe("GBR");
+        expect(dispatch.mock.calls.length).toBe(1);
+    });
+
     it("updates parameter values", async () => {
         const commit = jest.fn();
         const dispatch = jest.fn();

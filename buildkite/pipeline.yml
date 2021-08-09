@@ -1,4 +1,20 @@
-steps:
 
-  - label: "Build, test and publish app"
-    command: buildkite/build-test-push.sh
+steps:
+  - label: ":construction_worker: Make shared build env"
+    command: buildkite/make-build-env.sh
+
+  - wait
+
+  - label: ":mag: Test back-end"
+    command: buildkite/test-back-end.sh
+
+  - label: ":mag: Test front-end"
+    command: buildkite/test-front-end.sh
+
+  - label: ":mag: Test in browser"
+    command: buildkite/test-e2e.sh
+
+  - wait
+
+  - label: ":construction_worker: Build and push app image"
+    command: buildkite/build-push.sh

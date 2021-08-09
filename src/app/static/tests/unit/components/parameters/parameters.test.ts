@@ -135,8 +135,8 @@ describe("Parameters", () => {
         expect(spans.at(0).text()).toBe("Population:");
         expect(spans.at(1).text()).toBe("21.00k");
     });
-  
-      it("renders population in hundred", async () => {
+
+    it("renders population in hundred", async () => {
         const wrapper = getWrapper();
         const populationProp = numericFormatter(100);
         await wrapper.setProps({ population: populationProp });
@@ -155,8 +155,8 @@ describe("Parameters", () => {
         expect(spans.at(0).text()).toBe("Population:");
         expect(spans.at(1).text()).toBe("100");
     });
-  
-     it("renders population in zero", async () => {
+
+    it("renders population in zero", async () => {
         const wrapper = getWrapper();
         const populationProp = numericFormatter(-1);
         await wrapper.setProps({ population: populationProp });

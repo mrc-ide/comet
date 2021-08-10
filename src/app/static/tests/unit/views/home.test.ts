@@ -163,7 +163,9 @@ describe("Home", () => {
                 metadata: null,
                 results: { value: "results" },
                 paramValues: { value: "chartLayoutData" },
-                countries: [{ code: "TEST", name: "test", public: false, population: 123 }]
+                countries: [{
+                    code: "TEST", name: "test", public: false, population: 123
+                }]
             })
         });
 

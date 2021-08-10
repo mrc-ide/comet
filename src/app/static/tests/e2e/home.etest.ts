@@ -6,5 +6,6 @@ test.describe("home page tests", () => {
         const name = await page.innerText("a.navbar-brand");
         expect(name).toBe("comet");
 
+
     });
 });

@@ -24,9 +24,8 @@ export const getters = {
         return dayjs().startOf("day").add(forecastDays, "days").toDate();
     },
     population: (state: RootState): string => {
-        const population = state.countries && state.countries
-            .find((country) => country.code === state.paramValues!.region)!.population;
-
-        return numericFormatter(population ?? 0);
+        const population = state.countries
+            ?.find((country) => country.code === state.paramValues!.region)!.population ?? 0;
+        return numericFormatter(population);
     }
 };

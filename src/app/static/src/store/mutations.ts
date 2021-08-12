@@ -1,11 +1,11 @@
 import { RootState } from "@/store/state";
 import {
-    ApiInfo,
-    Metadata,
-    Data,
-    ParameterGroupMetadata,
-    ErrorInfo,
-    Country
+  ApiInfo,
+  Metadata,
+  Data,
+  ParameterGroupMetadata,
+  ErrorInfo,
+  Country, ParameterValues
 } from "@/types";
 
 export const mutations = {
@@ -24,11 +24,22 @@ export const mutations = {
     setParameterMetadata(state: RootState, paramMetadata: ParameterGroupMetadata[]): void {
         state.metadata!.parameterGroups = paramMetadata;
     },
-    setParameterValues(state: RootState, paramValues: Data): void {
+    setParameterValues(state: RootState, paramValues: ParameterValues): void {
         state.paramValues = paramValues;
     },
     setCountry(state: RootState, countryCode: string): void {
-        state.paramValues!.region = countryCode;
+        //state.paramValues!.region = countryCode;
+        const country = state.countries!.find(country => country.code == countryCode)!;
+        //state.paramValues!.healthcare.generalBeds = country.capacityGeneral;
+        //state.paramValues!.healthcare.criticalBeds = country.capacityICU;
+        state.paramValues = {
+            ...state.paramValues,
+            region: countryCode,
+            healthcare: {
+                generalBeds: country.capacityGeneral,
+                criticalBeds: country.capacityICU
+            }
+        }
     },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;

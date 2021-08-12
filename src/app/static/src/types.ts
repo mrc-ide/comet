@@ -51,11 +51,20 @@ export interface Metadata {
 export interface Country {
     code: string,
     name: string,
-    public: boolean
+    public: boolean,
+    capacityGeneral: number,
+    capacityICU: number
 }
 
 export interface Data {
-  [k: string]: unknown;
+    [k: string]: unknown;
+}
+
+export interface ParameterValues extends Data {
+    healthcare: {
+        generalBeds: number,
+        criticalBeds: number
+    }
 }
 
 export interface ErrorInfo {

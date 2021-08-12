@@ -14,6 +14,21 @@ import { RootState } from "@/store/state";
 import { getters } from "@/store/getters";
 import { mockRootState } from "../../mocks";
 
+const paramValues = {
+    healthcare:{ generalBeds: 0, criticalBeds: 0 },
+    value: "chartLayoutData"
+};
+
+const countries = [
+    {
+        code: "GBR",
+        name: "United Kingdom",
+        public: true,
+        capacityICU: 100,
+        capacityGeneral: 10000
+    }
+];
+
 describe("Home", () => {
     it("gets metadata, countries and results on mount", () => {
         const mockGetMetadata = jest.fn();
@@ -65,7 +80,7 @@ describe("Home", () => {
         const mockGetResults = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                countries: [{ code: "NARN", name: "Narnia", public: true }]
+                countries
             }),
             actions: {
                 getMetadata: mockGetMetadata,
@@ -114,8 +129,8 @@ describe("Home", () => {
                     ]
                 } as any,
                 results: { value: "results" },
-                paramValues: { value: "paramValue" },
-                countries: [{ code: "GBR", name: "United Kingdom", public: true }]
+                paramValues,
+                countries
             }),
             getters: {
                 ...getters,
@@ -129,7 +144,7 @@ describe("Home", () => {
         expect(charts.props("chartMetadata")).toStrictEqual([{ value: "metadata" }]);
         expect(charts.props("chartData")).toStrictEqual({ value: "results" });
         expect(charts.props("layoutData")).toStrictEqual({
-            params: { value: "paramValue" },
+            paramValues,
             population: 67890000
         });
 
@@ -140,7 +155,7 @@ describe("Home", () => {
         expect(parameters.props("paramValues")).toStrictEqual({ value: "paramValue" });
         expect(parameters.props("forecastStart")).toStrictEqual(new Date("2021-01-01"));
         expect(parameters.props("forecastEnd")).toStrictEqual(new Date("2021-06-01"));
-        expect(parameters.props("countries")).toStrictEqual([{ code: "GBR", name: "United Kingdom", public: true }]);
+        expect(parameters.props("countries")).toStrictEqual(countries);
     });
 
     it("does not render Charts or Parameters component if no metadata", () => {
@@ -148,8 +163,8 @@ describe("Home", () => {
             state: mockRootState({
                 metadata: null,
                 results: { value: "results" },
-                paramValues: { value: "chartLayoutData" },
-                countries: [{ code: "TEST", name: "test", public: false }]
+                paramValues,
+                countries
             })
         });
 
@@ -173,7 +188,7 @@ describe("Home", () => {
                     ]
                 } as any,
                 results: { value: "results" },
-                paramValues: { value: "chartLayoutData" },
+                paramValues,
                 countries: null
             })
         });

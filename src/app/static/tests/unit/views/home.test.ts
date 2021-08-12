@@ -1,5 +1,6 @@
 // Mock the import of plotly to avoid import failures in non-browser context
-import { numericFormatter } from "@/components/parameters/phasesUtils";
+
+import { numericFormatter } from "@/utils/formatter";
 
 jest.mock("plotly.js", () => ({
     react: jest.fn()

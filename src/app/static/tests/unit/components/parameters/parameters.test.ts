@@ -6,7 +6,7 @@ import EditParameters from "@/components/parameters/EditParameters.vue";
 import EditPhases from "@/components/parameters/EditPhases.vue";
 import Collapsible from "@/components/Collapsible.vue";
 import Phases from "@/components/parameters/Phases.vue";
-import { numericFormatter } from "@/components/parameters/phasesUtils";
+import { numericFormatter } from "@/utils/formatter";
 
 describe("Parameters", () => {
     const paramGroupMetadata = [
@@ -138,24 +138,7 @@ describe("Parameters", () => {
         expect(options[2].code).toBe("GBR");
     });
 
-    it("renders population in million", () => {
-        const wrapper = getWrapper();
-        const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("label").text()).toBe("Country");
-
-        const countrySelect = countryDiv.find("v-select-stub");
-        expect(countrySelect.props("value").code).toBe("FRA");
-        const options = countrySelect.props("options");
-        expect(options[0].code).toBe("FRA");
-        expect(options[0].name).toBe("France");
-
-        const populationDiv = wrapper.find("#population");
-        const spans = populationDiv.findAll("span");
-        expect(spans.at(0).text()).toBe("Population:");
-        expect(spans.at(1).text()).toBe("2.00m");
-    });
-
-    it("renders population in thousand", async () => {
+    it("renders population in correct format", async () => {
         const wrapper = getWrapper(paramValuesIreland);
 
         const populationProp = numericFormatter(21000);
@@ -171,57 +154,6 @@ describe("Parameters", () => {
         const spans = populationDiv.findAll("span");
         expect(spans.at(0).text()).toBe("Population:");
         expect(spans.at(1).text()).toBe("21.00k");
-    });
-
-    it("renders population in hundred", async () => {
-        const wrapper = getWrapper(paramValuesIreland);
-        const populationProp = numericFormatter(100);
-        await wrapper.setProps({ population: populationProp });
-
-        const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("label").text()).toBe("Country");
-
-        const countrySelect = countryDiv.find("v-select-stub");
-        expect(countrySelect.props("value").code).toBe("IRE");
-
-        const populationDiv = wrapper.find("#population");
-        const spans = populationDiv.findAll("span");
-        expect(spans.at(0).text()).toBe("Population:");
-        expect(spans.at(1).text()).toBe("100");
-    });
-
-    it("renders population in zero", async () => {
-        const wrapper = getWrapper(paramValuesIreland);
-        const populationProp = numericFormatter(-1);
-        await wrapper.setProps({ population: populationProp });
-
-        const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("label").text()).toBe("Country");
-
-        const countrySelect = countryDiv.find("v-select-stub");
-        expect(countrySelect.props("value").code).toBe("IRE");
-
-        const populationDiv = wrapper.find("#population");
-        const spans = populationDiv.findAll("span");
-        expect(spans.at(0).text()).toBe("Population:");
-        expect(spans.at(1).text()).toBe("0");
-    });
-
-    it("renders population in billion", async () => {
-        const wrapper = getWrapper(paramValuesIreland);
-        const populationProp = numericFormatter(5000000000);
-        await wrapper.setProps({ population: populationProp });
-
-        const countryDiv = wrapper.find("#countries");
-        expect(countryDiv.find("label").text()).toBe("Country");
-
-        const countrySelect = countryDiv.find("v-select-stub");
-        expect(countrySelect.props("value").code).toBe("IRE");
-
-        const populationDiv = wrapper.find("#population");
-        const spans = populationDiv.findAll("span");
-        expect(spans.at(0).text()).toBe("Population:");
-        expect(spans.at(1).text()).toBe("5.00b");
     });
 
     it("renders collapsible dynamicForm and phases parameter groups", () => {

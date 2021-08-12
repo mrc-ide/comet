@@ -2,7 +2,7 @@
   <div>
     <div id="countries" class="mb-3">
       <label for="select-country" class="h3">Country</label>
-      <v-select id="select-country"
+      <v-select input-id="select-country"
                 v-model="selectedCountry"
                 :options="sortedCountries"
                 label="name"

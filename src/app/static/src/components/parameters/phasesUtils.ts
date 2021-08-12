@@ -44,20 +44,3 @@ export const getDisplayPhase = (
 export const getTotalDays = (start: Date, end: Date): number => daysBetween(start, end) + 1;
 
 export const phaseClassFromIndex = (idx: number): string => (idx % 2 ? "phase-odd" : "phase-even");
-
-export const numericFormatter = (num: number): any => {
-    if (num > 999 && num < 1000000) {
-        return `${(num / 1000).toFixed(2)}k`;
-    }
-    if (num >= 1000000000) {
-        return `${(num / 1000000000).toFixed(2)}b`;
-    }
-    if (num >= 1000000) {
-        return `${(num / 1000000).toFixed(2)}m`;
-    }
-    if (num >= 0 && num < 900) {
-        return num.toString();
-    }
-
-    return 0;
-};

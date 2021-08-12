@@ -50,20 +50,6 @@ describe("Parameters", () => {
         }
     ] as any;
 
-    const paramValuesIreland = {
-        region: "IRE",
-        pg1: {
-            value1: "old1",
-            value2: "unchanged"
-        },
-        pg2: {
-            value3: "val3"
-        },
-        pg3: {
-            value4: "val4"
-        }
-    };
-
     const paramValues = {
         region: "FRA",
         pg1: {
@@ -139,6 +125,19 @@ describe("Parameters", () => {
     });
 
     it("renders population in correct format", async () => {
+        const paramValuesIreland = {
+            region: "IRE",
+            pg1: {
+                value1: "old1",
+                value2: "unchanged"
+            },
+            pg2: {
+                value3: "val3"
+            },
+            pg3: {
+                value4: "val4"
+            }
+        };
         const wrapper = getWrapper(paramValuesIreland);
 
         const populationProp = numericFormatter(21000);

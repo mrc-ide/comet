@@ -11,7 +11,7 @@
     </div>
     <div id="population" class="mb-3" v-if="selectedCountry">
       <span>Population: </span>
-      <span>{{ population }} </span>
+      <span>{{ population }}</span>
     </div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
       <div>

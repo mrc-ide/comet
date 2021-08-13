@@ -18,7 +18,6 @@ import { getters } from "@/store/getters";
 import { mockRootState } from "../../mocks";
 
 const paramValues = {
-    healthcare:{ generalBeds: 0, criticalBeds: 0 },
     value: "chartLayoutData"
 };
 
@@ -122,46 +121,46 @@ describe("Home", () => {
     });
 
     it("renders components with expected props", () => {
-      const store = new Vuex.Store<RootState>({
-        state: mockRootState({
-          metadata: {
-            charts: [
-              {value: "metadata"}
-            ],
-            parameterGroups: [
-              {value: "paramMetadata"}
-            ]
-          } as any,
-          results: {value: "results"},
-          paramValues,
-          countries
-        }),
-        getters: {
-          ...getters,
-          forecastStart: () => new Date("2021-01-01"),
-          forecastEnd: () => new Date("2021-06-01"),
-          population: () => numericFormatter(1000000.09)
-        }
-      });
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                metadata: {
+                    charts: [
+                        { value: "metadata" }
+                    ],
+                    parameterGroups: [
+                        { value: "paramMetadata" }
+                    ]
+                } as any,
+                results: { value: "results" },
+                paramValues,
+                countries
+            }),
+            getters: {
+                ...getters,
+                forecastStart: () => new Date("2021-01-01"),
+                forecastEnd: () => new Date("2021-06-01"),
+                population: () => numericFormatter(1000000.09)
+            }
+        });
 
-      const wrapper = shallowMount(Home, {store});
-      const charts = wrapper.findComponent(Charts);
-      expect(charts.props("chartMetadata")).toStrictEqual([{value: "metadata"}]);
-      expect(charts.props("chartData")).toStrictEqual({value: "results"});
-      expect(charts.props("layoutData")).toStrictEqual({
-        paramValues,
-        population: 67890000
-      });
+        const wrapper = shallowMount(Home, { store });
+        const charts = wrapper.findComponent(Charts);
+        expect(charts.props("chartMetadata")).toStrictEqual([{ value: "metadata" }]);
+        expect(charts.props("chartData")).toStrictEqual({ value: "results" });
+        expect(charts.props("layoutData")).toStrictEqual({
+            params: paramValues,
+            population: 67890000
+        });
 
-      const parameters = wrapper.findComponent(Parameters);
-      expect(parameters.props("paramGroupMetadata")).toStrictEqual([
-        {value: "paramMetadata"}
-      ]);
-      expect(parameters.props("paramValues")).toStrictEqual({value: "paramValue"});
-      expect(parameters.props("population")).toStrictEqual("1.00m");
-      expect(parameters.props("forecastStart")).toStrictEqual(new Date("2021-01-01"));
+        const parameters = wrapper.findComponent(Parameters);
+        expect(parameters.props("paramGroupMetadata")).toStrictEqual([
+            { value: "paramMetadata" }
+        ]);
+        expect(parameters.props("paramValues")).toStrictEqual(paramValues);
+        expect(parameters.props("population")).toStrictEqual("1.00m");
+        expect(parameters.props("forecastStart")).toStrictEqual(new Date("2021-01-01"));
 
-      expect(parameters.props("countries")).toStrictEqual(countries);
+        expect(parameters.props("countries")).toStrictEqual(countries);
     });
 
     it("does not render Charts or Parameters component if no metadata", () => {

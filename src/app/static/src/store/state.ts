@@ -1,9 +1,9 @@
 import {
-  ApiInfo,
-  Country,
-  Data,
-  ErrorInfo,
-  Metadata
+    ApiInfo,
+    Country,
+    Data,
+    ErrorInfo,
+    Metadata
 } from "@/types";
 
 export interface RootState {

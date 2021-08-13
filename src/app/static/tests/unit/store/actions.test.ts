@@ -51,7 +51,7 @@ describe("actions", () => {
         const mockResults = { time_series: [] };
         mockAxios.onPost("/results")
             .reply(200, mockSuccess(mockResults));
-        const state = mockRootState({ paramValues: { param1: "value1" } as any });
+        const state = mockRootState({ paramValues: { param1: "value1" } });
 
         const commit = jest.fn();
         await (actions.getResults as any)({ commit, state });

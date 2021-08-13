@@ -1,13 +1,13 @@
 import { RootState } from "@/store/state";
 import {
-  ApiInfo,
-  Metadata,
-  Data,
-  ParameterGroupMetadata,
-  ErrorInfo,
-  Country
+    ApiInfo,
+    Metadata,
+    Data,
+    ParameterGroupMetadata,
+    ErrorInfo,
+    Country
 } from "@/types";
-import {updateParameterInGroup} from "@/utils/parameters";
+import { updateParameterInGroup } from "@/utils/parameters";
 
 export const mutations = {
     setApiInfo(state: RootState, apiInfo: ApiInfo): void {
@@ -30,11 +30,9 @@ export const mutations = {
     },
     setCountry(state: RootState, countryCode: string): void {
         state.paramValues!.region = countryCode;
-        const country = state.countries!.find(country => country.code == countryCode)!;
-        //state.paramValues!.healthcare.generalBeds = country.capacityGeneral; //TODO: wrap this into updateParameterInGroup
-        //state.paramValues!.healthcare.criticalBeds = country.capacityICU;
-        updateParameterInGroup(state, "healthcare", "generalBeds", country.capacityGeneral);
-        updateParameterInGroup(state, "healthcare", "criticalBeds", country.capacityICU)
+        const newCountry = state.countries!.find((country) => country.code === countryCode)!;
+        updateParameterInGroup(state, "healthcare", "generalBeds", newCountry.capacityGeneral);
+        updateParameterInGroup(state, "healthcare", "criticalBeds", newCountry.capacityICU);
     },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;

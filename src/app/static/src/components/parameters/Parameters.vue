@@ -9,6 +9,10 @@
                 :clearable="false">
       </v-select>
     </div>
+    <div id="population" class="mb-3" v-if="selectedCountry">
+      <span>Population: </span>
+      <span>{{ population }}</span>
+    </div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
       <div>
         <collapsible class="collapsible mt-2" :initial-open="false" :heading="paramGroup.label">
@@ -79,6 +83,7 @@ interface Props {
     forecastStart: Date
     forecastEnd: Date
     countries: Country[]
+    population: string
 }
 
 export default defineComponent({
@@ -96,7 +101,8 @@ export default defineComponent({
         paramValues: Object,
         forecastStart: Date,
         forecastEnd: Date,
-        countries: Array
+        countries: Array,
+        population: String
     },
     setup(props: Props, context) {
         const paramsModalOpen = ref(false);

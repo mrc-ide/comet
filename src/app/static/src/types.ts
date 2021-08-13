@@ -52,19 +52,13 @@ export interface Country {
     code: string,
     name: string,
     public: boolean,
+    population: number,
     capacityGeneral: number,
     capacityICU: number
 }
 
 export interface Data {
     [k: string]: unknown;
-}
-
-export interface ParameterValues extends Data {
-    healthcare: {
-        generalBeds: number,
-        criticalBeds: number
-    }
 }
 
 export interface ErrorInfo {

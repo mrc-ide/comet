@@ -5,8 +5,9 @@ import {
   Data,
   ParameterGroupMetadata,
   ErrorInfo,
-  Country, ParameterValues
+  Country
 } from "@/types";
+import {updateParameterInGroup} from "@/utils/parameters";
 
 export const mutations = {
     setApiInfo(state: RootState, apiInfo: ApiInfo): void {
@@ -24,17 +25,16 @@ export const mutations = {
     setParameterMetadata(state: RootState, paramMetadata: ParameterGroupMetadata[]): void {
         state.metadata!.parameterGroups = paramMetadata;
     },
-    setParameterValues(state: RootState, paramValues: ParameterValues): void {
+    setParameterValues(state: RootState, paramValues: Data): void {
         state.paramValues = paramValues;
     },
     setCountry(state: RootState, countryCode: string): void {
         state.paramValues!.region = countryCode;
         const country = state.countries!.find(country => country.code == countryCode)!;
-        //Because parameter values are kept separately from the metaata for dyanmic form used
-        //to update those values, we need to update them both
-        state.paramValues!.healthcare.generalBeds = country.capacityGeneral;
-        state.paramValues!.healthcare.criticalBeds = country.capacityICU;
-
+        //state.paramValues!.healthcare.generalBeds = country.capacityGeneral; //TODO: wrap this into updateParameterInGroup
+        //state.paramValues!.healthcare.criticalBeds = country.capacityICU;
+        updateParameterInGroup(state, "healthcare", "generalBeds", country.capacityGeneral);
+        updateParameterInGroup(state, "healthcare", "criticalBeds", country.capacityICU)
     },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;

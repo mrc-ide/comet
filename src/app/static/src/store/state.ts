@@ -3,7 +3,7 @@ import {
   Country,
   Data,
   ErrorInfo,
-  Metadata, ParameterValues
+  Metadata
 } from "@/types";
 
 export interface RootState {
@@ -11,7 +11,7 @@ export interface RootState {
   metadata: Metadata | null
   countries: Country[] | null
   results: Data | null
-  paramValues: ParameterValues | null
+  paramValues: Data | null
   fetchingResults: boolean
   errors: ErrorInfo[]
 }

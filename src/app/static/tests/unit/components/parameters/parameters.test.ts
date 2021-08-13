@@ -6,6 +6,7 @@ import EditParameters from "@/components/parameters/EditParameters.vue";
 import EditPhases from "@/components/parameters/EditPhases.vue";
 import Collapsible from "@/components/Collapsible.vue";
 import Phases from "@/components/parameters/Phases.vue";
+import { numericFormatter } from "@/utils/formatter";
 
 describe("Parameters", () => {
     const paramGroupMetadata = [
@@ -65,6 +66,8 @@ describe("Parameters", () => {
 
     const forecastStart = new Date("2021-01-01");
     const forecastEnd = new Date("2021-06-01");
+    const populationValue = 2000000;
+    const population = numericFormatter(populationValue);
 
     const countries = [
         { code: "GBR", name: "United Kingdom", public: true },
@@ -72,14 +75,15 @@ describe("Parameters", () => {
         { code: "IRE", name: "Ireland", public: true }
     ];
 
-    function getWrapper() {
+    function getWrapper(paramValuesData = paramValues) {
         return shallowMount(Parameters, {
             propsData: {
                 paramGroupMetadata,
-                paramValues,
+                paramValues: paramValuesData,
                 forecastStart,
                 forecastEnd,
-                countries
+                countries,
+                population
             }
         });
     }
@@ -118,6 +122,37 @@ describe("Parameters", () => {
         expect(options[0].code).toBe("FRA");
         expect(options[1].code).toBe("IRE");
         expect(options[2].code).toBe("GBR");
+    });
+
+    it("renders population in correct format", async () => {
+        const paramValuesIreland = {
+            region: "IRE",
+            pg1: {
+                value1: "old1",
+                value2: "unchanged"
+            },
+            pg2: {
+                value3: "val3"
+            },
+            pg3: {
+                value4: "val4"
+            }
+        };
+        const wrapper = getWrapper(paramValuesIreland);
+
+        const populationProp = numericFormatter(21000);
+        await wrapper.setProps({ population: populationProp });
+
+        const countryDiv = wrapper.find("#countries");
+        expect(countryDiv.find("label").text()).toBe("Country");
+
+        const countrySelect = countryDiv.find("v-select-stub");
+        expect(countrySelect.props("value").code).toBe("IRE");
+
+        const populationDiv = wrapper.find("#population");
+        const spans = populationDiv.findAll("span");
+        expect(spans.at(0).text()).toBe("Population:");
+        expect(spans.at(1).text()).toBe("21.00k");
     });
 
     it("renders collapsible dynamicForm and phases parameter groups", () => {

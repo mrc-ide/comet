@@ -1,4 +1,7 @@
 // Mock the import of plotly to avoid import failures in non-browser context
+
+import { numericFormatter } from "@/utils/formatter";
+
 jest.mock("plotly.js", () => ({
     react: jest.fn()
 }));
@@ -65,7 +68,9 @@ describe("Home", () => {
         const mockGetResults = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                countries: [{ code: "NARN", name: "Narnia", public: true }]
+                countries: [{
+                    code: "NARN", name: "Narnia", public: true, population: 1.0
+                }]
             }),
             actions: {
                 getMetadata: mockGetMetadata,
@@ -115,12 +120,15 @@ describe("Home", () => {
                 } as any,
                 results: { value: "results" },
                 paramValues: { value: "paramValue" },
-                countries: [{ code: "GBR", name: "United Kingdom", public: true }]
+                countries: [{
+                    code: "GBR", name: "United Kingdom", public: true, population: 1000000.09
+                }]
             }),
             getters: {
                 ...getters,
                 forecastStart: () => new Date("2021-01-01"),
-                forecastEnd: () => new Date("2021-06-01")
+                forecastEnd: () => new Date("2021-06-01"),
+                population: () => numericFormatter(1000000.09)
             }
         });
 
@@ -138,9 +146,16 @@ describe("Home", () => {
             { value: "paramMetadata" }
         ]);
         expect(parameters.props("paramValues")).toStrictEqual({ value: "paramValue" });
+        expect(parameters.props("population")).toStrictEqual("1.00m");
         expect(parameters.props("forecastStart")).toStrictEqual(new Date("2021-01-01"));
         expect(parameters.props("forecastEnd")).toStrictEqual(new Date("2021-06-01"));
-        expect(parameters.props("countries")).toStrictEqual([{ code: "GBR", name: "United Kingdom", public: true }]);
+        expect(parameters.props("countries")).toStrictEqual([
+            {
+                code: "GBR",
+                name: "United Kingdom",
+                public: true,
+                population: 1000000.09
+            }]);
     });
 
     it("does not render Charts or Parameters component if no metadata", () => {
@@ -149,7 +164,9 @@ describe("Home", () => {
                 metadata: null,
                 results: { value: "results" },
                 paramValues: { value: "chartLayoutData" },
-                countries: [{ code: "TEST", name: "test", public: false }]
+                countries: [{
+                    code: "TEST", name: "test", public: false, population: 123
+                }]
             })
         });
 

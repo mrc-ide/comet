@@ -28,18 +28,13 @@ export const mutations = {
         state.paramValues = paramValues;
     },
     setCountry(state: RootState, countryCode: string): void {
-        //state.paramValues!.region = countryCode;
+        state.paramValues!.region = countryCode;
         const country = state.countries!.find(country => country.code == countryCode)!;
-        //state.paramValues!.healthcare.generalBeds = country.capacityGeneral;
-        //state.paramValues!.healthcare.criticalBeds = country.capacityICU;
-        state.paramValues = {
-            ...state.paramValues,
-            region: countryCode,
-            healthcare: {
-                generalBeds: country.capacityGeneral,
-                criticalBeds: country.capacityICU
-            }
-        }
+        //Because parameter values are kept separately from the metaata for dyanmic form used
+        //to update those values, we need to update them both
+        state.paramValues!.healthcare.generalBeds = country.capacityGeneral;
+        state.paramValues!.healthcare.criticalBeds = country.capacityICU;
+
     },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;

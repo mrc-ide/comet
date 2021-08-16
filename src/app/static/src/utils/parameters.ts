@@ -19,9 +19,8 @@ export const updateParameterInGroup = (
 
     const paramGroup = state.metadata!.parameterGroups.find((group) => group.id === parameterGroup);
     const groupControls = (paramGroup!.config as DynamicFormMeta).controlSections
-        .map((section: DynamicControlSection) => section.controlGroups
-            .map((controlGroup: DynamicControlGroup) => controlGroup.controls))
-        .flat().flat();
+        .flatMap((section: DynamicControlSection) => section.controlGroups
+            .flatMap((controlGroup: DynamicControlGroup) => controlGroup.controls));
     const paramControl = groupControls.find(
         (control: DynamicControl) => control.name === parameterName
     )!;

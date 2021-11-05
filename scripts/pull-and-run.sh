@@ -4,7 +4,9 @@ set -ex
 HERE=$(readlink -f "$(dirname $0)")
 NETWORK=comet_nw
 COMET=comet
-GIT_BRANCH=main
+PACKAGE_ROOT=$(readlink -f $(dirname $0)/..)
+GIT_BRANCH=$(git -C "$PACKAGE_ROOT" symbolic-ref --short HEAD)
+
 $HERE/run-dependencies.sh
 
 COMET_IMAGE=mrcide/$COMET:$GIT_BRANCH

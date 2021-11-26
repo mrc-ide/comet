@@ -16,5 +16,7 @@ describe("App", () => {
 
         expect(routerLinks.at(2).text()).toBe("Accessibility");
         expect(routerLinks.at(2).attributes("to")).toBe("/accessibility");
+
+        expect(wrapper.find("main router-view").exists()).toBe(true);
     });
 });

@@ -4,6 +4,15 @@ h3, .h3 {
   font-size: 1.3rem;
 }
 
+.navbar {
+  .nav-link {
+    color: #a1a4a8!important;
+  }
+  .router-link-active {
+    color: #fff!important;
+  }
+}
+
 .parameters {
   .collapsible {
     h3 {

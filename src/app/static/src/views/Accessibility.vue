@@ -14,7 +14,7 @@
     <h2>How accessible the website is</h2>
     <p>Parts of this website may not be fully accessible. For example:</p>
     <ul>
-      <li>TODO!!</li>
+      <li>Pages may not have their language attribute defined</li>
     </ul>
     <h2>What we do about known issues</h2>
     <p>We work to achieve and maintain <a href="https://www.w3.org/TR/WCAG21/">WCAG 2.1 AA standards</a>,
@@ -48,9 +48,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
     export default {
-        name: "Accessibility.vue"
+        name: "Accessibility"
     }
 </script>
 

@@ -40,9 +40,9 @@ describe("router", () => {
         const componentPromise = (routes[2].components.default as () => Promise<any>)();
         componentPromise.then(
             (component: any) => {
-              expect(component.default.name).toBe("Accessibility");
-              done();
+                expect(component.default.name).toBe("Accessibility");
+                done();
             }
         );
-    })
+    });
 });

@@ -20,7 +20,7 @@
     <h2>How accessible the website is</h2>
     <p>Parts of this website may not be fully accessible. For example:</p>
     <ul>
-      <li>Pages may not have their language attribute defined</li>
+      <li>Data representations may be difficult to interpret with a screen reader</li>
     </ul>
     <h2>What we do about known issues</h2>
     <p>

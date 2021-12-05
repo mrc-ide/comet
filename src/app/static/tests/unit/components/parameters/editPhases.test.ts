@@ -135,6 +135,44 @@ describe("EditPhases", () => {
         expect(modal.find("button.btn-secondary").text()).toBe("Cancel");
     });
 
+    it("renders date axis where forecast start is first day of month", () => {
+        // Total days = 31 (Jan) + 28 (Feb) + 31 (Mar) + 10 = 100
+        const propsData = {
+            open: true,
+            forecastStart,
+            forecastEnd: new Date("2021-04-10"),
+            paramGroup
+        };
+        const wrapper = mount(EditPhases, { propsData });
+        const monthStarts = wrapper.findAll(".date-axis .month-start");
+        expect(monthStarts.length).toBe(4);
+        expect(monthStarts.at(0).text()).toBe("Jan 2021");
+        expect(monthStarts.at(0).element.style.left).toBe("0%");
+        expect(monthStarts.at(1).text()).toBe("Feb 2021");
+        expect(monthStarts.at(1).element.style.left).toBe("31%");
+        expect(monthStarts.at(2).text()).toBe("Mar 2021");
+        expect(monthStarts.at(2).element.style.left).toBe("59%");
+        expect(monthStarts.at(3).text()).toBe("Apr 2021");
+        expect(monthStarts.at(3).element.style.left).toBe("90%");
+    });
+
+    it("renders date axis where forecast start is not first day of month", () => {
+        // Total days = 9 (Feb) + 31 (Mar) + 10 = 50
+        const propsData = {
+            open: true,
+            forecastStart: new Date("2021-02-20"),
+            forecastEnd: new Date("2021-04-10"),
+            paramGroup
+        };
+        const wrapper = mount(EditPhases, { propsData });
+        const monthStarts = wrapper.findAll(".date-axis .month-start");
+        expect(monthStarts.length).toBe(2);
+        expect(monthStarts.at(0).text()).toBe("Mar 2021");
+        expect(monthStarts.at(0).element.style.left).toBe("18%");
+        expect(monthStarts.at(1).text()).toBe("Apr 2021");
+        expect(monthStarts.at(1).element.style.left).toBe("80%");
+    });
+
     it("dragging slider updates values", async () => {
         const wrapper = getWrapper();
         // drag second slider back from 05/01/21 to 03/01/21

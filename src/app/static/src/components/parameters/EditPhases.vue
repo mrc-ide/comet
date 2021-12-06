@@ -21,7 +21,7 @@
                  :key="index"
                  role="slider"
                  :tabindex="index"
-                 :style="{ left:`${sliderPosition(value)}%`, zIndex: value.zIndex }"
+                 :style="{ left:`${sliderPosition(value.daysFromStart)}%`, zIndex: value.zIndex }"
                  class="slider"
                  :class="phaseClassFromIndex(index+1)"
                  :aria-valuemin="sliderMin(index)"
@@ -68,6 +68,14 @@
               </div>
             </div>
           </div>
+          <div ref="date-axis" class="date-axis">
+            <span v-for="monthStart in monthStarts"
+                  class="month-start"
+                  :key = "monthStart.daysFromStart"
+                  :style="{ left:`${sliderPosition(monthStart.daysFromStart)}%`}">
+                {{monthStart.label}}
+            </span>
+          </div>
         </div>
       </div>
       <template v-slot:footer>
@@ -109,6 +117,11 @@ interface SliderValue {
     daysFromStart: number;
     rt: number;
     zIndex: number;
+}
+
+interface MonthStart {
+    label: string;
+    daysFromStart: number;
 }
 
 export default defineComponent({
@@ -221,8 +234,8 @@ export default defineComponent({
             moveStartDays.value = null;
         };
 
-        const sliderPosition = (value: SliderValue) => {
-            return (value.daysFromStart / totalDays) * 100;
+        const sliderPosition = (daysFromStart: number) => {
+            return (daysFromStart / totalDays) * 100;
         };
 
         const showRtValidationAnimation = (index: number) => {
@@ -291,6 +304,16 @@ export default defineComponent({
             context.emit("update", phases.value);
         };
 
+        const monthStarts: MonthStart[] = [];
+        const forecastStart = dayjs(props.forecastStart);
+        let monthStart = forecastStart.date() === 1 ? forecastStart
+            : forecastStart.add(1, "month").startOf("month");
+        while (monthStart < dayjs(props.forecastEnd)) {
+            const daysFromStart = daysBetween(props.forecastStart, monthStart);
+            monthStarts.push({ label: monthStart.format("MMM YYYY"), daysFromStart });
+            monthStart = monthStart.add(1, "month");
+        }
+
         return {
             rail,
             rtMin,
@@ -314,7 +337,8 @@ export default defineComponent({
             deletePhase,
             cancel,
             updatePhases,
-            phaseClassFromIndex
+            phaseClassFromIndex,
+            monthStarts
         };
     }
 });
@@ -338,6 +362,20 @@ export default defineComponent({
       position: relative;
       width: 100%;
       height: 13rem;
+    }
+
+    .date-axis {
+      width: 100%;
+      height: 3rem;
+      position: relative;
+      .month-start {
+        position: absolute;
+        top: 0px;
+        transform: rotate(45deg);
+        transform-origin: top left;
+        white-space: nowrap;
+        color: #888;
+      }
     }
 
     .slider {

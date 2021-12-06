@@ -55,6 +55,7 @@ export default defineComponent({
         });
 
         function validate() {
+            console.log("chartmetadata", props.chartMetadata)
             const ajv = new Ajv();
             const ajvValidate = ajv.compile(props.chartMetadata.inputSchema);
             const valid = ajvValidate(inputData.value);

@@ -20,7 +20,7 @@ describe("getters", () => {
     it("population returns expected population format", () => {
         const mockCountries = [{
             code: "NARN", name: "Narnia", public: true, population: 1200300.034
-        }];
+        }] as any;
         const state = mockRootState({ countries: mockCountries, paramValues: { region: "NARN" } });
         const population = getters.population(state);
         expect(population).toEqual("1.20m");

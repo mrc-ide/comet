@@ -7,6 +7,7 @@ import {
     ErrorInfo,
     Country
 } from "@/types";
+import { updateParameterInGroup } from "@/utils/parameters";
 
 export const mutations = {
     setApiInfo(state: RootState, apiInfo: ApiInfo): void {
@@ -29,6 +30,9 @@ export const mutations = {
     },
     setCountry(state: RootState, countryCode: string): void {
         state.paramValues!.region = countryCode;
+        const newCountry = state.countries!.find((country) => country.code === countryCode)!;
+        updateParameterInGroup(state, "healthcare", "generalBeds", newCountry.capacityGeneral);
+        updateParameterInGroup(state, "healthcare", "criticalBeds", newCountry.capacityICU);
     },
     setFetchingResults(state: RootState, fetchingResults: boolean): void {
         state.fetchingResults = fetchingResults;

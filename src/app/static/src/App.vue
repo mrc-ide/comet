@@ -2,8 +2,8 @@
 
     <div id="app">
 
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="#">comet</a>
+        <nav class="navbar navbar-expand-md fixed-top text-white" style="background: #1D376A">
+            <a class="navbar-brand text-white" href="#">comet</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">

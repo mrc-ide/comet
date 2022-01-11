@@ -4,7 +4,7 @@
     "y": fullyVaccinatedPersons.year2021,
     "name": "2021",
     "marker": {
-      "color": "rgba(209, 137, 105, 1)",
+      "color": "#1D376A",
       "line": {
         "width": 0
       }
@@ -17,7 +17,7 @@
     "y": fullyVaccinatedPersons.year2022,
     "name": "2022",
     "marker": {
-      "color": "rgba(158, 108, 144, 1)",
+      "color": "#5789B9",
       "line": {
         "width": 0
       }
@@ -30,7 +30,7 @@
     "y": fullyVaccinatedPersons.remainder,
     "name": "Remainder",
     "marker": {
-      "color": "rgba(220, 220, 220, 1)",
+      "color": "#BEDAEB",
       "line": {
         "width": 0
       }

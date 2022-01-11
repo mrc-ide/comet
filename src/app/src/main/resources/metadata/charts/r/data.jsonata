@@ -6,7 +6,7 @@
     "mode": "lines",
     "hovertemplate": "%{y:,.2f}<extra></extra>",
     "line": {
-      "color": "lightgrey",
+      "color": "#BEDAEB",
       "width": 2
     }
   },
@@ -17,7 +17,7 @@
     "mode": "lines",
     "hovertemplate": "%{y:,.2f}<extra></extra>",
     "line": {
-      "color": "rgb(42, 115, 187)",
+      "color": "#5789B9",
       "width": 2
     }
   }

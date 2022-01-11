@@ -18,7 +18,7 @@
     "name": "Counterfactual deaths",
     "visible": true,
     "line": {
-      "color": "#ff9191",
+      "color": "#BEDAEB",
       "width": 2
     },
     "hovertemplate": "%{y:,.0f}<extra></extra>"
@@ -42,7 +42,7 @@
     "name": "Deaths",
     "visible": true,
     "line": {
-      "color": "#bf0000",
+      "color": "#5789B9",
       "width": 2
     },
     "hovertemplate": "%{y:,.0f}<extra></extra>"
@@ -53,7 +53,7 @@
     "mode": "markers",
     "name": "Reported deaths",
     "marker": {
-      "color": "green",
+      "color": "1D376A",
       "size": 6
     },
     "hovertemplate": "%{y:,r}<extra></extra>"

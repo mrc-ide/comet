@@ -6,7 +6,7 @@
     "name": "Counterfactual hospitalisations",
     "visible": true,
     "line": {
-      "color": "#ffd5fe",
+      "color": "EBCFBE",
       "width": 2
     },
     "hovertemplate": "%{y:,.0f}<extra></extra>"
@@ -18,7 +18,7 @@
     "name": "Counterfactual critical care",
     "visible": true,
     "line": {
-      "color": "#c0ffff",
+      "color": "#BEDAEB",
       "width": 2
     },
     "hovertemplate": "%{y:,.0f}<extra></extra>"
@@ -30,7 +30,7 @@
     "name": "Hospitalisations",
     "visible": true,
     "line": {
-      "color": "#ff00fb",
+      "color": "#EBBEC3",
       "width": 2
     },
     "hovertemplate": "%{y:,.0f}<extra></extra>"
@@ -42,7 +42,7 @@
     "name": "Critical care",
     "visible": true,
     "line": {
-      "color": "#007f80",
+      "color": "#5789B9",
       "width": 2
     },
     "hovertemplate": "%{y:,.0f}<extra></extra>"

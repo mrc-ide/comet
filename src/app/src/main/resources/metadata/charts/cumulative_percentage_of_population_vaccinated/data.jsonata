@@ -6,7 +6,7 @@
     "textposition": "auto",
     "name": "Healthcare workers",
     "marker": {
-      "color": "rgba(80,  141, 115, 1)"
+      "color": "#1D376A"
     },
     "type": "bar",
     "hovertemplate": "%{y:,.0f}%<br>%{customdata:,.3r}<extra></extra>"
@@ -18,7 +18,7 @@
     "textposition": "auto",
     "name": "65+ years",
     "marker": {
-      "color": "rgba(204, 158, 150, 1)"
+      "color": "#5789B9"
     },
     "type": "bar",
     "hovertemplate": "%{y:,.0f}%<br>%{customdata:,.3r}<extra></extra>"
@@ -30,7 +30,7 @@
     "textposition": "auto",
     "name": "Working age",
     "marker": {
-      "color": "rgba(68,  159, 179, 1)"
+      "color": "#BEDAEB"
     },
     "type": "bar",
     "hovertemplate": "%{y:,.0f}%<br>%{customdata:,.3r}<extra></extra>"

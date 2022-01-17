@@ -37,11 +37,12 @@ describe("EditPhases", () => {
         setRailWidth(wrapper);
 
         const slider = wrapper.findAll(".slider").at(sliderIdx);
+        const rail = wrapper.find(".rail");
 
-        slider.trigger("mousedown", { offsetX: 0 });
+        slider.trigger("mousedown", { clientX: 0 });
         await Vue.nextTick();
 
-        slider.trigger("mousemove", { offsetX: dragAsPercent * 10 });
+        rail.trigger("mousemove", { clientX: dragAsPercent * 10 });
         await Vue.nextTick();
 
         slider.trigger("mouseup");
@@ -132,6 +133,44 @@ describe("EditPhases", () => {
 
         expect(modal.find("button.btn-action").text()).toBe("OK");
         expect(modal.find("button.btn-secondary").text()).toBe("Cancel");
+    });
+
+    it("renders date axis where forecast start is first day of month", () => {
+        // Total days = 31 (Jan) + 28 (Feb) + 31 (Mar) + 10 = 100
+        const propsData = {
+            open: true,
+            forecastStart,
+            forecastEnd: new Date("2021-04-10"),
+            paramGroup
+        };
+        const wrapper = mount(EditPhases, { propsData });
+        const monthStarts = wrapper.findAll(".date-axis .month-start");
+        expect(monthStarts.length).toBe(4);
+        expect(monthStarts.at(0).text()).toBe("Jan 2021");
+        expect(monthStarts.at(0).element.style.left).toBe("0%");
+        expect(monthStarts.at(1).text()).toBe("Feb 2021");
+        expect(monthStarts.at(1).element.style.left).toBe("31%");
+        expect(monthStarts.at(2).text()).toBe("Mar 2021");
+        expect(monthStarts.at(2).element.style.left).toBe("59%");
+        expect(monthStarts.at(3).text()).toBe("Apr 2021");
+        expect(monthStarts.at(3).element.style.left).toBe("90%");
+    });
+
+    it("renders date axis where forecast start is not first day of month", () => {
+        // Total days = 9 (Feb) + 31 (Mar) + 10 = 50
+        const propsData = {
+            open: true,
+            forecastStart: new Date("2021-02-20"),
+            forecastEnd: new Date("2021-04-10"),
+            paramGroup
+        };
+        const wrapper = mount(EditPhases, { propsData });
+        const monthStarts = wrapper.findAll(".date-axis .month-start");
+        expect(monthStarts.length).toBe(2);
+        expect(monthStarts.at(0).text()).toBe("Mar 2021");
+        expect(monthStarts.at(0).element.style.left).toBe("18%");
+        expect(monthStarts.at(1).text()).toBe("Apr 2021");
+        expect(monthStarts.at(1).element.style.left).toBe("80%");
     });
 
     it("dragging slider updates values", async () => {
@@ -325,7 +364,7 @@ describe("EditPhases", () => {
     it("clicking on timeline adds a new first phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);
-        await wrapper.find(".rail").trigger("click", { offsetX: 0 });
+        await wrapper.find(".rail").trigger("mousedown", { offsetX: 0 });
 
         const { sliderValues } = wrapper.vm.$data;
         expect(sliderValues.length).toBe(3);
@@ -364,7 +403,7 @@ describe("EditPhases", () => {
     it("clicking on timeline adds a new last phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);
-        await wrapper.find(".rail").trigger("click", { offsetX: 600 });
+        await wrapper.find(".rail").trigger("mousedown", { offsetX: 600 });
 
         const { sliderValues } = wrapper.vm.$data;
         expect(sliderValues.length).toBe(3);
@@ -403,7 +442,7 @@ describe("EditPhases", () => {
     it("clicking on timeline adds a new intermediate phase", async () => {
         const wrapper = getWrapper();
         setRailWidth(wrapper);
-        await wrapper.find(".rail").trigger("click", { offsetX: 200 });
+        await wrapper.find(".rail").trigger("mousedown", { offsetX: 200 });
 
         const { sliderValues } = wrapper.vm.$data;
         expect(sliderValues.length).toBe(3);

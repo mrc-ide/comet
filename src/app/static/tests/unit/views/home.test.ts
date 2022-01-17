@@ -1,4 +1,7 @@
 // Mock the import of plotly to avoid import failures in non-browser context
+
+import { numericFormatter } from "@/utils/formatter";
+
 jest.mock("plotly.js", () => ({
     react: jest.fn()
 }));
@@ -13,6 +16,21 @@ import Errors from "@/components/Errors.vue";
 import { RootState } from "@/store/state";
 import { getters } from "@/store/getters";
 import { mockRootState } from "../../mocks";
+
+const paramValues = {
+    value: "chartLayoutData"
+};
+
+const countries = [
+    {
+        code: "GBR",
+        name: "United Kingdom",
+        public: true,
+        population: 1.0,
+        capacityICU: 100,
+        capacityGeneral: 10000
+    }
+];
 
 describe("Home", () => {
     it("gets metadata, countries and results on mount", () => {
@@ -65,7 +83,7 @@ describe("Home", () => {
         const mockGetResults = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                countries: [{ code: "NARN", name: "Narnia", public: true }]
+                countries
             }),
             actions: {
                 getMetadata: mockGetMetadata,
@@ -102,7 +120,7 @@ describe("Home", () => {
         expect(mockGetResults.mock.calls.length).toBe(0);
     });
 
-    it("renders Charts and Parameters component with expected props", () => {
+    it("renders components with expected props", () => {
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
                 metadata: {
@@ -114,12 +132,14 @@ describe("Home", () => {
                     ]
                 } as any,
                 results: { value: "results" },
-                paramValues: { value: "paramValue" }
+                paramValues,
+                countries
             }),
             getters: {
                 ...getters,
                 forecastStart: () => new Date("2021-01-01"),
-                forecastEnd: () => new Date("2021-06-01")
+                forecastEnd: () => new Date("2021-06-01"),
+                population: () => numericFormatter(1000000.09)
             }
         });
 
@@ -128,7 +148,7 @@ describe("Home", () => {
         expect(charts.props("chartMetadata")).toStrictEqual([{ value: "metadata" }]);
         expect(charts.props("chartData")).toStrictEqual({ value: "results" });
         expect(charts.props("layoutData")).toStrictEqual({
-            params: { value: "paramValue" },
+            params: paramValues,
             population: 67890000
         });
 
@@ -136,9 +156,11 @@ describe("Home", () => {
         expect(parameters.props("paramGroupMetadata")).toStrictEqual([
             { value: "paramMetadata" }
         ]);
-        expect(parameters.props("paramValues")).toStrictEqual({ value: "paramValue" });
+        expect(parameters.props("paramValues")).toStrictEqual(paramValues);
+        expect(parameters.props("population")).toStrictEqual("1.00m");
         expect(parameters.props("forecastStart")).toStrictEqual(new Date("2021-01-01"));
-        expect(parameters.props("forecastEnd")).toStrictEqual(new Date("2021-06-01"));
+
+        expect(parameters.props("countries")).toStrictEqual(countries);
     });
 
     it("does not render Charts or Parameters component if no metadata", () => {
@@ -146,7 +168,8 @@ describe("Home", () => {
             state: mockRootState({
                 metadata: null,
                 results: { value: "results" },
-                paramValues: { value: "chartLayoutData" }
+                paramValues,
+                countries
             })
         });
 
@@ -154,6 +177,27 @@ describe("Home", () => {
         const charts = wrapper.findComponent(Charts);
         expect(charts.exists()).toBe(false);
 
+        const parameters = wrapper.findComponent(Parameters);
+        expect(parameters.exists()).toBe(false);
+    });
+
+    it("does not render Parameters component if no countries", () => {
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                metadata: {
+                    charts: [
+                        { value: "metadata" }
+                    ],
+                    parameterGroups: [
+                        { value: "paramMetadata" }
+                    ]
+                } as any,
+                results: { value: "results" },
+                paramValues,
+                countries: null
+            })
+        });
+        const wrapper = shallowMount(Home, { store });
         const parameters = wrapper.findComponent(Parameters);
         expect(parameters.exists()).toBe(false);
     });
@@ -185,11 +229,30 @@ describe("Home", () => {
         expect(fetchingResults.find("loading-spinner-stub").exists()).toBe(true);
     });
 
+    it("dispatches updateCountry on update emitted from Parameters", () => {
+        const mockUpdateCountry = jest.fn();
+        const store = new Vuex.Store<RootState>({
+            state: mockRootState({
+                metadata: {} as any,
+                countries: [] as any
+            }),
+            actions: {
+                updateCountry: mockUpdateCountry
+            }
+        });
+
+        const wrapper = shallowMount(Home, { store });
+        wrapper.findComponent(Parameters).vm.$emit("updateCountry", "FRA");
+        expect(mockUpdateCountry.mock.calls.length).toBe(1);
+        expect(mockUpdateCountry.mock.calls[0][1]).toBe("FRA");
+    });
+
     it("commits parameter metadata on update emitted from Parameters", async () => {
         const mockSetParameterMetadata = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                metadata: {} as any
+                metadata: {} as any,
+                countries: [] as any
             }),
             mutations: {
                 setParameterMetadata: mockSetParameterMetadata
@@ -209,7 +272,8 @@ describe("Home", () => {
         const mockUpdateParameterValues = jest.fn();
         const store = new Vuex.Store<RootState>({
             state: mockRootState({
-                metadata: {} as any
+                metadata: {} as any,
+                countries: [] as any
             }),
             actions: {
                 updateParameterValues: mockUpdateParameterValues

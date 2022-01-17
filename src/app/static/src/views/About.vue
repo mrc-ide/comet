@@ -3,8 +3,8 @@
     <h1>{{ heading }}</h1>
     <errors :errors="errors" @dismissed="setErrors([])"></errors>
     <h2>API versions</h2>
-    <p>API Name: {{apiName}}</p>
-    <div v-for="(value, key) in apiVersion" :key="key">{{key}}: {{value}}</div>
+    <p id="api-name">API Name: {{apiName}}</p>
+    <div v-for="(value, key) in apiVersion" :key="key" class="api-version">{{key}}: {{value}}</div>
   </div>
 </template>
 

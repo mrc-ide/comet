@@ -1,5 +1,18 @@
 <template>
   <div>
+    <div id="countries" class="mb-3">
+      <label for="select-country" class="h3">Country</label>
+      <v-select input-id="select-country"
+                v-model="selectedCountry"
+                :options="sortedCountries"
+                label="name"
+                :clearable="false">
+      </v-select>
+    </div>
+    <div id="population" class="mb-3" v-if="selectedCountry">
+      <span>Population: </span>
+      <span>{{ population }}</span>
+    </div>
     <div v-for="paramGroup in paramGroupMetadata" :key="paramGroup.id">
       <div>
         <collapsible class="collapsible mt-2" :initial-open="false" :heading="paramGroup.label">
@@ -47,12 +60,18 @@
 </template>
 
 <script lang="ts">
+import vSelect from "vue-select";
 import { computed, defineComponent, ref } from "@vue/composition-api";
 import {
     DynamicForm,
     DynamicFormData
 } from "@reside-ic/vue-dynamic-form";
-import { Data, ParameterGroupMetadata, Rt } from "@/types";
+import {
+    Country,
+    Data,
+    ParameterGroupMetadata,
+    Rt
+} from "@/types";
 import Collapsible from "@/components/Collapsible.vue";
 import EditParameters from "./EditParameters.vue";
 import Phases from "./Phases.vue";
@@ -63,6 +82,8 @@ interface Props {
     paramValues: Data
     forecastStart: Date
     forecastEnd: Date
+    countries: Country[]
+    population: string
 }
 
 export default defineComponent({
@@ -72,13 +93,16 @@ export default defineComponent({
         EditParameters,
         EditPhases,
         Collapsible,
-        Phases
+        Phases,
+        vSelect
     },
     props: {
         paramGroupMetadata: Array,
         paramValues: Object,
         forecastStart: Date,
-        forecastEnd: Date
+        forecastEnd: Date,
+        countries: Array,
+        population: String
     },
     setup(props: Props, context) {
         const paramsModalOpen = ref(false);
@@ -87,6 +111,22 @@ export default defineComponent({
 
         const editParamGroup = computed(() => {
             return props.paramGroupMetadata.find((g) => g.id === editParamGroupId.value);
+        });
+
+        const selectedCountry = computed({
+            get: () => {
+                return props.countries
+                    .find((c:Country) => c.code === props.paramValues.region as string)!;
+            },
+            set: (value: Country) => {
+                context.emit("updateCountry", value.code);
+            }
+        });
+
+        const sortedCountries = computed(() => {
+            return [...props.countries]
+                .filter((country: Country) => country.public)
+                .sort((a: Country, b: Country) => (a.name > b.name ? 1 : -1));
         });
 
         function editParameters(paramGroupId: string) {
@@ -144,6 +184,8 @@ export default defineComponent({
         }
 
         return {
+            selectedCountry,
+            sortedCountries,
             paramsModalOpen,
             phasesModalOpen,
             editParamGroupId,

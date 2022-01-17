@@ -66,5 +66,9 @@ export const actions: ActionTree<RootState, RootState> = {
     async updateParameterValues({ commit, dispatch }, newValues) {
         commit("setParameterValues", newValues);
         dispatch("getResults");
+    },
+    async updateCountry({ commit, dispatch }, newValue) {
+        commit("setCountry", newValue);
+        dispatch("getResults");
     }
 };

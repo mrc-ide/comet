@@ -14,13 +14,14 @@
       <div class="phase-editor" @mouseup="mouseUp">
         <div class="phases-container">
           <div ref="rail" class="rail"
-               @click="addPhase">
+               @mousedown="addPhase"
+               @mousemove="mouseMove($event)">
             <div v-for="(value, index) in sliderValues"
                  :id="`slider-${index}-${sliderUpdateKeys[index]}`"
                  :key="index"
                  role="slider"
                  :tabindex="index"
-                 :style="{ left:`${sliderPosition(value)}%`, zIndex: value.zIndex }"
+                 :style="{ left:`${sliderPosition(value.daysFromStart)}%`, zIndex: value.zIndex }"
                  class="slider"
                  :class="phaseClassFromIndex(index+1)"
                  :aria-valuemin="sliderMin(index)"
@@ -28,15 +29,14 @@
                  :aria-valuetext="displayPhases[index].start"
                  :aria-valuemax="sliderMax(index)"
                  :aria-label="`Phase ${displayPhases[index].index}`"
-                 @mousemove="mouseMove(index, $event)"
-                 @mousedown="mouseDown(index, $event)"
+                 @mousedown.stop.prevent="mouseDown(index, $event)"
                  @mouseup="mouseUp"
                  @click.stop="">
               <div class="slider-spike" :class="phaseClassFromIndex(index+1)"></div>
               <button type="button"
                       class="close float-right mr-1" aria-label="Delete"
                       @click="deletePhase(index)">
-                <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true" class="disable-select">&times;</span>
               </button>
               <div class="slider-text">
                 <div class="phase-dates disable-select">
@@ -50,7 +50,8 @@
                   <div class="phase-start">Start: {{displayPhases[index].start}}</div>
                   <div class="phase-end">End: {{displayPhases[index].end}}</div>
                 </div>
-                <div class="phase-rt">Rt:
+                <div class="phase-rt">
+                  <span class="disable-select">Rt:</span>
                   <input
                     :id="`phase-rt-${index}`"
                     class="phase-rt-input"
@@ -66,6 +67,14 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div ref="date-axis" class="date-axis">
+            <span v-for="monthStart in monthStarts"
+                  class="month-start"
+                  :key = "monthStart.daysFromStart"
+                  :style="{ left:`${sliderPosition(monthStart.daysFromStart)}%`}">
+                {{monthStart.label}}
+            </span>
           </div>
         </div>
       </div>
@@ -108,6 +117,11 @@ interface SliderValue {
     daysFromStart: number;
     rt: number;
     zIndex: number;
+}
+
+interface MonthStart {
+    label: string;
+    daysFromStart: number;
 }
 
 export default defineComponent({
@@ -164,6 +178,7 @@ export default defineComponent({
 
         const movingSlider: Ref<number | null> = ref(null);
         const moveStartOffset: Ref<number | null> = ref(null);
+        const moveStartDays: Ref<number | null> = ref(null);
 
         const sliderMin = (index: number) => {
             return index === 0 ? 0 : sliderValues.value[index - 1].daysFromStart + 1;
@@ -190,7 +205,8 @@ export default defineComponent({
 
         const mouseDown = (index: number, event: MouseEvent) => {
             movingSlider.value = index;
-            moveStartOffset.value = event.offsetX;
+            moveStartOffset.value = event.clientX;
+            moveStartDays.value = sliderValues.value[index].daysFromStart;
 
             bringSliderToFront(index);
         };
@@ -200,12 +216,14 @@ export default defineComponent({
             return totalDays * valueAsRangeFraction;
         };
 
-        const mouseMove = (index: number, event: MouseEvent) => {
-            if (movingSlider.value === index && moveStartOffset.value !== null) {
-                const offsetDiff = event.offsetX - moveStartOffset.value;
+        const mouseMove = (event: MouseEvent) => {
+            if (movingSlider.value !== null && moveStartOffset.value !== null
+                   && moveStartDays.value !== null) {
+                const index = movingSlider.value;
+                const offsetDiff = event.clientX - moveStartOffset.value;
                 const valueDiff = sliderValueAsDays(offsetDiff);
-                const oldValue = sliderValues.value[index].daysFromStart;
-                const newValue = limitSliderValue(index, oldValue + valueDiff);
+
+                const newValue = limitSliderValue(index, moveStartDays.value + valueDiff);
                 sliderValues.value[index].daysFromStart = newValue;
             }
         };
@@ -213,10 +231,11 @@ export default defineComponent({
         const mouseUp = () => {
             movingSlider.value = null;
             moveStartOffset.value = null;
+            moveStartDays.value = null;
         };
 
-        const sliderPosition = (value: SliderValue) => {
-            return (value.daysFromStart / totalDays) * 100;
+        const sliderPosition = (daysFromStart: number) => {
+            return (daysFromStart / totalDays) * 100;
         };
 
         const showRtValidationAnimation = (index: number) => {
@@ -285,6 +304,16 @@ export default defineComponent({
             context.emit("update", phases.value);
         };
 
+        const monthStarts: MonthStart[] = [];
+        const forecastStart = dayjs(props.forecastStart);
+        let monthStart = forecastStart.date() === 1 ? forecastStart
+            : forecastStart.add(1, "month").startOf("month");
+        while (monthStart < dayjs(props.forecastEnd)) {
+            const daysFromStart = daysBetween(props.forecastStart, monthStart);
+            monthStarts.push({ label: monthStart.format("MMM YYYY"), daysFromStart });
+            monthStart = monthStart.add(1, "month");
+        }
+
         return {
             rail,
             rtMin,
@@ -308,7 +337,8 @@ export default defineComponent({
             deletePhase,
             cancel,
             updatePhases,
-            phaseClassFromIndex
+            phaseClassFromIndex,
+            monthStarts
         };
     }
 });
@@ -332,6 +362,20 @@ export default defineComponent({
       position: relative;
       width: 100%;
       height: 13rem;
+    }
+
+    .date-axis {
+      width: 100%;
+      height: 3rem;
+      position: relative;
+      .month-start {
+        position: absolute;
+        top: 0px;
+        transform: rotate(45deg);
+        transform-origin: top left;
+        white-space: nowrap;
+        color: #888;
+      }
     }
 
     .slider {

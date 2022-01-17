@@ -4,13 +4,22 @@
 
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <a class="navbar-brand" href="#">comet</a>
-            <div id="navbarsExampleDefault" class="collapse navbar-collapse">
+            <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <router-link class="nav-link" to="/">Home</router-link>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/" exact>
+                          Home
+                        </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/about">About</router-link>
+                        <router-link class="nav-link" to="/about">
+                          About
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/accessibility">
+                          Accessibility
+                        </router-link>
                     </li>
                 </ul>
             </div>
@@ -27,6 +36,7 @@
 <style lang="scss">
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import '../node_modules/bootstrap-vue/src/index.scss';
+@import '../node_modules/vue-select/src/scss/vue-select.scss';
 @import 'assets/custom.scss';
 
 body {

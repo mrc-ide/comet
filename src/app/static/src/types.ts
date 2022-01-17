@@ -51,11 +51,14 @@ export interface Metadata {
 export interface Country {
     code: string,
     name: string,
-    public: boolean
+    public: boolean,
+    population: number,
+    capacityGeneral: number,
+    capacityICU: number
 }
 
 export interface Data {
-  [k: string]: unknown;
+    [k: string]: unknown;
 }
 
 export interface ErrorInfo {

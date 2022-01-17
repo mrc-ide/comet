@@ -6,6 +6,7 @@ import EditParameters from "@/components/parameters/EditParameters.vue";
 import EditPhases from "@/components/parameters/EditPhases.vue";
 import Collapsible from "@/components/Collapsible.vue";
 import Phases from "@/components/parameters/Phases.vue";
+import { numericFormatter } from "@/utils/formatter";
 
 describe("Parameters", () => {
     const paramGroupMetadata = [
@@ -50,6 +51,7 @@ describe("Parameters", () => {
     ] as any;
 
     const paramValues = {
+        region: "FRA",
         pg1: {
             value1: "old1",
             value2: "unchanged"
@@ -64,17 +66,94 @@ describe("Parameters", () => {
 
     const forecastStart = new Date("2021-01-01");
     const forecastEnd = new Date("2021-06-01");
+    const populationValue = 2000000;
+    const population = numericFormatter(populationValue);
 
-    function getWrapper() {
+    const countries = [
+        { code: "GBR", name: "United Kingdom", public: true },
+        { code: "FRA", name: "France", public: true },
+        { code: "IRE", name: "Ireland", public: true }
+    ];
+
+    function getWrapper(paramValuesData = paramValues) {
         return shallowMount(Parameters, {
+            propsData: {
+                paramGroupMetadata,
+                paramValues: paramValuesData,
+                forecastStart,
+                forecastEnd,
+                countries,
+                population
+            }
+        });
+    }
+
+    it("renders countries", () => {
+        const wrapper = getWrapper();
+        const countryDiv = wrapper.find("#countries");
+        expect(countryDiv.find("label.h3").text()).toBe("Country");
+        const countrySelect = countryDiv.find("v-select-stub");
+        expect(countrySelect.props("value").code).toBe("FRA");
+        const options = countrySelect.props("options");
+        // countries should be sorted by name
+        expect(options[0].code).toBe("FRA");
+        expect(options[0].name).toBe("France");
+        expect(options[1].code).toBe("IRE");
+        expect(options[1].name).toBe("Ireland");
+        expect(options[2].code).toBe("GBR");
+        expect(options[2].name).toBe("United Kingdom");
+    });
+
+    it("countries which are not public are not rendered", () => {
+        const wrapper = shallowMount(Parameters, {
             propsData: {
                 paramGroupMetadata,
                 paramValues,
                 forecastStart,
-                forecastEnd
+                forecastEnd,
+                countries: [
+                    ...countries,
+                    { code: "TEST", name: "TEST COUNTRY", public: false }
+                ]
             }
         });
-    }
+        const options = wrapper.find("#countries v-select-stub").props("options");
+        expect(options.length).toBe(3);
+        expect(options[0].code).toBe("FRA");
+        expect(options[1].code).toBe("IRE");
+        expect(options[2].code).toBe("GBR");
+    });
+
+    it("renders population in correct format", async () => {
+        const paramValuesIreland = {
+            region: "IRE",
+            pg1: {
+                value1: "old1",
+                value2: "unchanged"
+            },
+            pg2: {
+                value3: "val3"
+            },
+            pg3: {
+                value4: "val4"
+            }
+        };
+        const wrapper = getWrapper(paramValuesIreland);
+
+        const populationProp = numericFormatter(21000);
+        await wrapper.setProps({ population: populationProp });
+
+        const countryDiv = wrapper.find("#countries");
+        expect(countryDiv.find("label").text()).toBe("Country");
+
+        const countrySelect = countryDiv.find("v-select-stub");
+        expect(countrySelect.props("value").code).toBe("IRE");
+
+        const populationDiv = wrapper.find("#population");
+        const spans = populationDiv.findAll("span");
+        expect(spans.at(0).text()).toBe("Population:");
+        expect(spans.at(1).text()).toBe("21.00k");
+    });
 
     it("renders collapsible dynamicForm and phases parameter groups", () => {
         const wrapper = getWrapper();
@@ -108,6 +187,14 @@ describe("Parameters", () => {
         buttons.wrappers.forEach((button) => {
             expect(button.text()).toBe("Edit");
         });
+    });
+
+    it("selecting country emits updateCountry event", async () => {
+        const wrapper = getWrapper();
+        const newCountry = { code: "GBR", name: "United Kingdom", public: true };
+        await wrapper.find("#countries v-select-stub").vm.$emit("input", newCountry);
+        expect(wrapper.emitted("updateCountry")?.length).toBe(1);
+        expect(wrapper.emitted("updateCountry")![0][0]).toBe("GBR");
     });
 
     it("Edit components are not rendered before group is selected", () => {
@@ -199,6 +286,7 @@ describe("Parameters", () => {
         const updateValues = wrapper.emitted("updateValues")!;
         expect(updateValues.length).toBe(1);
         expect(updateValues[0][0]).toStrictEqual({
+            region: "FRA",
             pg1: {
                 value1: "new1",
                 value2: "unchanged"
@@ -240,6 +328,7 @@ describe("Parameters", () => {
 
         expect(wrapper.emitted("updateValues")?.length).toBe(1);
         expect(wrapper.emitted("updateValues")![0][0]).toStrictEqual({
+            region: "FRA",
             pg1: {
                 value1: "old1",
                 value2: "unchanged"

@@ -24,12 +24,14 @@
     "vue": "^2.6.12",
     "vue-feather-icons": "^5.1.0",
     "vue-router": "^3.1.6",
+    "vue-select": "^3.12.2",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@types/ajv": "^1.0.0",
     "@types/jest": "^24.0.19",
     "@types/plotly.js": "^1.54.10",
+    "@types/vue-select": "^3.11.2",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-babel": "~4.5.0",

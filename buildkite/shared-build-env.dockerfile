@@ -9,7 +9,6 @@ RUN ./gradlew
 
 # Pull in dependencies
 COPY ./src/settings.gradle /comet/src/
-COPY ./src/config/ /comet/src/config/
 COPY ./src/gradle.properties .
 COPY ./src/app/build.gradle.kts app/
 
@@ -22,4 +21,6 @@ RUN npm ci --prefix=app/static
 
 # Copy source
 COPY . /comet
+COPY ./src/config/ /comet/src/config/
+COPY ./src/app/src/main/resources/docker-config.properties /comet/src/app/src/main/resources/config.properties
 RUN ./gradlew :app:compileKotlin

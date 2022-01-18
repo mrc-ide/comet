@@ -1,7 +1,5 @@
 FROM vimc/node-docker-openjdk:master AS build
 
-RUN npm install codecov --global --quiet
-
 WORKDIR /app/src
 
 COPY gradlew .
@@ -21,8 +19,6 @@ COPY app/src/main/resources/docker-config.properties app/src/main/resources/conf
 
 FROM build AS test
 
-RUN ./gradlew :app:detektMain :app:test :app:jacocoTestReport --no-daemon
-RUN npm run lint --prefix=app/static/ && npm run test:unit --prefix=app/static/
 ARG BUILDKITE
 ARG BUILDKITE_BRANCH
 ARG BUILDKITE_BUILD_NUMBER

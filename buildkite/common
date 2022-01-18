@@ -9,8 +9,10 @@ else
 fi
 
 if [ "$BUILDKITE" = "true" ]; then
+    GIT_COMMIT=${BUILDKITE_COMMIT:0:7}
     GIT_BRANCH=$BUILDKITE_BRANCH
 else
+    GIT_COMMIT=$(git rev-parse --short=7 HEAD)
     GIT_BRANCH=$(git symbolic-ref --short HEAD)
 fi
 

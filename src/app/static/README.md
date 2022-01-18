@@ -20,6 +20,12 @@ npm run build
 npm run test:unit
 ```
 
+### Run end to end tests
+Run this npm command while the app is running
+```
+npm run test:e2e
+```
+
 ### Lints and fixes files
 ```
 npm run lint

@@ -1,6 +1,9 @@
 ARG GIT_ID="UNKNOWN"
-FROM mrcide/comet-shared-build-env:$GIT_ID
+FROM mrcide/comet-shared-test-env:$GIT_ID
+
+COPY ./src/app/static/playwright.docker.config.ts /app/static/playwright.config.ts
+COPY ./src/app/static/playwright.docker.config.ts /comet/src/app/static/playwright.config.ts
 
 RUN cd app/static && npx playwright install chromium
 
-CMD ./gradlew app:bootRun & sleep 90 && npm run test:e2e --prefix=app/static
+CMD npm run test:e2e --prefix=app/static

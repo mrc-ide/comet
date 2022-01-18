@@ -14,7 +14,7 @@ else
     GIT_BRANCH=$(git symbolic-ref --short HEAD)
 fi
 
-# Deal with dependabot tags which look like
+# Deal with dependabot tags which look likedocker p
 #
 #   dependabot/npm_and_yarn/app/lodash-4.17.19
 #
@@ -29,4 +29,4 @@ NETWORK=comet_nw
 TAG_SHA=$ORG/$NAME:$GIT_ID
 TAG_BRANCH=$ORG/$NAME:$GIT_BRANCH
 TAG_LATEST="$ORG/$NAME:latest"
-BUILD_ENV_TAG=$ORG/comet-shared-build-env:$GIT_ID
+TEST_ENV_TAG=$ORG/comet-shared-test-env:$GIT_ID

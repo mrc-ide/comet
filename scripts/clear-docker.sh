@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -eEuo pipefail
-docker kill "$(docker ps -aq)" || true
-docker rm "$(docker ps -aq)" || true
-docker network prune --force || true
+set -euxo pipefail
+docker rm --force $(docker ps --all --quiet) || true
+docker network prune --force
+docker volume prune --force
+
+

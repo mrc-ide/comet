@@ -1,7 +1,7 @@
 
 steps:
-  - label: ":construction_worker: Make shared build env"
-    command: buildkite/make-build-env.sh
+  - label: ":construction_worker: Make shared test env"
+    command: buildkite/make-test-env.sh
 
   - wait
 
@@ -16,5 +16,5 @@ steps:
 
   - wait
 
-  - label: ":construction_worker: Build and push app image"
-    command: buildkite/build-push.sh
+  - label: ":construction_worker: Push app image"
+    command: buildkite/push-app-image.sh

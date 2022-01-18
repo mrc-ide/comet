@@ -24,3 +24,7 @@ COPY . /comet
 COPY ./src/config/ /comet/src/config/
 COPY ./src/app/src/main/resources/docker-config.properties /comet/src/app/src/main/resources/config.properties
 RUN ./gradlew :app:compileKotlin
+
+# Install codecov
+RUN npm install codecov --global --quiet
+

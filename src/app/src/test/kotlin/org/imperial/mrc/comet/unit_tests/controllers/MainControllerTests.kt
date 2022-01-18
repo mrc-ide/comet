@@ -14,7 +14,7 @@ class MainControllerTests {
 
     private val mockResponseEntity = mock<ResponseEntity<String>>()
 
-    @Test
+    /*@Test
     fun `gets api info`() {
         val mockClient = mock<APIClient> {
             on { info() } doReturn mockResponseEntity
@@ -26,5 +26,5 @@ class MainControllerTests {
 
         assertThat(result).isSameAs(mockResponseEntity)
         verify(mockLogger).info("api-info")
-    }
+    }*/
 }

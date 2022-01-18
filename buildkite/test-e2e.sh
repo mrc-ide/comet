@@ -19,7 +19,7 @@ docker run -d \
     --name=comet \
     $IMAGE_NAME:$GIT_BRANCH
 
-# Create an image based on the shared build env that compiles and tests the front-end
+# Create an image based on the shared test env that runs browser tests
 docker build --tag comet-test-e2e \
 	--build-arg GIT_ID=$GIT_ID \
   -f $HERE/test-e2e.dockerfile \
@@ -33,7 +33,6 @@ for _ in $(seq 30); do
     sleep 6
 done
 
-# Run the created image
 docker run --rm \
     --network=$NETWORK \
     comet-test-e2e

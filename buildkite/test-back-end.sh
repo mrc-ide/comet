@@ -8,7 +8,7 @@ function cleardocker() {
 }
 trap cleardocker EXIT
 
-# Create an image based on the shared build env that runs back-end tests
+# Create an image based on the shared test env that runs back-end tests
 docker build --tag=comet-test-back-end \
   --build-arg GIT_ID=$GIT_ID \
   -f $HERE/test-back-end.dockerfile \
@@ -24,7 +24,6 @@ for _ in $(seq 30); do
     sleep 6
 done
 
-# Run the build env image to run gradle tests
 docker run --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
     --network=comet_nw \
